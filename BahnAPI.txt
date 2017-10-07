@@ -1,0 +1,27 @@
+
+// station info (for pattern)
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/station/Hamburg%20Dammtor"
+
+// timetable
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/plan/8002548/171007/18"
+
+// future change
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/fchg/8002548"
+
+// recent change
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/rchg/8002548"
+
+//////////////
+// Elbgaustraße
+
+// station info
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/station/Hamburg%20Elbgaustr"
+
+// timetable
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/plan/8001739/171007/19"
+
+// future changes
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/fchg/8001739"
+
+// recent changes
+curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/rchg/8001739"
