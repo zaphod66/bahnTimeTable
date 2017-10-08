@@ -21,6 +21,8 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
 
+libraryDependencies += "com.softwaremill.sttp" %% "core" % "0.0.17"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
