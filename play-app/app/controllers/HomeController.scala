@@ -47,14 +47,17 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     val dateStr = date.toString("yyMMdd")
     val hourStr = date.getHourOfDay
 
-    val HH_Dammtor   = 8002548
-    val HH_Elbgaustr = 8001739
-    val HH_Jungfernstieg = 8003137
+    val HH_Dammtor         = 8002548
+    val HH_Elbgaustr       = 8001739
+    val HH_Jungfernstieg   = 8003137
     val HH_Landungsbrücken = 8003518
+    val HH_HBF_Fern        = 8002549
+    val HH_HBF_SBahn       = 8098549
+    val BR_Brieselang      = 8013472
 
     val req1 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$HH_Elbgaustr")
     val req2 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/rchg/$HH_Elbgaustr")
-    val req3 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$HH_Dammtor/$dateStr/$hourStr")
+    val req3 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$HH_Elbgaustr/$dateStr/$hourStr")
 
     val res = req3.send()
 
@@ -108,6 +111,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
       val line = if (ca == "S") s"$ca-$ln"
       else if (ca.startsWith("IC")) s"$ca $n"
+      else if (ca.startsWith("R")) s"$ca$ln"
       else s"$ln"
 
       TableEntry(line, decorateDateString(an), decorateDateString(dn), depa, dest)
