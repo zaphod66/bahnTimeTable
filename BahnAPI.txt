@@ -1,3 +1,11 @@
+Bahn API
+
+User: norbert66
+Pass: Mon66Bahn
+https://developer.deutschebahn.com
+
+//////////////
+// Dammtor
 
 // station info (for pattern)
 curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/station/Hamburg%20Dammtor"
@@ -10,6 +18,9 @@ curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 6
 
 // recent change
 curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/rchg/8002548"
+
+// departureBoard
+curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 8aa98ee641a28d95cddf612756cf1abd" "https://api.deutschebahn.com/fahrplan-plus/v1/departureBoard/8002548?date=2017-11-05T19%3A30"
 
 //////////////
 // Elbgaustraße
@@ -25,3 +36,10 @@ curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 6
 
 // recent changes
 curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/rchg/8001739"
+
+val req2 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/8001739/171008/19")
+
+val res2 = req2.send()
+
+val xml2 = scala.xml.XML.loadString(res2.unsafeBody)
+

@@ -1,10 +1,27 @@
-@(response: String)
+@import model.TableEntry
+
+@(station: String, table: Seq[TableEntry])
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
 
 @main("Welcome to Bahn time table") {
 
-  <h2>Bahn Time Table</h2>
+  <section id="top">
+    <div class="wrapper">
+        <h1>@station</h1>
+    </div>
+  </section>
 
-  <tl>
-    <h3>@response</h3>
-  </tl>
+  <div id="content" class="wrapper doc">
+    <article>
+        <table>
+            <tr><th>Linie</th><th>Ankunft</th><th>Abfahrt</th><th>Aus</th><th>Nach</th></tr>
+            @for(entry <- table) {
+              <tr><td>@entry.line</td><td>@entry.arrival</td><td>@entry.departure</td><td>@entry.depart</td><td>@entry.dest</td></tr>
+            }
+        </table>
+    </article>
+  </div>
+
+  <!--@welcome("Mona", style = "scala")-->
 }
