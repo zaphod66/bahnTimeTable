@@ -57,7 +57,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
     val req1 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$HH_Elbgaustr")
     val req2 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/rchg/$HH_Elbgaustr")
-    val req3 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$HH_Elbgaustr/$dateStr/$hourStr")
+    val req3 = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$HH_HBF_SBahn/$dateStr/$hourStr")
 
     val res = req3.send()
 
@@ -71,8 +71,8 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     println(s"Attributes: $attrMap")
 
     val items = resXml \\ "s"
-    println("-------------------")
-    println(resXml.toString)
+//    println("-------------------")
+//    println(resXml.toString)
     println("-------------------")
     items foreach { s =>  println(s"---\n$s\n${s \\ "ar"} - ${s \\ "dp"}\n---") }
     println("-------------------")
@@ -103,6 +103,13 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
           tl.head.attributes.asAttrMap.getOrElse("n", ".")
         else "."
 
+      val pp = if (ar.nonEmpty)
+        ar.head.attributes.asAttrMap.getOrElse("pp", "-")
+      else if (dp.nonEmpty)
+        dp.head.attributes.asAttrMap.getOrElse("pp", "-")
+      else
+        "-"
+
       val pptha = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
       val ppthd = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
 
@@ -110,11 +117,11 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       val dest = ppthd.split('|').lastOption.getOrElse("-")
 
       val line = if (ca == "S") s"$ca-$ln"
-      else if (ca.startsWith("IC")) s"$ca $n"
+      else if (ca.startsWith("IC") || ca.startsWith("NJ") || ca.startsWith("EC")) s"$ca $n"
       else if (ca.startsWith("R")) s"$ca$ln"
       else s"$ln"
 
-      TableEntry(line, decorateDateString(an), decorateDateString(dn), depa, dest)
+      TableEntry(line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
     }
 
     Ok(views.html.index(station, entries.sortWith(lessThan)))
