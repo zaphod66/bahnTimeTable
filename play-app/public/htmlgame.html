@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>HTML-Game</title>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/htmlgame.css">
+</head>
+<body>
+    <noscript>JavaScript required</noscript>
+    <main>
+        <div class="flex">
+            <button v-if="state === 'over'" @click.prevent="restart">Restart</button>
+            <button v-else @click.prevent="pause" :disabled="pauseDisabled">{{state === 'paused' ? 'Continue' : 'Pause'}}</button>
+            <button @click.prevent="state = 'over'" :disabled="state !== 'on'">Give up</button>
+        </div>
+
+        <div class="flex">
+            <div id="counter">{{done}} von {{todo}}</div>
+
+            <input type="text" autofocus
+                   v-bind:disabled="inputDisabled"
+                   v-model:value="inputValue"
+                   v-on:input="handleInput">
+
+            <div id="timer" :class="state">{{minutes}}:{{seconds}}</div>
+        </div>
+
+        <output class="green" v-if="html5.length">
+            <b>HTML5 Elements:</b> <span v-for="el in html5" :key="'output-' + el">{{el}}</span>
+        </output>
+        <output class="blue" v-if="experimental.length">
+            <b>Experimental:</b> <span v-for="el in experimental" :key="'output-' + el">{{el}}</span>
+        </output>
+        <output class="red" v-if="deprecated.length">
+            <b>Deprecated:</b> <span v-for="el in deprecated" :key="'output-' + el">{{el}}</span>
+        </output>
+
+        <div v-if="state === 'over'">
+            <p><strong>
+                {{html5.length}} regular html5 elements<br>
+                {{experimental.length}} experimental elements<br>
+                {{deprecated.length}} deprecated elements
+            </strong></p>
+            <h3>
+                Score: {{score}} points
+            </h3>
+
+            <ul v-if="results.length">
+                <li v-for="result in results">
+                    <b>{{result.name}}:</b> {{result.found.length}} of {{result.total}}.<br>
+                    Found:
+                    <ul v-if="result.found.length" class="elementlist found">
+                        <li v-for="elem in result.found">
+                            <code :title="elem.role">{{elem.name}}</code>
+                        </li>
+                    </ul>
+                    <span v-else>Unfortunately none.</span>
+                    Missing:
+                    <ul v-if="result.missing.length" class="elementlist missing">
+                        <li v-for="elem in result.missing">
+                            <code :title="elem.role">{{elem.name}}</code>
+                        </li>
+                    </ul>
+                    <span v-else>None. &ndash; great!</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="public/javascripts/vue.js"></script>
+    <script type="text/javascript" src="public/javascripts/gamedata.js"></script>
+    <script type="text/javascript" src="public/javascripts/htmlgame.js"></script>
+</body>
+</html>

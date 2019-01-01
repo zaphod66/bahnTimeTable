@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Bahn Time Table</title>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/htmlgame.css">
+</head>
+
+<body>
+    <noscript>JavaScript required</noscript>
+
+    <main>
+        <div class="flex">
+            <input type="text" autofocus
+                   v-bind:disabled="inputDisabled"
+                   v-model:value="inputValue"
+                   v-on:input="handleInput">
+
+            <div>{{response}}</div>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="public/javascripts/vue.js"></script>
+    <script type="text/javascript" src="public/javascripts/timetable.js"></script>
+
+</body>
+
+</html>
