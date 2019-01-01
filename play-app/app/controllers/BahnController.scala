@@ -1,10 +1,9 @@
 package controllers
 
 import javax.inject._
-
 import play.api.mvc._
 import com.softwaremill.sttp._
-import model.TableEntry
+import model.{StationEntry, TableEntry}
 import org.joda.time.DateTime
 
 @Singleton
@@ -48,24 +47,92 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     println("---------------------------")
   }
 
-  private def getStation(eva: Int): String = {
-    val date = DateTime.now()
-    val dateStr = date.toString("yyMMdd")
-    val hourStr = date.getHourOfDay
+  private def getStationDs100(ds100: String): Option[(String, Int)] = {
+    // https://api.deutschebahn.com/timetables/v1/station/8003518
+    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
+    val res = req.send()
 
+//    println("===========================")
+//    println(s"getStationDs100($ds100)")
+//    println("===========================")
+
+    try {
+      val resStr = res.unsafeBody
+      val resXml = scala.xml.XML.loadString(resStr)
+
+//      printlnBody(s"getStationDs100($ds100)", resStr)
+
+      val t1 = resXml \\ "station"
+      val t2 = t1 \@ "name"
+      val t3 = t1 \@ "eva"
+//      val t4 = try {
+//        t3.toInt
+//      } catch {
+//        case _: NumberFormatException => 0
+//      }
+
+      Option((t2, t3.toInt))
+    } catch { case _: Exception => None }
+  }
+
+  private def getStationEva(eva: Int): String = {
     // https://api.deutschebahn.com/timetables/v1/station/8003518
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/station/$eva")
     val res = req.send()
 
-    val resStr = res.unsafeBody
-    val resXml = scala.xml.XML.loadString(resStr)
+    try {
+      val resStr = res.unsafeBody
+      val resXml = scala.xml.XML.loadString(resStr)
 
-    printlnBody("getStattion", resStr)
+      printlnBody("getStationEva", resStr)
 
-    val t1 = resXml \\ "station"
-    val t2 = t1 \@ "name"
+      val t1 = resXml \\ "station"
+      val t2 = t1 \@ "name"
 
-    t2
+      t2
+    } catch {
+      case _: NoSuchElementException => "unknown"
+    }
+  }
+
+  private def getBetriebsstellen(name: String): List[StationEntry] = {
+    // https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=altona
+    val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641")
+    val req = reqHeader.get(uri"https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=$name")
+    val res = req.send()
+    try {
+      val str = res.unsafeBody
+
+      import play.api.libs.json._
+
+      val json = Json.parse(str)
+      val jsonArr = json.asInstanceOf[JsArray]
+      val jsonSeq = jsonArr.value
+
+      val stations = jsonSeq map { js =>
+        val lName  = (js \ "name").as[String]
+        val sName  = (js \ "short").as[String]
+        val abbr   = (js \ "abbrev").as[String]
+        val tpe    = (js \ "type").as[String]
+        val status = (js \ "status").asOpt[String].getOrElse("in use")
+
+        StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
+      }
+
+      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Hp") && s.status == "in use"
+
+      println("---------------------------")
+      println(s"getBetriebsstellen($name)")
+      println("---------------------------")
+      stations foreach println
+      println("---------------------------")
+      stations.filter(cond) foreach println
+      println("---------------------------")
+
+      stations.filter(cond).toList
+    } catch {
+      case _: NoSuchElementException => List.empty[StationEntry]
+    }
   }
 
   private def getFullChanges(eva: Int): List[TableEntry] = {
@@ -86,71 +153,82 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
     val planReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
     val planRes = planReq.send()
-    val planStr = planRes.unsafeBody
 
-    printlnBody("timetable", planStr)
+    try {
+      val planStr = planRes.unsafeBody
 
-    val resXml = scala.xml.XML.loadString(planStr)
+      printlnBody("timetable", planStr)
 
-    val attrMap = resXml.attributes.asAttrMap
-    println(s"Attributes: $attrMap")
+      val resXml = scala.xml.XML.loadString(planStr)
 
-    val items = resXml \\ "s"
+      val attrMap = resXml.attributes.asAttrMap
+      println(s"Attributes: $attrMap")
 
-    items foreach { s => println(s"-- s --\n$s\n----\n${s \\ "ar"}\n-\n${s \\ "dp"}\n-------") }
+      val items = resXml \\ "s"
 
-    val entries = items map { item =>
-      val tl = item \\ "tl"
-      val ar = item \\ "ar"
-      val dp = item \\ "dp"
+      items foreach { s => println(s"-- s --\n$s\n----\n${s \\ "ar"}\n-\n${s \\ "dp"}\n-------") }
 
-      val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
-      val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+      val entries = items map { item =>
+        val tl = item \\ "tl"
+        val ar = item \\ "ar"
+        val dp = item \\ "dp"
 
-      val ln =
-        if (ar.nonEmpty)
-          ar.head.attributes.asAttrMap.getOrElse("l", "-")
+        val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+        val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+
+        val ann = ar \@ "pt"
+        val dnn = dp \@ "pt"
+
+        println(s"ann: <$ann>")
+        println(s"dnn: <$dnn>")
+
+        val ln =
+          if (ar.nonEmpty)
+            ar.head.attributes.asAttrMap.getOrElse("l", "-")
+          else if (dp.nonEmpty)
+            dp.head.attributes.asAttrMap.getOrElse("l", "-")
+          else
+            "-"
+
+        val ca =
+          if (tl.nonEmpty)
+            tl.head.attributes.asAttrMap.getOrElse("c", "-")
+          else "-"
+
+        val n =
+          if (tl.nonEmpty)
+            tl.head.attributes.asAttrMap.getOrElse("n", ".")
+          else "."
+
+        val pp = if (ar.nonEmpty)
+          ar.head.attributes.asAttrMap.getOrElse("pp", "-")
         else if (dp.nonEmpty)
-          dp.head.attributes.asAttrMap.getOrElse("l", "-")
+          dp.head.attributes.asAttrMap.getOrElse("pp", "-")
         else
           "-"
 
-      val ca =
-        if (tl.nonEmpty)
-          tl.head.attributes.asAttrMap.getOrElse("c", "-")
-        else "-"
+        val pptha = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
+        val ppthd = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
 
-      val n =
-        if (tl.nonEmpty)
-          tl.head.attributes.asAttrMap.getOrElse("n", ".")
-        else "."
+        val depa = pptha.split('|').headOption.getOrElse("-")
+        val dest = ppthd.split('|').lastOption.getOrElse("-")
 
-      val pp = if (ar.nonEmpty)
-        ar.head.attributes.asAttrMap.getOrElse("pp", "-")
-      else if (dp.nonEmpty)
-        dp.head.attributes.asAttrMap.getOrElse("pp", "-")
-      else
-        "-"
+        val line = if (ca == "S") s"$ca-$ln"
+        else if (ca.startsWith("IC") || ca.startsWith("NJ") || ca.startsWith("EC")) s"$ca $n"
+        else if (ca.startsWith("R")) s"$ca$ln"
+        else s"$ln"
 
-      val pptha = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
-      val ppthd = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "-"), _ + _)
+        TableEntry(line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
+      }
 
-      val depa = pptha.split('|').headOption.getOrElse("-")
-      val dest = ppthd.split('|').lastOption.getOrElse("-")
-
-      val line = if (ca == "S") s"$ca-$ln"
-      else if (ca.startsWith("IC") || ca.startsWith("NJ") || ca.startsWith("EC")) s"$ca $n"
-      else if (ca.startsWith("R")) s"$ca$ln"
-      else s"$ln"
-
-      TableEntry(line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
+      entries.toList
+    } catch {
+      case _: NoSuchElementException => List.empty[TableEntry]
     }
-
-    entries.toList
   }
 
   def timeTableServerEva(eva: Int) = Action {
-    val station = getStation(eva)
+    val station = getStationEva(eva)
     val entries = getEntries(eva)
 
     getFullChanges(eva)
@@ -159,6 +237,8 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def timeTableServer = Action {
+    // Abkürzungen der Betriebsstellen
+    // http://www.bahnseite.de/DS100/DS100_main.html
     val HH_Dammtor = 8002548
     val HH_Elbgaustr = 8001739
     val HH_Jungfernstieg = 8003137
@@ -168,10 +248,11 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     val BR_Brieselang = 8013472
     val MK_Cammin = 8011307
     val SH_Pinneberg = 8004819
+    val HL_HBF = 8000237
 
     val eva = HH_Landungsbrücken
 
-    val station = getStation(eva)
+    val station = getStationEva(eva)
     val entries = getEntries(eva)
 
     Ok(views.html.index(station, entries.sortWith(lessThan)))
@@ -183,4 +264,22 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok.sendFile(new java.io.File("public/bahnTimeTable.html"))
   }
 
+  def station(ds100: String) = Action {
+
+    val (name, eva) = getStationDs100(ds100).getOrElse((" unknown ", 0))
+
+    Ok(views.html.welcome(s"$ds100: ($name - $eva)"))
+  }
+
+  def betriebstellen(name: String) = Action {
+
+    val stations = getBetriebsstellen(name)
+    val ds100s   = stations map (_.ds100)
+
+    val tt = ds100s map getStationDs100
+
+    tt.flatten foreach println
+
+    Ok
+  }
 }
