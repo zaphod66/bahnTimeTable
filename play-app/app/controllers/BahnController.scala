@@ -119,7 +119,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
         StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
       }
 
-      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Hp") && s.status == "in use"
+      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Bft" || s.tpe == "Hp") && s.status == "in use"
 
       println("---------------------------")
       println(s"getBetriebsstellen($name)")
@@ -139,11 +139,15 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     val fchgReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$eva")
 
     val fchgRes = fchgReq.send()
-    val fchgStr = fchgRes.unsafeBody
+    try {
+      val fchgStr = fchgRes.unsafeBody
 
-    printlnBody("fchg", fchgStr)
+      printlnBody("fchg", fchgStr)
 
-    List.empty[TableEntry]
+      List.empty[TableEntry]
+    } catch {
+      case _: NoSuchElementException => println(s"Error in getFullChanges($eva)"); List.empty[TableEntry]
+    }
   }
 
   private def getEntries(eva: Int): List[TableEntry] = {
