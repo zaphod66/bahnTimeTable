@@ -84,7 +84,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
       val resStr = res.unsafeBody
       val resXml = scala.xml.XML.loadString(resStr)
 
-      printlnBody("getStationEva", resStr)
+      printlnBody(s"getStationEva($eva)", resStr)
 
       val t1 = resXml \\ "station"
       val t2 = t1 \@ "name"
@@ -142,7 +142,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     try {
       val fchgStr = fchgRes.unsafeBody
 
-      printlnBody("fchg", fchgStr)
+      printlnBody(s"getFullChanges($eva)", fchgStr)
 
       List.empty[TableEntry]
     } catch {
@@ -161,7 +161,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     try {
       val planStr = planRes.unsafeBody
 
-      printlnBody("timetable", planStr)
+      printlnBody(s"getEntries($eva)", planStr)
 
       val resXml = scala.xml.XML.loadString(planStr)
 
@@ -170,7 +170,8 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
       val items = resXml \\ "s"
 
-      items foreach { s => println(s"-- s --\n$s\n----\n${s \\ "ar"}\n-\n${s \\ "dp"}\n-------") }
+//      items foreach { s => println(s"-- s --\n$s\n-------\n${s \\ "ar"}\n-\n${s \\ "dp"}\n-------") }
+      items foreach { s => println(s"-- s --\n$s\n-------") }
 
       val entries = items map { item =>
         val tl = item \\ "tl"
@@ -179,12 +180,6 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
         val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
         val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
-
-        val ann = ar \@ "pt"
-        val dnn = dp \@ "pt"
-
-        println(s"ann: <$ann>")
-        println(s"dnn: <$dnn>")
 
         val ln =
           if (ar.nonEmpty)
@@ -218,16 +213,21 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
         val dest = ppthd.split('|').lastOption.getOrElse("-")
 
         val line = if (ca == "S") s"$ca-$ln"
-        else if (ca.startsWith("IC") || ca.startsWith("NJ") || ca.startsWith("EC")) s"$ca $n"
+        else if (ca.startsWith("IC") || ca.startsWith("NJ") || ca.startsWith("EC") || ca.startsWith("RB")) s"$ca $n"
         else if (ca.startsWith("R")) s"$ca$ln"
         else s"$ln"
+
+//        val itemMap = item.attributes.asAttrMap
+//        itemMap foreach { kv => println(s"${kv._1} -> ${kv._2}") }
+//        val tlMap = tl.head.attributes.asAttrMap
+//        tlMap foreach { kv => println(s"${kv._1} -> ${kv._2}") }
 
         TableEntry(line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
       }
 
       entries.toList
     } catch {
-      case _: NoSuchElementException => List.empty[TableEntry]
+      case _: NoSuchElementException => println(s"Error in getEntries($eva)"); List.empty[TableEntry]
     }
   }
 
