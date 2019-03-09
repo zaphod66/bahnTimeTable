@@ -45,6 +45,17 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     }.toOption
   }
 
+  private def instant2LocalDateTime(instant: Instant): LocalDateTime = {
+    LocalDateTime.ofInstant(instant, ZoneId.systemDefault().normalized())
+//    LocalDateTime.ofInstant(instant, ZoneId.of("UTC"))
+  }
+
+  private def dateString2LocalDateTime(str: String): Option[LocalDateTime] = {
+    val instant = dateString2Instant(str)
+
+    instant map { i => LocalDateTime.ofInstant(i, ZoneId.of("UTC")) }
+  }
+
   private def minutesBetween(t1: Instant, t2: Instant): Long = {
     import java.time.Duration
 
@@ -59,10 +70,15 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     val arr2 = e2.arrival
     val dep2 = e2.departure
 
-    val time1 = if (arr1 != "-") arr1 else dep1
-    val time2 = if (arr2 != "-") arr2 else dep2
+    val time1 = if (arr1.isDefined) arr1 else dep1
+    val time2 = if (arr2.isDefined) arr2 else dep2
 
-    time1 < time2
+    (time1, time2) match {
+      case (Some(t1), Some(t2)) => t1.isBefore(t2)
+      case (Some(_), None)      => false
+      case (None, Some(_))      => true
+      case (None, None)         => false
+    }
   }
 
   private def printlnBody(title: String, resStr: String): Unit = {
@@ -93,11 +109,6 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
       val t1 = resXml \\ "station"
       val t2 = t1 \@ "name"
       val t3 = t1 \@ "eva"
-//      val t4 = try {
-//        t3.toInt
-//      } catch {
-//        case _: NumberFormatException => 0
-//      }
 
       Option((t2, t3.toInt))
     } catch { case _: Exception => None }
@@ -185,15 +196,18 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
         val ar = n \\ "ar"
         val dp = n \\ "dp"
 
-        val arStr = decorateDateString(ar.\@("ct"))
-        val dpStr = decorateDateString(dp.\@("ct"))
+//        println(s"""=========> ${ar.\@("ct")} - ${dateString2LocalDateTime(ar.\@("ct"))}""")
+//        println(s"""=========> ${dp.\@("ct")} - ${dateString2LocalDateTime(dp.\@("ct"))}""")
 
-        (arStr, dpStr)
+        val arLDT = dateString2LocalDateTime(ar.\@("ct"))
+        val dpLDT = dateString2LocalDateTime(dp.\@("ct"))
+
+        (arLDT, dpLDT)
       }.filter { case (k, _) => k.nonEmpty }.map {case (k, v) => (k.head.toString, v)}
 
 //      resMap2 foreach println
 
-      resMap2.map { case (k, v) => TableEntry(k, "", "", "", "", "", "", v._1, v._2) }.toList
+      resMap2.map { case (k, v) => TableEntry(k, "", "", None, None, "", "", v._1, v._2) }.toList
     } catch {
       case _: NoSuchElementException => println(s"Error in getFullChanges($eva)"); List.empty[TableEntry]
     }
@@ -201,12 +215,13 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   private def getEntries(eva: Int): List[TableEntry] = {
     val instant = Instant.now()
-    val dt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    val dt = instant2LocalDateTime(instant)
     val dfDate = DateTimeFormatter.ofPattern("yyMMdd")
-    val dfHour = DateTimeFormatter.ofPattern("hh")
+    val dfHour = DateTimeFormatter.ofPattern("HH")
 
     val dateStr = dt.format(dfDate)
     val hourStr = dt.format(dfHour)
+
 
     val planReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
     val planRes = planReq.send()
@@ -238,6 +253,15 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
         val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
         val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+
+//        println(s"=========> an: $an")
+//        println(s"=========> dn: $dn")
+
+        val arLDT     = dateString2LocalDateTime(an)
+        val dpLDT     = dateString2LocalDateTime(dn)
+
+//        println(s"=========> arLDT: $arLDT")
+//        println(s"=========> dpLDT: $dpLDT")
 
         val ln =
           if (ar.nonEmpty)
@@ -281,7 +305,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 //        tlMap foreach { kv => println(s"${kv._1} -> ${kv._2}") }
 
         val id = item.attribute("id").get.head.buildString(true)
-        TableEntry(id, line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
+        TableEntry(id, line, pp, arLDT, dpLDT, depa, dest)
       }
 
       entries.toList
@@ -304,14 +328,9 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     val entries2 = entries map { t =>
       val delay = fk.get(t.id)
 
-      //    delay.fold(t)(t => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
       delay.fold(t)(_ => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
     }
 
-//    entries foreach println
-//    println("-------")
-//    fk.values foreach println
-//    println("-------")
     entries2 foreach println
 
     Ok(views.html.index(station, entries2.sortWith(lessThan)))

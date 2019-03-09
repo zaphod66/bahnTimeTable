@@ -1,4 +1,6 @@
 @import model.TableEntry
+@import java.time.format.DateTimeFormatter
+@import java.time.Duration
 
 @(station: String, table: Seq[TableEntry])
 
@@ -15,17 +17,37 @@
   <div id="content" class="wrapper doc">
     <article>
         <table>
-            <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th>Abfahrt</th><th>Aus</th><th>Nach</th><th>Aktuelle Ankunft</th><th>Aktuelle Abfahrt</th></tr>
+            <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
             @for(entry <- table) {
               <tr>
                   <td>@entry.line</td>
                   <td>@entry.track</td>
-                  <td>@entry.arrival</td>
-                  <td>@entry.departure</td>
+                  <td>@entry.arrival.fold("")(_.format(DateTimeFormatter.ofPattern("HH:mm")))</td>
+                  <td>@{
+                      (entry.arrival, entry.arDelay) match {
+                        case (Some(ar), Some(ad)) =>
+                          val d = Duration.between(ar, ad).toMinutes
+                          val s = if (d >= 0) "+" + d.toString else d.toString
+                          val c = if (d > 0) "#FF0000" else "#00FF00"
+
+                          play.twirl.api.Html("""<font color="""" + c + """">""" + s + "</font>")
+                        case _ => ""
+                      }
+                  }</td>
+                  <td>@entry.departure.fold("")(_.format(DateTimeFormatter.ofPattern("HH:mm")))</td>
+                  <td>@{
+                      (entry.departure, entry.dpDelay) match {
+                        case (Some(ar), Some(ad)) =>
+                          val d = Duration.between(ar, ad).toMinutes
+                          val s = if (d >= 0) "+" + d.toString else d.toString
+                          val c = if (d > 0) "#FF0000" else "#00FF00"
+
+                          play.twirl.api.Html("""<font color="""" + c + """">""" + s + "</font>")
+                        case _ => ""
+                      }
+                  }</td>
                   <td>@entry.depart</td>
                   <td>@entry.dest</td>
-                  <td>@entry.arDelay</td>
-                  <td>@entry.dpDelay</td>
               </tr>
             }
         </table>
