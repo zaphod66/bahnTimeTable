@@ -1,10 +1,14 @@
 package controllers
 
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDateTime, ZoneId}
+
 import javax.inject._
 import play.api.mvc._
 import com.softwaremill.sttp._
 import model.{StationEntry, TableEntry}
-import org.joda.time.DateTime
+
+import scala.util.Try
 
 @Singleton
 class BahnController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
@@ -23,6 +27,30 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
       //    s"$yea.$mon.$day - $hou:$min"
       s"$hou:$min"
     }
+  }
+
+  private def dateString2Iso(str: String): String = {
+    val yea = str.substring(0, 2)
+    val mon = str.substring(2, 4)
+    val day = str.substring(4, 6)
+    val hou = str.substring(6, 8)
+    val min = str.substring(8, 10)
+
+    s"20$yea-$mon-${day}T$hou:$min:00Z"
+  }
+
+  private def dateString2Instant(str: String): Option[Instant] = {
+    Try {
+      Instant.parse(dateString2Iso(str))
+    }.toOption
+  }
+
+  private def minutesBetween(t1: Instant, t2: Instant): Long = {
+    import java.time.Duration
+
+    val d = Duration.between(t1, t2)
+
+    d.toMinutes
   }
 
   private def lessThan(e1: TableEntry, e2: TableEntry): Boolean = {
@@ -140,20 +168,45 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
     val fchgRes = fchgReq.send()
     try {
+//      printlnBody(s"getFullChanges($eva)", fchgStr)
       val fchgStr = fchgRes.unsafeBody
+      val fchgXml = scala.xml.XML.loadString(fchgStr)
 
-      printlnBody(s"getFullChanges($eva)", fchgStr)
+      val attrMap = fchgXml.attributes.asAttrMap
+      println(s"Attributes: $attrMap")
 
-      List.empty[TableEntry]
+      val items = fchgXml \\ "s"
+
+      val resMap = items.map(s => s.attribute("id") -> s).toMap
+        .filter { case (k, _) => k.isDefined }
+        .map { case (k,v) => (k.get, v) }
+
+      val resMap2 = resMap.mapValues { n =>
+        val ar = n \\ "ar"
+        val dp = n \\ "dp"
+
+        val arStr = decorateDateString(ar.\@("ct"))
+        val dpStr = decorateDateString(dp.\@("ct"))
+
+        (arStr, dpStr)
+      }.filter { case (k, _) => k.nonEmpty }.map {case (k, v) => (k.head.toString, v)}
+
+//      resMap2 foreach println
+
+      resMap2.map { case (k, v) => TableEntry(k, "", "", "", "", "", "", v._1, v._2) }.toList
     } catch {
       case _: NoSuchElementException => println(s"Error in getFullChanges($eva)"); List.empty[TableEntry]
     }
   }
 
   private def getEntries(eva: Int): List[TableEntry] = {
-    val date = DateTime.now()
-    val dateStr = date.toString("yyMMdd")
-    val hourStr = date.getHourOfDay
+    val instant = Instant.now()
+    val dt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    val dfDate = DateTimeFormatter.ofPattern("yyMMdd")
+    val dfHour = DateTimeFormatter.ofPattern("hh")
+
+    val dateStr = dt.format(dfDate)
+    val hourStr = dt.format(dfHour)
 
     val planReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 67332c908af9458ed8584e4f9fa7c641").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
     val planRes = planReq.send()
@@ -161,7 +214,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     try {
       val planStr = planRes.unsafeBody
 
-      printlnBody(s"getEntries($eva)", planStr)
+//      printlnBody(s"getEntries($eva)", planStr)
 
       val resXml = scala.xml.XML.loadString(planStr)
 
@@ -170,8 +223,13 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
       val items = resXml \\ "s"
 
-//      items foreach { s => println(s"-- s --\n$s\n-------\n${s \\ "ar"}\n-\n${s \\ "dp"}\n-------") }
-      items foreach { s => println(s"-- s --\n$s\n-------") }
+//      items foreach { s => println(s"""id - ${s.attribute("id")} """) }
+
+      val resMap = items.map(s => s.attribute("id") -> s).toMap
+        .filter { case (k, _) => k.isDefined }
+        .map { case (k,v) => (k.get.toString, v) }
+
+//      resMap foreach println
 
       val entries = items map { item =>
         val tl = item \\ "tl"
@@ -222,22 +280,41 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 //        val tlMap = tl.head.attributes.asAttrMap
 //        tlMap foreach { kv => println(s"${kv._1} -> ${kv._2}") }
 
-        TableEntry(line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
+        val id = item.attribute("id").get.head.buildString(true)
+        TableEntry(id, line, pp, decorateDateString(an), decorateDateString(dn), depa, dest)
       }
 
       entries.toList
     } catch {
-      case _: NoSuchElementException => println(s"Error in getEntries($eva)"); List.empty[TableEntry]
+      case e: NoSuchElementException => /*e.printStackTrace();*/ println(s"Error in getEntries($eva) - $e}"); List.empty[TableEntry]
     }
   }
 
   def timeTableServerEva(eva: Int) = Action {
     val station = getStationEva(eva)
     val entries = getEntries(eva)
+    val fchgs   = getFullChanges(eva)
 
-    getFullChanges(eva)
+    val entriesMap = entries.map(t => t.id -> t).toMap
+    val fchgsMap   = fchgs.map(t => t.id -> t).toMap
 
-    Ok(views.html.index(station, entries.sortWith(lessThan)))
+    val ek = entriesMap.keySet
+    val fk = fchgsMap.filter { case (k, _) => ek.contains(k) }
+
+    val entries2 = entries map { t =>
+      val delay = fk.get(t.id)
+
+      //    delay.fold(t)(t => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
+      delay.fold(t)(_ => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
+    }
+
+//    entries foreach println
+//    println("-------")
+//    fk.values foreach println
+//    println("-------")
+    entries2 foreach println
+
+    Ok(views.html.index(station, entries2.sortWith(lessThan)))
   }
 
   def timeTableServer = Action {
@@ -262,9 +339,10 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.index(station, entries.sortWith(lessThan)))
   }
 
-  def timeTable = Action {
+  def timeTable = Action { request =>
     import scala.concurrent.ExecutionContext.Implicits.global
 
+    val b = request.body
     Ok.sendFile(new java.io.File("public/bahnTimeTable.html"))
   }
 

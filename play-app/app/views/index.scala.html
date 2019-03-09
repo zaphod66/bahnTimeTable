@@ -15,7 +15,7 @@
   <div id="content" class="wrapper doc">
     <article>
         <table>
-            <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th>Abfahrt</th><th>Aus</th><th>Nach</th></tr>
+            <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th>Abfahrt</th><th>Aus</th><th>Nach</th><th>Aktuelle Ankunft</th><th>Aktuelle Abfahrt</th></tr>
             @for(entry <- table) {
               <tr>
                   <td>@entry.line</td>
@@ -24,6 +24,8 @@
                   <td>@entry.departure</td>
                   <td>@entry.depart</td>
                   <td>@entry.dest</td>
+                  <td>@entry.arDelay</td>
+                  <td>@entry.dpDelay</td>
               </tr>
             }
         </table>
