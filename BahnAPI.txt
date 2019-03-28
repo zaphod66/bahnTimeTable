@@ -20,7 +20,9 @@ curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 6
 curl -X GET --header "Accept: application/xml" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/timetables/v1/rchg/8002548"
 
 // departureBoard
-curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 8aa98ee641a28d95cddf612756cf1abd" "https://api.deutschebahn.com/fahrplan-plus/v1/departureBoard/8002548?date=2017-11-05T19%3A30"
+curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 8aa98ee641a28d95cddf612756cf1abd" "https://api.deutschebahn.com/fahrplan-plus/v1/departureBoard/8002548?date=2017-11-05"
+
+curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 67332c908af9458ed8584e4f9fa7c641" "https://api.deutschebahn.com/fahrplan-plus/v1/departureBoard/8002548?date=2019-03-13"
 
 //////////////
 // Elbgaustraße
