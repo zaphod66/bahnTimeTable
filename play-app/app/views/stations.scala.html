@@ -1,0 +1,21 @@
+@(stations: Seq[(String, Int)])
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+
+@main("Welcome to Bahn time table") {
+    <section id="top">
+        <div class="wrapper">
+            <h1>Stations</h1>
+        </div>
+    </section>
+
+    <div id="content" class="wrapper doc">
+        <article>
+            <ol>
+                @for(station <- stations) {
+                    <li><a href="@controllers.routes.BahnController.timeTableServerEva(station._2)">@station._1</a></li>
+                }
+            </ol>
+        </article>
+    </div>
+}

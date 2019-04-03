@@ -77,6 +77,11 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   private def getStationDs100(ds100: String): Option[(String, Int)] = {
+
+    Thread.sleep(3000)  // 20 requests per minute
+
+    println(s"getStationDs100($ds100) ->")
+
     // https://api.deutschebahn.com/timetables/v1/station/8003518
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
     val res = req.send()
@@ -91,8 +96,12 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
       val t2 = t1 \@ "name"
       val t3 = t1 \@ "eva"
 
-      Option((t2, t3.toInt))
-    } catch { case _: Exception => None }
+      println(s"getStationDs100($ds100) done: $t1 -> ($t2,$t3)")
+      if (t3 == "") {
+        None
+      } else
+        Option((t2, t3.toInt))
+    } catch { case e: Exception => println(s"getStationDs100($ds100) fail: ${e.getMessage}"); None }
   }
 
   private def getStationEva(eva: Int): String = {
@@ -139,7 +148,8 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
         StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
       }
 
-      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Bft" || s.tpe == "Hp") && s.status == "in use"
+      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Bft" || s.tpe == "Hp"
+        || s.tpe == "NE-Bf"|| s.tpe == "NE-Bft") && s.status == "in use"
 
       println("---------------------------")
       println(s"getBetriebsstellen($name)")
@@ -186,7 +196,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
       resMap2.map { case (k, v) => TableEntry(k, "", "", None, None, "", "", v._1, v._2) }.toList
     } catch {
-      case _: NoSuchElementException => println(s"Error in getFullChanges($eva)"); List.empty[TableEntry]
+      case e: NoSuchElementException => println(s"Error in getFullChanges($eva): ${e.getMessage}"); List.empty[TableEntry]
     }
   }
 
@@ -219,11 +229,11 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 //
 //      resMap foreach println
 
-      items foreach { item =>
-        println("------------------")
-        println(item)
-        println("------------------")
-      }
+//      items foreach { item =>
+//        println("------------------")
+//        println(item)
+//        println("------------------")
+//      }
 
       val entries = items map { item =>
         val tl = item \\ "tl"
@@ -290,7 +300,7 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
       entries.toList
     } catch {
-      case e: NoSuchElementException => /*e.printStackTrace();*/ println(s"Error in getEntries($eva) - $e}"); List.empty[TableEntry]
+      case e: NoSuchElementException => /*e.printStackTrace();*/ println(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
     }
   }
 
@@ -355,12 +365,15 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
   def betriebstellen(name: String) = Action {
 
     val stations = getBetriebsstellen(name)
-    val ds100s   = stations map (_.ds100)
+    val ds100s   = stations map ( _.ds100 )
 
-    val tt = ds100s map getStationDs100
+    val stationsRaw  = ds100s map { getStationDs100 }
+    val stationsList = stationsRaw.flatten
 
-    tt.flatten foreach println
+    println("-----------------")
+    stationsList foreach println
+    println("-----------------")
 
-    Ok
+    Ok(views.html.stations(stationsList))
   }
 }

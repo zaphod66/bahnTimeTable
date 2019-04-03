@@ -1,7 +1,5 @@
 Bahn API
 
-User: norbert66
-Pass: Mon66Bahn
 https://developer.deutschebahn.com
 
 //////////////
@@ -45,3 +43,9 @@ val res2 = req2.send()
 
 val xml2 = scala.xml.XML.loadString(res2.unsafeBody)
 
+/////////////////
+// Betriebstellen
+
+curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 8aa98ee641a28d95cddf612756cf1abd" "https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=Allerm"
+
+curl -X GET --header "Accept: application/json" --header "Authorization: Bearer 8aa98ee641a28d95cddf612756cf1abd" "https://api.deutschebahn.com/timetables/v1/station/AALH"

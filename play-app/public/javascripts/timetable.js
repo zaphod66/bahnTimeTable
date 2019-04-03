@@ -13,6 +13,9 @@ const timetable = new Vue({
 //		    console.log(this.inputValue)
 
 		    this.response = this.inputValue
+		},
+		submitForm() {
+		    alert('Submitted: <' + this.response + '> <' + encodeURIComponent(this.response) + '>');
 		}
 	}
 })
