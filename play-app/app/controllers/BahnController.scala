@@ -3,10 +3,12 @@ package controllers
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
-import javax.inject._
-import play.api.mvc._
 import com.softwaremill.sttp._
+import javax.inject._
 import model.{StationEntry, TableEntry}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, Writes}
+import play.api.mvc._
 
 import scala.util.Try
 
@@ -364,7 +366,13 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def betriebstellen(name: String) = Action {
 
-    val stations = getBetriebsstellen(name)
+    import java.nio.charset.{StandardCharsets => SC}
+
+    import play.utils.UriEncoding
+
+    val decodedName = UriEncoding.decodePath(name, SC.UTF_8)
+
+    val stations = getBetriebsstellen(decodedName)
     val ds100s   = stations map ( _.ds100 )
 
     val stationsRaw  = ds100s map { getStationDs100 }
@@ -375,5 +383,24 @@ class BahnController @Inject()(cc: ControllerComponents) extends AbstractControl
     println("-----------------")
 
     Ok(views.html.stations(stationsList))
+  }
+
+  def betriebstellenJson(name: String) = Action {
+    case class NameDs100(name: String, ds100: String)
+
+    implicit val nameDs100Writes: Writes[NameDs100] =
+      ((JsPath \ "name").write[String] and  (JsPath \ "ds100").write[String])(unlift(NameDs100.unapply)
+    )
+    import java.nio.charset.{StandardCharsets => SC}
+
+    import play.utils.UriEncoding
+
+    val decodedName = UriEncoding.decodePath(name, SC.UTF_8)
+
+    val stations = getBetriebsstellen(decodedName)
+
+    val pairs = stations map (s => NameDs100(s.longName, s.ds100))
+
+    Ok(Json.toJson(pairs))
   }
 }

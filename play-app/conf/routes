@@ -19,6 +19,7 @@ GET     /timeTable/*eva             controllers.BahnController.timeTableServerEv
 GET     /btt                        controllers.BahnController.timeTable
 GET     /station/*ds100             controllers.BahnController.station(ds100: String)
 GET     /betrieb/*name              controllers.BahnController.betriebstellen(name: String)
+GET     /betriebJson/*name          controllers.BahnController.betriebstellenJson(name: String)
 GET     /public/htmlgame            controllers.Assets.at(path="/public", file="htmlgame.html")
 GET     /public/bahnTimeTable       controllers.Assets.at(path="/public", file="bahnTimeTable.html")
 GET     /bahnTimeTable       controllers.Assets.at(path="/public", file="bahnTimeTable.html")

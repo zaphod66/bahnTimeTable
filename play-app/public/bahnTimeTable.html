@@ -8,6 +8,7 @@
 
 <body>
     <noscript>JavaScript required</noscript>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <main>
         <div class="flex">
@@ -17,12 +18,24 @@
                    v-on:input="handleInput">
 
             <div>{{response}}</div>
+            <div>
+                <button type="submit"
+                        class="btn btn-primary submit"
+                        v-on:click="submitForm">Suchen</button>
+                <button type="submit"
+                        class="btn btn-primary submit"
+                        v-on:click="chnData">Change</button>
+            </div>
         </div>
-        <div>
-            <button type="submit"
-                    class="btn btn-primary submit"
-                    v-on:click="submitForm">Suchen</button>
-        </div>
+        <b v-if="stations.length">Stations ({{stations.length}}):</b>
+        <ul>
+            <li v-for="el in stations"><b>{{el.name}}</b> - {{el.ds100}}</li>
+        </ul>
+        <!--
+        <output class="green" v-if="stations.length">
+            <span v-for="el in stations" :key="'output-' + el">{{el}}</span>
+        </output>
+        -->
     </main>
 
     <script type="text/javascript" src="public/javascripts/vue.js"></script>
