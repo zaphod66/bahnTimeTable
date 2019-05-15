@@ -23,6 +23,8 @@ scalaVersion := "2.12.1"
 
 libraryDependencies += "com.softwaremill.sttp" %% "core" % "0.0.17"
 
+libraryDependencies += "org.reactivemongo" %% "play2-reactivemongo" % "0.16.6-play26"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
@@ -31,3 +33,4 @@ scalacOptions += "-feature"
 
 initialCommands in console := "import scalaz._, Scalaz._"
 
+routesGenerator := InjectedRoutesGenerator 

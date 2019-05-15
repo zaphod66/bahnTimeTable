@@ -16,20 +16,19 @@
                    v-bind:disabled="inputDisabled"
                    v-model:value="inputValue"
                    v-on:input="handleInput">
-
-            <div>{{response}}</div>
             <div>
                 <button type="submit"
                         class="btn btn-primary submit"
                         v-on:click="submitForm">Suchen</button>
                 <button type="submit"
                         class="btn btn-primary submit"
-                        v-on:click="chnData">Change</button>
+                        v-on:click="chnData">Auflösen</button>
             </div>
         </div>
         <b v-if="stations.length">Stations ({{stations.length}}):</b>
+        <b v-if="counterVisible">({{counter}}/{{stations.length}})</b>
         <ul>
-            <li v-for="el in stations"><b>{{el.name}}</b> - {{el.ds100}}</li>
+            <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.ds100">{{el.ds100}}</span></li>
         </ul>
         <!--
         <output class="green" v-if="stations.length">
