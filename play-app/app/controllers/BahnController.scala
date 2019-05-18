@@ -320,8 +320,8 @@ class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: R
     }
   }
 
-  def timeTableServerEva(eva: Int) = Action {
-    val station = getStationEva(eva)
+  private def timeTableEntries(eva: Int): List[TableEntry] = {
+//    val station = getStationEva(eva)
     val entries = getEntries(eva)
     val fchgs = getFullChanges(eva)
 
@@ -337,9 +337,24 @@ class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: R
       delay.fold(t)(_ => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
     }
 
-    entries2 foreach println
+    entries2
+  }
 
-    Ok(views.html.index(station, entries2.sortWith(lessThan)))
+  def timeTableServerEva(eva: Int) = Action {
+    val station = getStationEva(eva)
+    val entries = timeTableEntries(eva)
+
+    entries foreach println
+
+    Ok(views.html.index(station, entries.sortWith(lessThan)))
+  }
+
+  def timeTableServerJson(eva: Int) = Action {
+    implicit val entriesWrites = Json.writes[TableEntry]
+
+    val entries = timeTableEntries(eva)
+
+    Ok(Json.toJson(entries))
   }
 
   def timeTable = Action { _ =>

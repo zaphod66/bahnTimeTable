@@ -8,11 +8,13 @@ const timetable = new Vue({
 		inputValue: '',
 		inputDisabled: false,
 		stations: [],
+		timeTable: [],
 		protocol: location.protocol,
 		hostname: location.hostname,
 		port: location.port,
 		counter: 0,
-		counterVisible: false
+		counterVisible: false,
+		tableVisible: false
 	},
 	methods: {
 		handleInput: function() {
@@ -25,7 +27,7 @@ const timetable = new Vue({
               .get(url)
               .then(response => (this.stations = response.data))
 		},
-		chnData() {
+		checkData() {
             var arrayLength = this.stations.length
             this.stations.forEach(this.checkDs100)
 		},
@@ -37,16 +39,29 @@ const timetable = new Vue({
 		        .then(response => {
 		          var eva = response.data.eva
 		          var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTable/" + eva
-		          station.name  = '<a href="' + url + '">' + station.name + '</a>'
+		          var lnk = '<a href="' + url + '" target="_blank">' + station.name + '</a>'
+//		          var btn = '<button @click="getTimeTable(' + eva + ')">' + station.name + '</button>'
+		          station.name  = lnk
 		          station.ds100 = eva
                   this.counter = this.counter + 1
-                  if (this.counter == this.stations.length) this.counterVisible = false
+                  if (this.counter == this.stations.length) { this.counterVisible = false; this.counter = 0 }
 		        })
 		        .catch(_ => {
     		      station.name  = '<strike>' + station.name + '</strike>'
     		      station.ds100 = '<strike>' + station.ds100 + '</strike>'
                   this.counter = this.counter + 1
-                  if (this.counter == this.stations.length) this.counterVisible = false
+                  if (this.counter == this.stations.length) { this.counterVisible = false; this.counter = 0 }
+		        })
+		},
+		getTimeTable(eva) {
+		    var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTableJson/" + eva
+
+		    axios
+		        .get(url)
+		        .then(response => {
+		            this.timeTable = response.data
+		        })
+		        .catch(_ => {
 		        })
 		}
 	}

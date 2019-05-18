@@ -20,21 +20,34 @@
                 <button type="submit"
                         class="btn btn-primary submit"
                         v-on:click="submitForm">Suchen</button>
-                <button type="submit"
-                        class="btn btn-primary submit"
-                        v-on:click="chnData">Auflösen</button>
             </div>
         </div>
-        <b v-if="stations.length">Stations ({{stations.length}}):</b>
-        <b v-if="counterVisible">({{counter}}/{{stations.length}})</b>
-        <ul>
-            <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.ds100">{{el.ds100}}</span></li>
-        </ul>
-        <!--
-        <output class="green" v-if="stations.length">
-            <span v-for="el in stations" :key="'output-' + el">{{el}}</span>
-        </output>
-        -->
+        <div>
+            <b v-if="stations.length">Stations ({{stations.length}}):</b>
+            <b v-if="counterVisible">({{counter}}/{{stations.length}})</b>
+        </div>
+        <div>
+            <button type="submit"
+                    class="btn btn-primary submit"
+                    v-on:click="checkData"
+                    v-if="stations.length">Auflösen</button>
+            <button type="submit"
+                    v-on:click="getTimeTable(8001739)"
+                    v-if="stations.length">TimeTable</button>
+            <ul>
+            <!--    <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.ds100">{{el.ds100}}</span></li>   -->
+                <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span></li>
+            </ul>
+
+            <!--
+            <output class="green" v-if="stations.length">
+                <span v-for="el in stations" :key="'output-' + el">{{el}}</span>
+            </output>
+            -->
+        </div>
+        <div v-if="tableVisible">
+            {{timeTable}}
+        </div>
     </main>
 
     <script type="text/javascript" src="public/javascripts/vue.js"></script>

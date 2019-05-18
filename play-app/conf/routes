@@ -16,6 +16,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /htmlgame                   controllers.HtmlGameController.htmlgame
 GET     /timeTable/*eva             controllers.BahnController.timeTableServerEva(eva: Int)
 GET     /btt                        controllers.BahnController.timeTable
+GET     /timeTableJson/*eva         controllers.BahnController.timeTableServerJson(eva: Int)
 GET     /station/*ds100             controllers.BahnController.station(ds100: String)
 GET     /stationJson/*ds100         controllers.BahnController.getStationDs100Json(ds100: String)
 GET     /betrieb/*name              controllers.BahnController.betriebstellen(name: String)
