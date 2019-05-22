@@ -8,7 +8,7 @@ const timetable = new Vue({
 		inputValue: '',
 		inputDisabled: false,
 		stations: [],
-		timeTable: [],
+		timeTable: '',
 		protocol: location.protocol,
 		hostname: location.hostname,
 		port: location.port,
@@ -23,6 +23,8 @@ const timetable = new Vue({
 		    var encoded = encodeURIComponent(this.response)
             var url     = this.protocol + '//' + this.hostname + ':' + this.port + "/betriebJson/" + this.inputValue
             this.counter = 0
+            this.tableVisible = false
+
             axios
               .get(url)
               .then(response => (this.stations = response.data))
@@ -40,7 +42,8 @@ const timetable = new Vue({
 		          var eva = response.data.eva
 		          var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTable/" + eva
 		          var lnk = '<a href="' + url + '" target="_blank">' + station.name + '</a>'
-//		          var btn = '<button @click="getTimeTable(' + eva + ')">' + station.name + '</button>'
+//		          var btn = '<button class="default" v-on:click="this.getTimeTable(' + eva + ')">' + station.name + '</button>'
+//		          var btn = '<button class="btn submit" v-on:click="this.getTimeTable(' + eva + ')">' + station.name + '</button>'
 		          station.name  = lnk
 		          station.ds100 = eva
                   this.counter = this.counter + 1
@@ -60,8 +63,11 @@ const timetable = new Vue({
 		        .get(url)
 		        .then(response => {
 		            this.timeTable = response.data
+		            this.tableVisible = true
 		        })
 		        .catch(_ => {
+		            this.timeTable = ''
+    		        this.tableVisible = false
 		        })
 		}
 	}

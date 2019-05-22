@@ -39,6 +39,10 @@
                 <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span></li>
             </ul>
 
+            <ul>
+            <!--    <li v-for="st in stations"><button v-on:click="getTimeTable($st.ds100)">{{ st.name }}</button></li> -->
+                <li v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(8001739)">{{st.ds100}}</button></li>
+            </ul>
             <!--
             <output class="green" v-if="stations.length">
                 <span v-for="el in stations" :key="'output-' + el">{{el}}</span>
