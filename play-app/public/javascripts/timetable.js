@@ -42,10 +42,13 @@ const timetable = new Vue({
 		          var eva = response.data.eva
 		          var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTable/" + eva
 		          var lnk = '<a href="' + url + '" target="_blank">' + station.name + '</a>'
-//		          var btn = '<button class="default" v-on:click="this.getTimeTable(' + eva + ')">' + station.name + '</button>'
-//		          var btn = '<button class="btn submit" v-on:click="this.getTimeTable(' + eva + ')">' + station.name + '</button>'
-		          station.name  = lnk
+//		          var btn = '<button class="btn submit" v-on:click="getTimeTable(' + eva + ')">' + station.name + '</button>'
+//                  var btn = '<button class="btn submit" v-on:click="getTimeTable($st.ds100)">{{st.ds100}}</button>'
+                  var btn = '<button class="btn submit" v-on:click="getTimeTable($st.ds100)">{{st.ds100}}</button>'
+//		          station.name  = lnk
+		          station.link  = lnk
 		          station.ds100 = eva
+		          station.eva   = eva
                   this.counter = this.counter + 1
                   if (this.counter == this.stations.length) { this.counterVisible = false; this.counter = 0 }
 		        })
@@ -56,7 +59,7 @@ const timetable = new Vue({
                   if (this.counter == this.stations.length) { this.counterVisible = false; this.counter = 0 }
 		        })
 		},
-		getTimeTable(eva) {
+		getTimeTable: function(eva) {
 		    var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTableJson/" + eva
 
 		    axios
