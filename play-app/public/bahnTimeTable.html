@@ -31,31 +31,25 @@
                     class="btn btn-primary submit"
                     v-on:click="checkData"
                     v-if="stations.length">Auflösen</button>
-            <button type="submit"
-                    v-on:click="getTimeTable(8001739)"
-                    v-if="stations.length">TimeTable</button>
+
             <ul>
-            <!--    <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.ds100">{{el.ds100}}</span></li>   -->
                 <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.link">{{ el.link }}=</span></li>
             </ul>
+        </div>
 
-
+        <div v-if="buttonsVisible">
             <ul>
                 <li v-if="stations.length" v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.eva}}</button></li>
             </ul>
-
-<!--
-            <ul>
-                <li v-if="stations.length" v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(${st.eva})">{{st.name}}</button></li>
-            </ul>
--->
-<!--
-            <output class="green" v-if="stations.length">
-                <span v-for="el in stations" :key="'output-' + el">{{el}}</span>
-            </output>
--->
         </div>
+
         <div v-if="tableVisible">
+            <!--
+            <table>
+                <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
+
+            </table>
+            -->
             {{timeTable}}
         </div>
     </main>
