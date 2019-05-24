@@ -4,7 +4,7 @@ body {
   line-height: 1.7;
   margin: 0;
   padding: 2em;
-  max-width: 40em;
+  max-width: 70em;
   margin: 0 auto;
 }
 
@@ -19,7 +19,7 @@ main {
 }
 
 button {
-  width: 7em;
+  width: 8em;
 }
 
 input[type="text"] {
@@ -40,7 +40,7 @@ input:focus {
 }
 
 #counter {
-  width: 6rem;
+  width: 15rem;
   margin: 0 .5rem 0 0;
   padding: .35rem 0 .15rem;
   text-align: center;
@@ -145,6 +145,22 @@ footer {
 .fade-enter-active, .fade-leave-active {
   transition: opacity 10s;
 }
+
 .fade-enter, .fade-leave-to
   opacity: 0;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 5;
+}
+
+th {
+  text-align: left;
+  font-weight: bold;
+}
+
+td {
+  text-align: left;
+  font-weight: normal;
 }

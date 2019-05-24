@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Bahn Time Table</title>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/htmlgame.css">
+<!--    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">-->
 </head>
 
 <body>
@@ -22,7 +23,7 @@
                         v-on:click="submitForm">Suchen</button>
             </div>
         </div>
-        <div>
+        <div id="counter">
             <b v-if="stations.length">Stations ({{stations.length}}):</b>
             <b v-if="counterVisible">({{counter}}/{{stations.length}})</b>
         </div>
@@ -44,13 +45,19 @@
         </div>
 
         <div v-if="tableVisible">
-            <!--
             <table>
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
-
+                <tr v-for="e in timeTable">
+                    <td>{{e.line}}</td>
+                    <td>{{e.track}}</td>
+                    <td>{{e.arrival}}</td>
+                    <td>{{e.arDelay}}</td>
+                    <td>{{e.departure}}</td>
+                    <td>{{e.dpDelay}}</td>
+                    <td>{{e.depart}}</td>
+                    <td>{{e.dest}}</td>
+                </tr>
             </table>
-            -->
-            {{timeTable}}
         </div>
     </main>
 

@@ -49,7 +49,7 @@ const timetable = new Vue({
 		          station.eva   = eva
                   station.found = true
                   this.counter = this.counter + 1
-                  if (this.counter == this.stations.length) {
+                  if (this.counter >= this.stations.length) {
                     this.counterVisible = false
                     this.counter = 0
                     this.buttonsVisible = true
@@ -61,11 +61,11 @@ const timetable = new Vue({
     		      station.ds100 = '<strike>' + station.ds100 + '</strike>'
                   station.found = false
                   this.counter = this.counter + 1
-                  if (this.counter == this.stations.length) {
-                    this.counterVisible = false
-                    this.counter = 0
-                    this.buttonsVisible = true
-                    this.stations = this.stations.filter(s => s.found)
+                  if (this.counter >= this.stations.length) {
+                      this.counterVisible = false
+                      this.counter = 0
+                      this.buttonsVisible = true
+                      this.stations = this.stations.filter(s => s.found)
                   }
 		        })
 		},
