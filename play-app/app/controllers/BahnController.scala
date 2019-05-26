@@ -3,18 +3,14 @@ package controllers
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
+import cn.playscala.mongo.Mongo
 import com.softwaremill.sttp._
 import javax.inject._
-import model.{StationEntry, TableEntry}
+import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsObject, JsPath, Json, Writes}
+import play.api.libs.json.{JsPath, Json, Writes}
 import play.api.mvc._
 import utils.Throttler
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.play.json._
-import collection._
-import reactivemongo.api.Cursor
-import reactivemongo.api.ReadPreference
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -25,9 +21,7 @@ object Singleton {
 }
 
 @Singleton
-//class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: ReactiveMongoApi)
-//  extends AbstractController(cc) with ReactiveMongoComponents {
-class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: ReactiveMongoApi)
+class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   extends AbstractController(cc) {
 
   implicit val backend = HttpURLConnectionBackend()
@@ -413,25 +407,24 @@ class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: R
 
   implicit def ec: ExecutionContext = cc.executionContext
 
-  def collection: Future[JSONCollection] = {
-    val db = reactiveMongoApi.database
+  def findByDs100(ds100: String): Future[Option[Ds100Entry]] = {
+    val f = mongo.find[DBDs100Entry](Json.obj("ds100" -> ds100)).first
 
-    db.map(_.collection[JSONCollection]("btt"))
+    val t = Await.result(f, Duration.Inf)
+
+    t foreach println
+
+    f.map(dbfM => dbfM.map(dbf => Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName)))
   }
 
-  def findByDs100(ds100: String) = {
-    val cursor: Future[Cursor[JsObject]] = collection.map {
-//      _.find(Json.obj("ds100" -> ds100)).cursor[JsObject](ReadPreference.primaryPreferred)
-      _.find(Json.obj("ds100" -> ds100)).cursor[JsObject](ReadPreference.Primary)
-    }
+  def storeDs100(ds100: String, name: String, eva: Int): Future[Void] = {
 
-    val stationList = cursor.flatMap(_.collect[List](1, Cursor.FailOnError[List[JsObject]]()))
-
-    stationList
-  }
-
-  def storeDs100(ds100: String, name: String, eva: Int) = {
     println(s"storeDs100($ds100, $name, $eva)")
+    val t = mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = eva, stationName = name))
+
+    Await.result(t, Duration.Inf)
+
+    t
   }
 
   def getStationDs100Json(ds100: String) = Action {
@@ -445,23 +438,21 @@ class BahnController @Inject()(cc: ControllerComponents, val reactiveMongoApi: R
 
     val decodedDs100 = UriEncoding.decodePath(ds100, SC.UTF_8)
 
-    val foundStations = findByDs100(decodedDs100)
-    val lNameEva = foundStations.map { l =>
-      if (l.isEmpty) {
-        val neM = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
+    val foundStationM = findByDs100(decodedDs100) // Future { List.empty } // findByDs100(decodedDs100)
+    val foundStation = Await.result(foundStationM, Duration.Inf)
 
-        neM foreach { ne => storeDs100(decodedDs100, ne.name, ne.eva) }
-        neM.toList
-      } else {
-        List.empty[NameEva]
-      }
-    }
 
-    val oNameEva = lNameEva.map { _.headOption }
+    val oNameEva = foundStation.fold {
+      val neM = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
 
-    val neM = Await.result(oNameEva, Duration.Inf)
+      neM foreach { ne => storeDs100(decodedDs100, ne.name, ne.eva) }
+
+      neM
+    } (s => Option(NameEva(s.stationName, s.eva)))
+
+//    val neM = Await.result(oNameEva, Duration.Inf)
 //    val neM2 = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
 
-    Ok(Json.toJson(neM))
+    Ok(Json.toJson(oNameEva))
   }
 }

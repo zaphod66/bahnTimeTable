@@ -7,7 +7,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 resolvers += Resolver.sonatypeRepo("snapshots")
 resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.6"
 //val scalazVersion = "7.2.15"
 //
 //libraryDependencies ++= Seq(
@@ -23,14 +23,16 @@ scalaVersion := "2.12.1"
 
 libraryDependencies += "com.softwaremill.sttp" %% "core" % "0.0.17"
 
-libraryDependencies += "org.reactivemongo" %% "play2-reactivemongo" % "0.16.6-play26"
+libraryDependencies += "cn.playscala" % "play-mongo_2.12" % "0.3.0"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
 
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+
 scalacOptions += "-feature"
 
 initialCommands in console := "import scalaz._, Scalaz._"
 
-routesGenerator := InjectedRoutesGenerator 
+routesGenerator := InjectedRoutesGenerator
