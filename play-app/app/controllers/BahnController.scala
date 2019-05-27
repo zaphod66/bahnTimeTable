@@ -410,16 +410,13 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   def findByDs100(ds100: String): Future[Option[Ds100Entry]] = {
     val f = mongo.find[DBDs100Entry](Json.obj("ds100" -> ds100)).first
 
-    val t = Await.result(f, Duration.Inf)
-
-    t foreach println
-
     f.map{ dbfM =>
       dbfM.flatMap { dbf =>
-        if (dbf.found)
-          Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName))
-        else
-          Option.empty[Ds100Entry]
+        Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found))
+//        if (dbf.found)
+//          Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName))
+//        else
+//          Option.empty[Ds100Entry]
       }
     }
   }
@@ -456,7 +453,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val nameEva = foundStation.fold {
       val neM = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
 
-//      neM foreach { ne => storeDs100(decodedDs100, ne.name, ne.eva) }
       neM.fold {
         storeDs100Failed(decodedDs100)
       } {
@@ -464,7 +460,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       }
 
       neM
-    } (s => Option(NameEva(s.stationName, s.eva)))
+    } (s => if (s.found) Option(NameEva(s.stationName, s.eva)) else Option.empty[NameEva])
 
     Ok(Json.toJson(nameEva))
   }
