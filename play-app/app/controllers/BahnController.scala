@@ -414,17 +414,29 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     t foreach println
 
-    f.map(dbfM => dbfM.map(dbf => Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName)))
+    f.map{ dbfM =>
+      dbfM.flatMap { dbf =>
+        if (dbf.found)
+          Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName))
+        else
+          Option.empty[Ds100Entry]
+      }
+    }
   }
 
   def storeDs100(ds100: String, name: String, eva: Int): Future[Void] = {
 
     println(s"storeDs100($ds100, $name, $eva)")
-    val t = mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = eva, stationName = name))
 
-    Await.result(t, Duration.Inf)
+    mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = eva, stationName = name, found = true))
 
-    t
+  }
+
+  def storeDs100Failed(ds100: String): Future[Void] = {
+
+    println(s"storeDs100Failed($ds100)")
+
+    mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = 0, stationName = "", found = false))
   }
 
   def getStationDs100Json(ds100: String) = Action {
@@ -438,21 +450,22 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val decodedDs100 = UriEncoding.decodePath(ds100, SC.UTF_8)
 
-    val foundStationM = findByDs100(decodedDs100) // Future { List.empty } // findByDs100(decodedDs100)
-    val foundStation = Await.result(foundStationM, Duration.Inf)
+    val foundStationM = findByDs100(decodedDs100)
+    val foundStation  = Await.result(foundStationM, Duration.Inf)
 
-
-    val oNameEva = foundStation.fold {
+    val nameEva = foundStation.fold {
       val neM = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
 
-      neM foreach { ne => storeDs100(decodedDs100, ne.name, ne.eva) }
+//      neM foreach { ne => storeDs100(decodedDs100, ne.name, ne.eva) }
+      neM.fold {
+        storeDs100Failed(decodedDs100)
+      } {
+        ne => storeDs100(decodedDs100, ne.name, ne.eva)
+      }
 
       neM
     } (s => Option(NameEva(s.stationName, s.eva)))
 
-//    val neM = Await.result(oNameEva, Duration.Inf)
-//    val neM2 = getStationDs100(decodedDs100).map((NameEva.apply _).tupled)
-
-    Ok(Json.toJson(oNameEva))
+    Ok(Json.toJson(nameEva))
   }
 }
