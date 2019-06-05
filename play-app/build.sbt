@@ -25,6 +25,8 @@ libraryDependencies += "com.softwaremill.sttp" %% "core" % "0.0.17"
 
 libraryDependencies += "cn.playscala" % "play-mongo_2.12" % "0.3.0"
 
+libraryDependencies += "javax.xml.bind" % "jaxb-api" % "2.3.0"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"

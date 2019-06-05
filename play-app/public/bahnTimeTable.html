@@ -34,14 +34,17 @@
                     v-if="stations.length">Auflösen</button>
 
             <ul>
-                <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> - <span v-html="el.link">{{ el.link }}=</span></li>
+                <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
             </ul>
         </div>
 
         <div v-if="buttonsVisible">
-            <ul>
-                <li v-if="stations.length" v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.eva}}</button></li>
-            </ul>
+            <span v-if="stations.length" v-for="st in stations">
+                <button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.name}}</button> &nbsp;
+            </span>
+<!--            <ul>-->
+<!--                <li v-if="stations.length" v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.name}}</button></li>-->
+<!--            </ul>-->
         </div>
 
         <div v-if="tableVisible"  id="content" class="wrapper doc">
