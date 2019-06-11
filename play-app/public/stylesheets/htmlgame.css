@@ -113,6 +113,12 @@ ul.elementlist {
   display: inline-block;
 }
 
+li {
+  margin: 0.2em;
+  margin-left: 0.5em;
+  border: 1px solid black
+}
+
 .found code {
   background-color: rgba(0, 255, 0, 0.2);
 }
