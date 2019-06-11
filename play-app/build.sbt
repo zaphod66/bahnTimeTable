@@ -35,6 +35,6 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.fu
 
 scalacOptions += "-feature"
 
-initialCommands in console := "import scalaz._, Scalaz._"
+//initialCommands in console := "import scalaz._, Scalaz._"
 
 routesGenerator := InjectedRoutesGenerator
