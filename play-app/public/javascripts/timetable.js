@@ -17,6 +17,13 @@ const timetable = new Vue({
 		tableVisible: false,
 		buttonsVisible: false
 	},
+	filters: {
+	    filterDate: function(date) {
+	        if (date === undefined) { return ""; }
+	        var splits = date.split("T");
+	        return splits[1];
+	    }
+	},
 	methods: {
 		handleInput: function() {
 		},

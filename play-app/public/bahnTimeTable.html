@@ -53,10 +53,10 @@
                 <tr v-for="e in timeTable">
                     <td>{{e.line}}</td>
                     <td>{{e.track}}</td>
-                    <td>{{e.arrival}}</td>
-                    <td>{{e.arDelay}}</td>
-                    <td>{{e.departure}}</td>
-                    <td>{{e.dpDelay}}</td>
+                    <td>{{e.arrival | filterDate}}</td>
+                    <td>{{e.arDelay | filterDate}}</td>
+                    <td>{{e.departure | filterDate}}</td>
+                    <td>{{e.dpDelay   | filterDate}}</td>
                     <td>{{e.depart}}</td>
                     <td>{{e.dest}}</td>
                 </tr>

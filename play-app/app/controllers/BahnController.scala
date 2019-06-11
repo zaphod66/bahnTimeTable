@@ -331,7 +331,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       delay.fold(t)(_ => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
     }
 
-    entries2
+    entries2.sortWith(lessThan)
   }
 
   def timeTableServerEva(eva: Int) = Action {
