@@ -184,8 +184,8 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       val fchgStr = fchgRes.unsafeBody
       val fchgXml = scala.xml.XML.loadString(fchgStr)
 
-      val attrMap = fchgXml.attributes.asAttrMap
-      println(s"Attributes: $attrMap")
+//      val attrMap = fchgXml.attributes.asAttrMap
+//      println(s"Attributes: $attrMap")
 
       val items = fchgXml \\ "s"
 
@@ -210,7 +210,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   }
 
   private def getEntries(eva: Int): List[TableEntry] = {
-    val instant = Instant.now()
+    val instant = Instant.now() //.minusSeconds(3600)
     val dt = instant2LocalDateTime(instant)
     val dfDate = DateTimeFormatter.ofPattern("yyMMdd")
     val dfHour = DateTimeFormatter.ofPattern("HH")

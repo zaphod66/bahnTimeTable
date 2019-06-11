@@ -42,9 +42,6 @@
             <span v-if="stations.length" v-for="st in stations">
                 <button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.name}}</button> &nbsp;
             </span>
-<!--            <ul>-->
-<!--                <li v-if="stations.length" v-for="st in stations"><button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.name}}</button></li>-->
-<!--            </ul>-->
         </div>
 
         <div v-if="tableVisible"  id="content" class="wrapper doc">
