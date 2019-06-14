@@ -1,7 +1,7 @@
 package utils
 
 object Throttler {
-  private val delta      = 3000L
+  private val delta      = 3000L  // in millis
   private var lastAccess = System.currentTimeMillis() - delta
   private var lastInc    = 0L
   private var token      = 20

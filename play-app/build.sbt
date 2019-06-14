@@ -21,9 +21,12 @@ scalaVersion := "2.12.6"
 //libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 //libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
 
-libraryDependencies += "com.softwaremill.sttp" %% "core" % "0.0.17"
+libraryDependencies += "com.softwaremill.sttp" %% "core" % "1.5.19"
 
 libraryDependencies += "cn.playscala" % "play-mongo_2.12" % "0.3.0"
+
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
 libraryDependencies += "javax.xml.bind" % "jaxb-api" % "2.3.0"
 
