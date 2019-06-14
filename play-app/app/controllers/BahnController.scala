@@ -4,7 +4,8 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
 import cn.playscala.mongo.Mongo
-import com.softwaremill.sttp._
+import com.softwaremill.sttp.{Request, _}
+import com.typesafe.scalalogging.StrictLogging
 import javax.inject._
 import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
@@ -15,16 +16,41 @@ import utils.Throttler
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.Try
+import scala.language.higherKinds
 
 object Singleton {
   def throttle(): Unit = this.synchronized(Thread.sleep(3000))
 }
 
+class LoggingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBackend[R, S] with StrictLogging {
+
+  override def send[T](request: Request[T, S]): R[Response[T]] = {
+    responseMonad.map(responseMonad.handleError(delegate.send(request)) {
+      case e: Exception =>
+        logger.error(s"Exception when sending request: $request.\nTo reproduce ,run: ${request.toCurl}", e)
+
+        responseMonad.error(e)
+    }) { response =>
+      logger.trace(s"=====\n$request => $response\nTo reproduce, run ${request.toCurl}")
+
+      response
+    }
+  }
+
+  override def close(): Unit = delegate.close()
+
+  override def responseMonad: MonadError[R] = delegate.responseMonad
+}
+
 @Singleton
 class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
-  extends AbstractController(cc) {
+  extends AbstractController(cc) with StrictLogging {
 
-  implicit val backend = HttpURLConnectionBackend()
+
+  val standardBackend = HttpURLConnectionBackend()
+  val loggingBackend  = new LoggingSttpBackend[Id, Nothing](standardBackend)
+
+  private implicit val backend: SttpBackend[Id, Nothing] = loggingBackend
 
   private def dateString2Iso(str: String): String = {
     val yea = str.substring(0, 2)
@@ -94,6 +120,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
     val res = req.send()
 
+    logger.info(s"getStationDs100($ds100)")
+    logger.info(s"${req.toCurl}")
+
     try {
       val resStr = res.unsafeBody
       val resXml = scala.xml.XML.loadString(resStr)
@@ -102,12 +131,13 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       val t2 = t1 \@ "name"
       val t3 = t1 \@ "eva"
 
-      println(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
-
       if (t3 == "") {
+        println(s"getStationDs100($ds100): Not found")
         None
-      } else
+      } else {
+        println(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
         Option((t2, t3.toInt))
+      }
     } catch {
       case e: Exception => println(s"getStationDs100($ds100) fail: ${e.getMessage}"); None
     }
@@ -117,6 +147,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     // https://api.deutschebahn.com/timetables/v1/station/8003518
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$eva")
     val res = req.send()
+
+    logger.info(s"getStationEva($eva)")
+    logger.info(s"${req.toCurl}")
 
     try {
       val resStr = res.unsafeBody
@@ -137,6 +170,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     // https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=altona
     val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd")
     val req = reqHeader.get(uri"https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=$name")
+
     val res = req.send()
     try {
       val str = res.unsafeBody
@@ -157,16 +191,17 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
         StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
       }
 
-      def cond(s: StationEntry): Boolean = (s.tpe == "Bf" || s.tpe == "Bft" || s.tpe == "Hp"
-        || s.tpe == "NE-Bf" || s.tpe == "NE-Bft") && s.status == "in use"
+      val stationTypes = Set[String]("Bf", "Bft", "Hp", "NE-Bf", "NE-Bft"/*, "Bush"*/)
 
-      println("---------------------------")
-      println(s"getBetriebsstellen($name)")
-      println("---------------------------")
-      stations foreach println
-      println("---------------------------")
-      stations.filter(cond) foreach println
-      println("---------------------------")
+      def cond(s: StationEntry): Boolean = stationTypes.contains(s.tpe) && s.status == "in use"
+
+      logger.info(s"getBetriebsstellen($name)")
+      logger.info(s"${req.toCurl}")
+
+//      stations foreach println
+//      println("---------------------------")
+//      stations.filter(cond) foreach println
+//      println("---------------------------")
 
       stations.filter(cond).toList
     } catch {
@@ -178,6 +213,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   private def getFullChanges(eva: Int): List[TableEntry] = {
     val fchgReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$eva")
+
+    logger.info(s"getFullChanges($eva)")
+    logger.info(s"${fchgReq.toCurl}")
 
     val fchgRes = fchgReq.send()
     try {
@@ -221,6 +259,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val planReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
     val planRes = planReq.send()
+
+    logger.info(s"getEntries($eva)")
+    logger.info(s"${planReq.toCurl}")
 
     try {
       val planStr = planRes.unsafeBody
@@ -335,10 +376,11 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   }
 
   def timeTableServerEva(eva: Int) = Action {
+
+    logger.info(s"timeTableServerEva($eva)")
+
     val station = getStationEva(eva)
     val entries = timeTableEntries(eva)
-
-    entries foreach println
 
     Ok(views.html.index(station, entries.sortWith(lessThan)))
   }
@@ -413,10 +455,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     f.map{ dbfM =>
       dbfM.flatMap { dbf =>
         Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found))
-//        if (dbf.found)
-//          Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName))
-//        else
-//          Option.empty[Ds100Entry]
       }
     }
   }
