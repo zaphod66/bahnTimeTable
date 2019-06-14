@@ -97,6 +97,13 @@ const timetable = new Vue({
 		            this.timeTable = ''
     		        this.tableVisible = false
 		        })
+		},
+		calcDiff: function(dateSch, dateAct) {
+		    var d1 = Date.parse(dateSch);
+		    var d2 = Date.parse(dateAct);
+		    var diff = (d2 - d1) / 1000;
+
+		    return '<font color="#00FF00>' + diff + '</font>'
 		}
 	}
 })
