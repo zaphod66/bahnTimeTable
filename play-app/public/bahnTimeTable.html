@@ -19,32 +19,32 @@
                    v-on:input="handleInput">
             <div>
                 <button type="submit"
-                        class="btn btn-primary submit"
+                        class="btn btn-default submit"
                         v-on:click="submitForm">Suchen</button>
             </div>
         </div>
         <div id="counter">
-            <b v-if="stations.length">Stations ({{stations.length}}):</b>
-            <b v-if="counterVisible">({{counter}}/{{stations.length}})</b>
+            <b v-show="stations.length">Stations ({{stations.length}}):</b>
+            <b v-show="counterVisible">({{counter}}/{{stations.length}})</b>
         </div>
         <div>
             <button type="submit"
                     class="btn btn-primary submit"
                     v-on:click="checkData"
-                    v-if="stations.length">Auflösen</button>
+                    v-show="stations.length">Auflösen</button>
 
             <ul>
-                <li v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
+                <li class="blue" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
             </ul>
         </div>
 
-        <div v-if="buttonsVisible">
-            <span v-if="stations.length" v-for="st in stations">
+        <div v-show="buttonsVisible">
+            <span v-show="stations.length" v-for="st in stations">
                 <button class="btn submit" v-on:click="getTimeTable(st.eva)">{{st.name}}</button> &nbsp;
             </span>
         </div>
 
-        <div v-if="tableVisible"  id="content" class="wrapper doc">
+        <div v-show="tableVisible"  id="content" class="wrapper doc">
             <table>
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 <tr v-for="e in timeTable">
