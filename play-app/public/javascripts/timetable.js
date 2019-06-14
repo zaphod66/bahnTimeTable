@@ -27,6 +27,14 @@ const timetable = new Vue({
 	methods: {
 		handleInput: function() {
 		},
+		calcDiff: function(dateSch, dateAct) {
+		    if (dateAct === undefined) { return ""; }
+		    var d1 = Date.parse(dateSch);
+		    var d2 = Date.parse(dateAct);
+		    var diff = (d2 - d1) / 60000; // in minutes
+
+		    return diff;
+		},
 		submitForm: function() {
 		    var encoded = encodeURIComponent(this.response)
             var url     = this.protocol + '//' + this.hostname + ':' + this.port + "/betriebJson/" + this.inputValue
