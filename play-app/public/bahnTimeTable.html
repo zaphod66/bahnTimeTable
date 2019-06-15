@@ -23,8 +23,8 @@
                         v-on:click="submitForm">Suchen</button>
             </div>
         </div>
-        <div id="counter">
-            <b v-show="stations.length">Stations ({{stations.length}}):</b>
+        <div id="counter" v-show="stations.length">
+            <b>Stations ({{stations.length}}):</b>
             <b v-show="counterVisible">({{counter}}/{{stations.length}})</b>
         </div>
         <div>

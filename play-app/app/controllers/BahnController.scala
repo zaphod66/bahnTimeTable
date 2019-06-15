@@ -4,43 +4,19 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
 import cn.playscala.mongo.Mongo
-import com.softwaremill.sttp.{Request, _}
+import com.softwaremill.sttp._
 import com.typesafe.scalalogging.StrictLogging
 import javax.inject._
 import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Writes}
 import play.api.mvc._
-import utils.Throttler
+import utils.{LoggingSttpBackend, ThrottlingSttpBackend}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.Try
 import scala.language.higherKinds
-
-object Singleton {
-  def throttle(): Unit = this.synchronized(Thread.sleep(3000))
-}
-
-class LoggingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBackend[R, S] with StrictLogging {
-
-  override def send[T](request: Request[T, S]): R[Response[T]] = {
-    responseMonad.map(responseMonad.handleError(delegate.send(request)) {
-      case e: Exception =>
-        logger.error(s"Exception when sending request: $request.\nTo reproduce ,run: ${request.toCurl}", e)
-
-        responseMonad.error(e)
-    }) { response =>
-      logger.trace(s"=====\n$request => $response\nTo reproduce, run ${request.toCurl}")
-
-      response
-    }
-  }
-
-  override def close(): Unit = delegate.close()
-
-  override def responseMonad: MonadError[R] = delegate.responseMonad
-}
 
 @Singleton
 class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
@@ -49,8 +25,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   val standardBackend = HttpURLConnectionBackend()
   val loggingBackend  = new LoggingSttpBackend[Id, Nothing](standardBackend)
+  val throttlingBackend = new ThrottlingSttpBackend[Id, Nothing](loggingBackend)
 
-  private implicit val backend: SttpBackend[Id, Nothing] = loggingBackend
+  private implicit val backend: SttpBackend[Id, Nothing] = throttlingBackend
 
   private def dateString2Iso(str: String): String = {
     val yea = str.substring(0, 2)
@@ -115,7 +92,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   private def getStationDs100(ds100: String): Option[(String, Int)] = {
 
-    Throttler.throttle()
+//    Throttler.throttle()
 
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
     val res = req.send()
@@ -132,14 +109,14 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       val t3 = t1 \@ "eva"
 
       if (t3 == "") {
-        println(s"getStationDs100($ds100): Not found")
+        logger.info(s"getStationDs100($ds100): Not found")
         None
       } else {
-        println(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
+        logger.info(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
         Option((t2, t3.toInt))
       }
     } catch {
-      case e: Exception => println(s"getStationDs100($ds100) fail: ${e.getMessage}"); None
+      case e: Exception => logger.error(s"getStationDs100($ds100) fail: ${e.getMessage}"); None
     }
   }
 
@@ -206,7 +183,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       stations.filter(cond).toList
     } catch {
       case e: NoSuchElementException =>
-        println(s"getBetriebsstellen($name) failed: ${e.getMessage}")
+        logger.error(s"getBetriebsstellen($name) failed: ${e.getMessage}")
         List.empty[StationEntry]
     }
   }
@@ -243,7 +220,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
       resMap2.map { case (k, v) => TableEntry(k, "", "", None, None, "", "", v._1, v._2) }.toList
     } catch {
-      case e: NoSuchElementException => println(s"Error in getFullChanges($eva): ${e.getMessage}"); List.empty[TableEntry]
+      case e: NoSuchElementException => logger.error(s"Error in getFullChanges($eva): ${e.getMessage}"); List.empty[TableEntry]
     }
   }
 
@@ -351,7 +328,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
       entries.toList
     } catch {
-      case e: NoSuchElementException => /*e.printStackTrace();*/ println(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
+      case e: NoSuchElementException => /*e.printStackTrace();*/ logger.error(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
     }
   }
 
@@ -461,7 +438,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   def storeDs100(ds100: String, name: String, eva: Int): Future[Void] = {
 
-    println(s"storeDs100($ds100, $name, $eva)")
+    logger.info(s"storeDs100($ds100, $name, $eva)")
 
     mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = eva, stationName = name, found = true))
 
@@ -469,7 +446,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   def storeDs100Failed(ds100: String): Future[Void] = {
 
-    println(s"storeDs100Failed($ds100)")
+    logger.info(s"storeDs100Failed($ds100)")
 
     mongo.insertOne[DBDs100Entry](DBDs100Entry(_id = ds100, ds100 = ds100, eva = 0, stationName = "", found = false))
   }
