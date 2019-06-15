@@ -15,7 +15,7 @@
         <div class="flex">
             <input type="text" autofocus
                    v-bind:disabled="inputDisabled"
-                   v-model:value="inputValue"
+                   v-model.trim="inputValue"
                    v-on:input="handleInput">
             <div>
                 <button type="submit"
