@@ -14,7 +14,8 @@ class LoggingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBacke
 
         responseMonad.error(e)
     }) { response =>
-      logger.trace(s"=====\n$request => $response\nTo reproduce, run ${request.toCurl}")
+      logger.trace(s"=====\n$request => $response")
+      logger.info(request.toCurl)
 
       response
     }

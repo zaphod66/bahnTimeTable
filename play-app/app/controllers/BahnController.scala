@@ -80,25 +80,22 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     }
   }
 
-  private def printlnBody(title: String, resStr: String): Unit = {
-    val resXml = scala.xml.XML.loadString(resStr)
-
-    println("---------------------------")
-    println(title)
-    println("---------------------------")
-    println(resXml.toString())
-    println("---------------------------")
-  }
+//  private def printlnBody(title: String, resStr: String): Unit = {
+//    val resXml = scala.xml.XML.loadString(resStr)
+//
+//    println("---------------------------")
+//    println(title)
+//    println("---------------------------")
+//    println(resXml.toString())
+//    println("---------------------------")
+//  }
 
   private def getStationDs100(ds100: String): Option[(String, Int)] = {
-
-//    Throttler.throttle()
 
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
     val res = req.send()
 
     logger.info(s"getStationDs100($ds100)")
-    logger.info(s"${req.toCurl}")
 
     try {
       val resStr = res.unsafeBody
@@ -126,13 +123,10 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val res = req.send()
 
     logger.info(s"getStationEva($eva)")
-    logger.info(s"${req.toCurl}")
 
     try {
       val resStr = res.unsafeBody
       val resXml = scala.xml.XML.loadString(resStr)
-
-      //      printlnBody(s"getStationEva($eva)", resStr)
 
       val t1 = resXml \\ "station"
       val t2 = t1 \@ "name"
@@ -173,7 +167,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       def cond(s: StationEntry): Boolean = stationTypes.contains(s.tpe) && s.status == "in use"
 
       logger.info(s"getBetriebsstellen($name)")
-      logger.info(s"${req.toCurl}")
 
 //      stations foreach println
 //      println("---------------------------")
@@ -192,15 +185,11 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val fchgReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$eva")
 
     logger.info(s"getFullChanges($eva)")
-    logger.info(s"${fchgReq.toCurl}")
 
     val fchgRes = fchgReq.send()
     try {
       val fchgStr = fchgRes.unsafeBody
       val fchgXml = scala.xml.XML.loadString(fchgStr)
-
-//      val attrMap = fchgXml.attributes.asAttrMap
-//      println(s"Attributes: $attrMap")
 
       val items = fchgXml \\ "s"
 
@@ -238,7 +227,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val planRes = planReq.send()
 
     logger.info(s"getEntries($eva)")
-    logger.info(s"${planReq.toCurl}")
 
     try {
       val planStr = planRes.unsafeBody
@@ -249,18 +237,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       val station = resXml.attribute("station").map(_.toString).getOrElse("-")
 
       val items = resXml \\ "s"
-
-      //      val resMap = items.map(s => s.attribute("id") -> s).toMap
-      //        .filter { case (k, _) => k.isDefined }
-      //        .map { case (k,v) => (k.get.toString, v) }
-      //
-      //      resMap foreach println
-
-      //      items foreach { item =>
-      //        println("------------------")
-      //        println(item)
-      //        println("------------------")
-      //      }
 
       val entries = items map { item =>
         val tl = item \\ "tl"
@@ -333,7 +309,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   }
 
   private def timeTableEntries(eva: Int): List[TableEntry] = {
-//    val station = getStationEva(eva)
     val entries = getEntries(eva)
     val fchgs = getFullChanges(eva)
 
@@ -371,12 +346,12 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   }
 
   def timeTable = Action { _ =>
-//    import scala.concurrent.ExecutionContext.Implicits.global
-
     Ok.sendFile(new java.io.File("public/bahnTimeTable.html"))
   }
 
   def station(ds100: String) = Action {
+
+    logger.info(s"station($ds100)")
 
     val (name, eva) = getStationDs100(ds100).getOrElse(("<unknown>", 0))
 
@@ -384,6 +359,8 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   }
 
   def betriebstellen(name: String) = Action {
+
+    logger.info(s"betriebstellen($name)")
 
     import java.nio.charset.{StandardCharsets => SC}
 
@@ -427,6 +404,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   implicit def ec: ExecutionContext = cc.executionContext
 
   def findByDs100(ds100: String): Future[Option[Ds100Entry]] = {
+
+    logger.info(s"findByDs100($ds100)")
+
     val f = mongo.find[DBDs100Entry](Json.obj("ds100" -> ds100)).first
 
     f.map{ dbfM =>
@@ -436,7 +416,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     }
   }
 
-  def storeDs100(ds100: String, name: String, eva: Int): Future[Void] = {
+  private def storeDs100(ds100: String, name: String, eva: Int): Future[Void] = {
 
     logger.info(s"storeDs100($ds100, $name, $eva)")
 
@@ -444,7 +424,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   }
 
-  def storeDs100Failed(ds100: String): Future[Void] = {
+  private def storeDs100Failed(ds100: String): Future[Void] = {
 
     logger.info(s"storeDs100Failed($ds100)")
 
