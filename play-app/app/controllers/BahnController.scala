@@ -358,31 +358,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     Ok(views.html.welcome(s"$ds100: ($name - $eva)"))
   }
 
-  def betriebstellen(name: String) = Action {
-
-    logger.info(s"betriebstellen($name)")
-
-    import java.nio.charset.{StandardCharsets => SC}
-
-    import play.utils.UriEncoding
-
-    val decodedName = UriEncoding.decodePath(name, SC.UTF_8)
-
-    val stations = getBetriebsstellen(decodedName)
-    val ds100s = stations map (_.ds100)
-
-    val stationsRaw = ds100s map {
-      getStationDs100
-    }
-    val stationsList = stationsRaw.flatten
-
-    println("-----------------")
-    stationsList foreach println
-    println("-----------------")
-
-    Ok(views.html.stations(stationsList))
-  }
-
   def betriebstellenJson(name: String) = Action {
     case class NameDs100(name: String, ds100: String)
 
@@ -403,7 +378,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   implicit def ec: ExecutionContext = cc.executionContext
 
-  def findByDs100(ds100: String): Future[Option[Ds100Entry]] = {
+  private def findByDs100(ds100: String): Future[Option[Ds100Entry]] = {
 
     logger.info(s"findByDs100($ds100)")
 
