@@ -1,8 +1,8 @@
 
-const timetable = new Vue({
+const timeTable = new Vue({
 	el: 'main',
 	mounted: function() {
-//	    this.$el.style.display = 'block'
+        this.$el.style.display = 'block'
     },
 	data: {
 		inputValue: '',
@@ -14,6 +14,7 @@ const timetable = new Vue({
 		port: location.port,
 		counter: 0,
 		counterVisible: false,
+		checkBtnVisible: false,
 		tableVisible: false,
 		buttonsVisible: false
 	},
@@ -35,20 +36,24 @@ const timetable = new Vue({
 
 		    return diff;
 		},
-		submitForm: function() {
+		searchStations: function() {
 		    var encoded = encodeURIComponent(this.response)
             var url     = this.protocol + '//' + this.hostname + ':' + this.port + "/betriebJson/" + this.inputValue
             this.counter = 0
+            this.checkBtnVisible = true
             this.tableVisible = false
             this.buttonsVisible = false
+            this.stations = []
 
             axios
               .get(url)
               .then(response => (this.stations = response.data))
+              .catch(error => console.log('Error searchStations:' + error))
 		},
 		checkData: function() {
             var arrayLength = this.stations.length
             this.stations.forEach(this.checkDs100)
+            this.checkBtnVisible = false
 		},
 		checkDs100: function(station) {
 		    var url = this.protocol + '//' + this.hostname + ':' + this.port + "/stationJson/" + station.ds100

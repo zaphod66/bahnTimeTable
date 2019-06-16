@@ -20,7 +20,11 @@
             <div>
                 <button type="submit"
                         class="btn btn-default submit"
-                        v-on:click="submitForm">Suchen</button>
+                        v-on:click="searchStations">Suchen</button>
+<!--                <div>-->
+<!--                    <input type="checkbox" id="checkSearch" value="false" v-model="searchImmediately">-->
+<!--                    <label for="checkSearch">Sofort Auflösen</label>-->
+<!--                </div>-->
             </div>
         </div>
         <div id="counter" v-show="stations.length">
@@ -31,7 +35,7 @@
             <button type="submit"
                     class="btn btn-primary submit"
                     v-on:click="checkData"
-                    v-show="stations.length">Auflösen</button>
+                    v-show="checkBtnVisible && stations.length">Auflösen</button>
 
             <ul>
                 <li class="blue" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
