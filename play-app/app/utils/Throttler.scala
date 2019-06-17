@@ -6,7 +6,7 @@ object Throttler extends StrictLogging {
   private val delta      = 3000L  // in millis
   private var lastAccess = System.currentTimeMillis() - delta
   private var lastInc    = 0L
-  private var token      = 20
+  private var token      = 3
 
   def bracket[T](body: => T): T = {
     val threadId = Thread.currentThread().getId
@@ -21,11 +21,16 @@ object Throttler extends StrictLogging {
 
       val t = body
 
-//      if (waitLast <= delta) Thread.sleep(actualWait)
-      Thread.sleep(actualWait)
+      if (token <= 0) {
+        Thread.sleep(actualWait)
+      } else {
+        token = token - 1
+      }
+
+      token = token + (waitLast / delta).toInt
+      if (token > 3) token = 3
 
       lastAccess = System.currentTimeMillis()
-//      lastAccess = newAccess
 
       t
     }
