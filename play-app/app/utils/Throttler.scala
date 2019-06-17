@@ -17,12 +17,12 @@ object Throttler extends StrictLogging {
       val tmp        = delta - waitLast
       val actualWait = if (tmp < 0) 0 else tmp
 
+      token = token + (waitLast / delta).toInt
+      if (token > 3) token = 3
+
       logger.info(s"threadId: $threadId - lastAccess: $lastAccess - newAccess: $newAccess - waitLast: $waitLast - actualWait: $actualWait - token: $token")
 
       val t = body
-
-      token = token + (waitLast / delta).toInt
-      if (token > 3) token = 3
 
       if (token <= 0) {
         Thread.sleep(actualWait)
