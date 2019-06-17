@@ -29,12 +29,21 @@ const timeTable = new Vue({
 		handleInput: function() {
 		},
 		calcDiff: function(dateSch, dateAct) {
-		    if (dateAct === undefined) { return ""; }
-		    var d1 = Date.parse(dateSch);
-		    var d2 = Date.parse(dateAct);
-		    var diff = (d2 - d1) / 60000; // in minutes
+            if (dateSch === undefined || dateSch === "") { return ""; }
+            if (dateAct === undefined || dateAct === "") { return ""; }
+            var d1 = Date.parse(dateSch);
+            var d2 = Date.parse(dateAct);
+            var diff = (d2 - d1) / 60000; // in minutes
 
-		    return diff;
+            var res = "";
+
+            if (diff >= 0) {
+                res = "+" + diff
+            } else {
+                res = "" + diff
+            };
+
+            return res;
 		},
 		searchStations: function() {
 		    var encoded = encodeURIComponent(this.response)
@@ -102,13 +111,6 @@ const timeTable = new Vue({
 		            this.timeTable = ''
     		        this.tableVisible = false
 		        })
-		},
-		calcDiff: function(dateSch, dateAct) {
-		    var d1 = Date.parse(dateSch);
-		    var d2 = Date.parse(dateAct);
-		    var diff = (d2 - d1) / 1000;
-
-		    return '<font color="#00FF00>' + diff + '</font>'
 		}
 	}
 })

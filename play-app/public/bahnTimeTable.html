@@ -57,9 +57,9 @@
                     <td>{{e.line}}</td>
                     <td>{{e.track}}</td>
                     <td>{{e.arrival | filterDate}}</td>
-                    <td>{{e.arDelay | filterDate}}</td>
+                    <td>{{ calcDiff(e.arrival, e.arDelay) }}</td>
                     <td>{{e.departure | filterDate}}</td>
-                    <td>{{e.dpDelay   | filterDate}}</td>
+                    <td>{{ calcDiff(e.departure, e.dpDelay) }}</td>
                     <td>{{e.depart}}</td>
                     <td>{{e.dest}}</td>
                 </tr>
