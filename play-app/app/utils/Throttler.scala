@@ -21,14 +21,14 @@ object Throttler extends StrictLogging {
 
       val t = body
 
+      token = token + (waitLast / delta).toInt
+      if (token > 3) token = 3
+
       if (token <= 0) {
         Thread.sleep(actualWait)
       } else {
         token = token - 1
       }
-
-      token = token + (waitLast / delta).toInt
-      if (token > 3) token = 3
 
       lastAccess = System.currentTimeMillis()
 
