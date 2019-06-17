@@ -1,3 +1,14 @@
+header h1{
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+header {
+  background-color: rgba(0, 255, 0, 0.2);
+  border-color: rgba(255, 255, 0, 0.2);
+}
+
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
@@ -144,7 +155,6 @@ code {
   margin: 0 2px;
   padding: 0px 5px;
 }
-
 
 code[title] {
   cursor: pointer;
