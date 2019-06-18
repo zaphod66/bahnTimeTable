@@ -1,12 +1,12 @@
+
 header h1{
-  padding: 10px 20px;
+  padding: 5px 20px;
   font-weight: bold;
   font-size: 120%;
 }
 
 header {
-  background-color: rgba(0, 255, 0, 0.2);
-  border-color: rgba(255, 255, 0, 0.2);
+  background-color: rgba(63, 255, 63, 0.2);
 }
 
 body {
