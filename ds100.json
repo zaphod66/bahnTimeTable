@@ -1871,6 +1871,7 @@
 {"_id":"EDSO","ds100":"EDSO","eva":8001545,"stationName":"Dortmund-Sölde","found":true}
 {"_id":"EDSR","ds100":"EDSR","eva":0,"stationName":"","found":false}
 {"_id":"EDST","ds100":"EDST","eva":8001520,"stationName":"Dortmund Stadthaus","found":true}
+{"_id":"EDTD","ds100":"EDTD","eva":0,"stationName":"","found":false}
 {"_id":"EDTF","ds100":"EDTF","eva":0,"stationName":"","found":false}
 {"_id":"EDTM","ds100":"EDTM","eva":8001420,"stationName":"Detmold","found":true}
 {"_id":"EDTO","ds100":"EDTO","eva":0,"stationName":"","found":false}
@@ -3664,6 +3665,7 @@
 {"_id":"HODU","ds100":"HODU","eva":0,"stationName":"","found":false}
 {"_id":"HOE","ds100":"HOE","eva":8800528,"stationName":"Hoeilaart","found":true}
 {"_id":"HOES","ds100":"HOES","eva":8004628,"stationName":"Oesede","found":true}
+{"_id":"HOFD","ds100":"HOFD","eva":0,"stationName":"","found":false}
 {"_id":"HOFN","ds100":"HOFN","eva":8004652,"stationName":"Offensen(Kr North)","found":true}
 {"_id":"HOHF","ds100":"HOHF","eva":0,"stationName":"","found":false}
 {"_id":"HOHT","ds100":"HOHT","eva":8004689,"stationName":"Osnabrück Altstadt","found":true}
@@ -8401,6 +8403,7 @@
 {"_id":"UDG","ds100":"UDG","eva":8011406,"stationName":"Dornburg(Saale)","found":true}
 {"_id":"UDI","ds100":"UDI","eva":8300115,"stationName":"Udine","found":true}
 {"_id":"UDIF","ds100":"UDIF","eva":0,"stationName":"","found":false}
+{"_id":"UDL","ds100":"UDL","eva":0,"stationName":"","found":false}
 {"_id":"UDN","ds100":"UDN","eva":8011378,"stationName":"Dietzhausen","found":true}
 {"_id":"UDOE","ds100":"UDOE","eva":8011397,"stationName":"Dörrberg","found":true}
 {"_id":"UDST","ds100":"UDST","eva":8010081,"stationName":"Döllstädt","found":true}
@@ -9545,8 +9548,11 @@
 {"_id":"XBCS","ds100":"XBCS","eva":8800536,"stationName":"Chastre","found":true}
 {"_id":"XBCT","ds100":"XBCT","eva":0,"stationName":"","found":false}
 {"_id":"XBDBG","ds100":"XBDBG","eva":8800305,"stationName":"Duinbergen","found":true}
+{"_id":"XBDBK","ds100":"XBDBK","eva":8800240,"stationName":"Diepenbeek","found":true}
 {"_id":"XBDD","ds100":"XBDD","eva":8800051,"stationName":"Dendermonde","found":true}
+{"_id":"XBDI","ds100":"XBDI","eva":8800052,"stationName":"Diest","found":true}
 {"_id":"XBDL","ds100":"XBDL","eva":8800050,"stationName":"Denderleeuw","found":true}
+{"_id":"XBDM","ds100":"XBDM","eva":8800246,"stationName":"Diegem","found":true}
 {"_id":"XBDR","ds100":"XBDR","eva":8800296,"stationName":"Drongen","found":true}
 {"_id":"XBDU","ds100":"XBDU","eva":8800218,"stationName":"Duffel","found":true}
 {"_id":"XBEG","ds100":"XBEG","eva":8800027,"stationName":"Enghien/Edingen","found":true}
@@ -9879,6 +9885,7 @@
 {"_id":"XFCX","ds100":"XFCX","eva":8700181,"stationName":"Châteauroux","found":true}
 {"_id":"XFCY","ds100":"XFCY","eva":8700055,"stationName":"Chambery-Challes-E","found":true}
 {"_id":"XFDF","ds100":"XFDF","eva":0,"stationName":"","found":false}
+{"_id":"XFDI","ds100":"XFDI","eva":8700340,"stationName":"Dieulouard","found":true}
 {"_id":"XFDM","ds100":"XFDM","eva":8700304,"stationName":"Diemeringen","found":true}
 {"_id":"XFDN","ds100":"XFDN","eva":8700429,"stationName":"Dijon Porte Neuve","found":true}
 {"_id":"XFDOR","ds100":"XFDOR","eva":8701027,"stationName":"Dormans(F)","found":true}
@@ -10049,6 +10056,7 @@
 {"_id":"XFTRA","ds100":"XFTRA","eva":0,"stationName":"","found":false}
 {"_id":"XFTRC","ds100":"XFTRC","eva":8700494,"stationName":"Tarascon-sur-Ariege","found":true}
 {"_id":"XFVAR","ds100":"XFVAR","eva":8700378,"stationName":"Vaires Torcy","found":true}
+{"_id":"XFVDS","ds100":"XFVDS","eva":8704852,"stationName":"Villedieu les Poeles","found":true}
 {"_id":"XFVEA","ds100":"XFVEA","eva":8704808,"stationName":"Verneuil sur Avre","found":true}
 {"_id":"XFVEE","ds100":"XFVEE","eva":8702187,"stationName":"Verneuil lEtang","found":true}
 {"_id":"XFVEY","ds100":"XFVEY","eva":8702252,"stationName":"Valleiry","found":true}
@@ -10312,6 +10320,7 @@
 {"_id":"XLDB","ds100":"XLDB","eva":8200002,"stationName":"Dudelange-Burange","found":true}
 {"_id":"XLDC","ds100":"XLDC","eva":8200003,"stationName":"Dudelange-Centre","found":true}
 {"_id":"XLDF","ds100":"XLDF","eva":8270360,"stationName":"Drauffelt","found":true}
+{"_id":"XLDK","ds100":"XLDK","eva":8200126,"stationName":"Diekirch","found":true}
 {"_id":"XLDM","ds100":"XLDM","eva":8270350,"stationName":"Dommeldange","found":true}
 {"_id":"XLDU","ds100":"XLDU","eva":8270370,"stationName":"Dudelange-Usines","found":true}
 {"_id":"XLDV","ds100":"XLDV","eva":8200613,"stationName":"Dudelange-Ville","found":true}
@@ -10662,6 +10671,7 @@
 {"_id":"XSBW","ds100":"XSBW","eva":8506182,"stationName":"Bettwiesen","found":true}
 {"_id":"XSCC","ds100":"XSCC","eva":0,"stationName":"","found":false}
 {"_id":"XSCR","ds100":"XSCR","eva":8505304,"stationName":"Capolago-Riva S. Vitale","found":true}
+{"_id":"XSD","ds100":"XSD","eva":8503306,"stationName":"Dietlikon","found":true}
 {"_id":"XSDA","ds100":"XSDA","eva":8506049,"stationName":"Dachsen","found":true}
 {"_id":"XSDD","ds100":"XSDD","eva":8509072,"stationName":"Davos Dorf","found":true}
 {"_id":"XSDE","ds100":"XSDE","eva":8500109,"stationName":"Delémont","found":true}
