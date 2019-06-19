@@ -9,6 +9,7 @@ const timeTable = new Vue({
 		inputDisabled: false,
 		stations: [],
 		timeTable: '',
+		currentStation: '',
 		protocol: location.protocol,
 		hostname: location.hostname,
 		port: location.port,
@@ -98,7 +99,8 @@ const timeTable = new Vue({
                   }
 		        })
 		},
-		getTimeTable: function(eva) {
+		getTimeTable: function(name, eva) {
+
 		    var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTableJson/" + eva
 
 		    axios
@@ -106,6 +108,7 @@ const timeTable = new Vue({
 		        .then(response => {
 		            this.timeTable = response.data
 		            this.tableVisible = true
+		            this.currentStation = name
 		        })
 		        .catch(_ => {
 		            this.timeTable = ''
