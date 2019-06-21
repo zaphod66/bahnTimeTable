@@ -180,6 +180,7 @@ table {
   border: 2px solid #42b983;
   border-radius: 3px;
   background-color: #fff;
+  width: 100%;
 }
 
 th {
@@ -201,10 +202,25 @@ td {
   font-weight: normal;
   min-width: 60px;
   padding: 4px 4px;
-  background-color: #f9f9f9;
 }
 
-td: nth-of-type(odd)
+td, tr: nth-of-type(odd)
 {
   background: #f0f0fa;
 }
+
+caption, th, td {
+  text-align:left;
+  font-weight:normal;
+}
+
+table tr {
+  background: #F0F0F7;
+  border-bottom:1px solid #eee;
+}
+
+table tr:nth-of-type(odd) {
+  background: #FAFAFA;
+}
+
+// tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;}
