@@ -56,25 +56,29 @@
         <div v-show="tableVisible"  id="content" class="wrapper doc">
             <header><h1>{{ currentStation }}</h1></header>
             <table>
-                <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
-                <tr v-for="e in timeTable">
-                    <td>{{e.line}}</td>
-                    <td>{{e.track}}</td>
-                    <td>{{e.arrival | filterDate}}</td>
-                    <td>{{ calcDiff(e.arrival, e.arDelay) }}</td>
-                    <td>{{e.departure | filterDate}}</td>
-                    <td>{{ calcDiff(e.departure, e.dpDelay) }}</td>
-                    <td>{{e.depart}}</td>
-                    <td>{{e.dest}}</td>
-                </tr>
+                <thead>
+                    <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
+                </thead>
+                <tbody>
+                    <tr v-for="e in timeTable">
+                        <td>{{e.line}}</td>
+                        <td>{{e.track}}</td>
+                        <td>{{e.arrival | filterDate}}</td>
+                        <td>{{ calcDiff(e.arrival, e.arDelay) }}</td>
+                        <td>{{e.departure | filterDate}}</td>
+                        <td>{{ calcDiff(e.departure, e.dpDelay) }}</td>
+                        <td>{{e.depart}}</td>
+                        <td>{{e.dest}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
-        <div v-show="tableVisible"  id="content" class="wrapper doc">
+        <div v-show="tableVisible">
             <header><h1>{{ currentStation }}</h1></header>
             <table>
                 <thead>
-                <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
+                    <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 </thead>
                 <tbody>
                     <time-table-entry v-for="e in timeTable" :entry="e"></time-table-entry>
