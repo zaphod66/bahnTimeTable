@@ -54,7 +54,7 @@
         </div>
 
         <div v-show="tableVisible"  id="content" class="wrapper doc">
-            <header>{{ currentStation }}</header>
+            <header><h1>{{ currentStation }}</h1></header>
             <table>
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 <tr v-for="e in timeTable">
@@ -67,6 +67,18 @@
                     <td>{{e.depart}}</td>
                     <td>{{e.dest}}</td>
                 </tr>
+            </table>
+        </div>
+
+        <div v-show="tableVisible"  id="content" class="wrapper doc">
+            <header><h1>{{ currentStation }}</h1></header>
+            <table>
+                <thead>
+                <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
+                </thead>
+                <tbody>
+                    <time-table-entry v-for="e in timeTable" :entry="e"></time-table-entry>
+                </tbody>
             </table>
         </div>
     </main>

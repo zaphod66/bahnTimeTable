@@ -1,6 +1,11 @@
+const TimeTableEntryComp = {
+    template: '<tr><td>{{ entry.line }}</td><td>{{ entry.track }}</td><td>{{ entry.arrival }}</td><td>{{ entry.arDelay }}</td><td>{{ entry.departure }}</td><td>{{ entry.dpDelay }}</td><td>{{ entry.depart }}</td><td>{{ entry.dest }}</td></tr>',
+    props: ['entry']
+};
 
 const timeTable = new Vue({
 	el: 'main',
+	components: { 'time-table-entry': TimeTableEntryComp },
 	mounted: function() {
         this.$el.style.display = 'block'
     },
