@@ -1167,6 +1167,7 @@
 {"_id":"DCM","ds100":"DCM","eva":8011971,"stationName":"Chemnitz Mitte","found":true}
 {"_id":"DCN","ds100":"DCN","eva":8011331,"stationName":"Cunnertswalde","found":true}
 {"_id":"DCO","ds100":"DCO","eva":0,"stationName":"","found":false}
+{"_id":"DCOE","ds100":"DCOE","eva":0,"stationName":"","found":false}
 {"_id":"DCOM","ds100":"DCOM","eva":8089295,"stationName":"Chemnitz Omnibusbahnhof","found":true}
 {"_id":"DCOW","ds100":"DCOW","eva":0,"stationName":"","found":false}
 {"_id":"DCR","ds100":"DCR","eva":8010074,"stationName":"Cranzahl","found":true}
@@ -11197,6 +11198,7 @@
 {"_id":"XVLO","ds100":"XVLO","eva":0,"stationName":"","found":false}
 {"_id":"XVLU","ds100":"XVLU","eva":0,"stationName":"","found":false}
 {"_id":"XVMA","ds100":"XVMA","eva":0,"stationName":"","found":false}
+{"_id":"XVMD","ds100":"XVMD","eva":0,"stationName":"","found":false}
 {"_id":"XVME","ds100":"XVME","eva":0,"stationName":"","found":false}
 {"_id":"XVMG","ds100":"XVMG","eva":0,"stationName":"","found":false}
 {"_id":"XVMR","ds100":"XVMR","eva":0,"stationName":"","found":false}
