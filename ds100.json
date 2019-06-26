@@ -9887,6 +9887,7 @@
 {"_id":"XBHN","ds100":"XBHN","eva":0,"stationName":"","found":false}
 {"_id":"XBHNY","ds100":"XBHNY","eva":8800403,"stationName":"Hennuyeres","found":true}
 {"_id":"XBHNZ","ds100":"XBHNZ","eva":8800587,"stationName":"Haren-Zuid/Haren-Sud","found":true}
+{"_id":"XBHO","ds100":"XBHO","eva":8800528,"stationName":"Hoeilaart","found":true}
 {"_id":"XBHR","ds100":"XBHR","eva":8800063,"stationName":"Herentals","found":true}
 {"_id":"XBHRB","ds100":"XBHRB","eva":8800161,"stationName":"Harelbeke","found":true}
 {"_id":"XBHRG","ds100":"XBHRG","eva":8800386,"stationName":"Houraing","found":true}
@@ -10129,6 +10130,7 @@
 {"_id":"XDKHL","ds100":"XDKHL","eva":8601242,"stationName":"Koebenhavns Lufthavn st","found":true}
 {"_id":"XDKHO","ds100":"XDKHO","eva":0,"stationName":"","found":false}
 {"_id":"XDKO","ds100":"XDKO","eva":8601318,"stationName":"Kolding st","found":true}
+{"_id":"XDKT","ds100":"XDKT","eva":0,"stationName":"","found":false}
 {"_id":"XDLD","ds100":"XDLD","eva":8601509,"stationName":"Lunde J st","found":true}
 {"_id":"XDLF","ds100":"XDLF","eva":8601472,"stationName":"Loeftgaard st","found":true}
 {"_id":"XDLI","ds100":"XDLI","eva":0,"stationName":"","found":false}
@@ -10962,6 +10964,7 @@
 {"_id":"XNAC","ds100":"XNAC","eva":8400058,"stationName":"Amsterdam Centraal","found":true}
 {"_id":"XNAE","ds100":"XNAE","eva":8400066,"stationName":"Apeldoorn","found":true}
 {"_id":"XNAHP","ds100":"XNAHP","eva":0,"stationName":"","found":false}
+{"_id":"XNAL","ds100":"XNAL","eva":8400050,"stationName":"Alkmaar","found":true}
 {"_id":"XNAM","ds100":"XNAM","eva":8400055,"stationName":"Amersfoort","found":true}
 {"_id":"XNAMV","ds100":"XNAMV","eva":8400031,"stationName":"Amersfoort Vathorst","found":true}
 {"_id":"XNAO","ds100":"XNAO","eva":8400051,"stationName":"Almelo","found":true}
@@ -11006,12 +11009,14 @@
 {"_id":"XNGR","ds100":"XNGR","eva":8400263,"stationName":"Groningen","found":true}
 {"_id":"XNHB","ds100":"XNHB","eva":0,"stationName":"","found":false}
 {"_id":"XNHD","ds100":"XNHD","eva":8400332,"stationName":"Hoofddorp","found":true}
+{"_id":"XNHE","ds100":"XNHE","eva":8400285,"stationName":"Haarlem","found":true}
 {"_id":"XNHH","ds100":"XNHH","eva":0,"stationName":"","found":false}
 {"_id":"XNHHV","ds100":"XNHHV","eva":0,"stationName":"","found":false}
 {"_id":"XNHI","ds100":"XNHI","eva":8400322,"stationName":"Hilversum","found":true}
 {"_id":"XNHIS","ds100":"XNHIS","eva":8400570,"stationName":"Hilversum Sportpark","found":true}
 {"_id":"XNHK","ds100":"XNHK","eva":0,"stationName":"","found":false}
 {"_id":"XNHL","ds100":"XNHL","eva":8400316,"stationName":"Hengelo","found":true}
+{"_id":"XNHLS","ds100":"XNHLS","eva":8402735,"stationName":"Haarlem Spaarnwoude","found":true}
 {"_id":"XNHOK","ds100":"XNHOK","eva":8400336,"stationName":"Hoorn Kersenboogerd","found":true}
 {"_id":"XNHS","ds100":"XNHS","eva":8400331,"stationName":"Hoogezand-Sappemeer","found":true}
 {"_id":"XNKA","ds100":"XNKA","eva":8400368,"stationName":"Krommenie-Assendelft","found":true}
@@ -11084,6 +11089,7 @@
 {"_id":"XNZLR","ds100":"XNZLR","eva":0,"stationName":"","found":false}
 {"_id":"XNZO","ds100":"XNZO","eva":0,"stationName":"","found":false}
 {"_id":"XNZP","ds100":"XNZP","eva":0,"stationName":"","found":false}
+{"_id":"XNZV","ds100":"XNZV","eva":8400735,"stationName":"Zevenaar","found":true}
 {"_id":"XOAD","ds100":"XOAD","eva":0,"stationName":"","found":false}
 {"_id":"XOB","ds100":"XOB","eva":0,"stationName":"","found":false}
 {"_id":"XOBG","ds100":"XOBG","eva":0,"stationName":"","found":false}
@@ -11298,6 +11304,7 @@
 {"_id":"XRSL","ds100":"XRSL","eva":7800015,"stationName":"Slavonski Brod","found":true}
 {"_id":"XRST","ds100":"XRST","eva":0,"stationName":"","found":false}
 {"_id":"XRSU","ds100":"XRSU","eva":0,"stationName":"","found":false}
+{"_id":"XSA","ds100":"XSA","eva":8502113,"stationName":"Aarau","found":true}
 {"_id":"XSAA","ds100":"XSAA","eva":8502224,"stationName":"Affoltern am Albis","found":true}
 {"_id":"XSAB","ds100":"XSAB","eva":8506308,"stationName":"Arbon","found":true}
 {"_id":"XSABO","ds100":"XSABO","eva":8502000,"stationName":"Aarburg-Oftringen","found":true}
