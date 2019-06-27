@@ -480,6 +480,7 @@
 {"_id":"AWPW","ds100":"AWPW","eva":8007122,"stationName":"Worpswede","found":true}
 {"_id":"AWRE","ds100":"AWRE","eva":8006570,"stationName":"Wremen","found":true}
 {"_id":"AWRT","ds100":"AWRT","eva":8006527,"stationName":"Witzwort","found":true}
+{"_id":"AWRZ","ds100":"AWRZ","eva":0,"stationName":"","found":false}
 {"_id":"AWST","ds100":"AWST","eva":8006572,"stationName":"Wrist","found":true}
 {"_id":"AWYU","ds100":"AWYU","eva":0,"stationName":"","found":false}
 {"_id":"AY","ds100":"AY","eva":8003032,"stationName":"Husby","found":true}
@@ -2857,6 +2858,7 @@
 {"_id":"FKKVG","ds100":"FKKVG","eva":8098193,"stationName":"Kassel Hbf (tief)","found":true}
 {"_id":"FKLH","ds100":"FKLH","eva":0,"stationName":"","found":false}
 {"_id":"FKLM","ds100":"FKLM","eva":8003143,"stationName":"Kahl(Main)","found":true}
+{"_id":"FKLP","ds100":"FKLP","eva":0,"stationName":"","found":false}
 {"_id":"FKLPK","ds100":"FKLPK","eva":8070164,"stationName":"Kahl Kopp/Heide","found":true}
 {"_id":"FKLU","ds100":"FKLU","eva":8003315,"stationName":"Groß-Umstadt Klein-Umstadt","found":true}
 {"_id":"FKMP","ds100":"FKMP","eva":8003170,"stationName":"Kamp-Bornhofen","found":true}
@@ -3270,6 +3272,7 @@
 {"_id":"HADH","ds100":"HADH","eva":0,"stationName":"","found":false}
 {"_id":"HAHD","ds100":"HAHD","eva":8070302,"stationName":"Delmenhorst-Annenheide","found":true}
 {"_id":"HAHG","ds100":"HAHG","eva":0,"stationName":"","found":false}
+{"_id":"HAHM","ds100":"HAHM","eva":0,"stationName":"","found":false}
 {"_id":"HAHO","ds100":"HAHO","eva":8000442,"stationName":"Ahlhorn","found":true}
 {"_id":"HAHS","ds100":"HAHS","eva":8000486,"stationName":"Alfhausen","found":true}
 {"_id":"HALF","ds100":"HALF","eva":8000483,"stationName":"Alfeld(Leine)","found":true}
@@ -3352,6 +3355,7 @@
 {"_id":"HBLB","ds100":"HBLB","eva":8005324,"stationName":"Bad Lauterberg im Harz Barbis","found":true}
 {"_id":"HBLK","ds100":"HBLK","eva":0,"stationName":"","found":false}
 {"_id":"HBM","ds100":"HBM","eva":8001160,"stationName":"Bremen-Mahndorf","found":true}
+{"_id":"HBMA","ds100":"HBMA","eva":0,"stationName":"","found":false}
 {"_id":"HBMG","ds100":"HBMG","eva":8001165,"stationName":"Bremen-St Magnus","found":true}
 {"_id":"HBML","ds100":"HBML","eva":8000871,"stationName":"Bennemühlen","found":true}
 {"_id":"HBMN","ds100":"HBMN","eva":8007764,"stationName":"Borkum(Nordseebad)","found":true}
@@ -3662,6 +3666,7 @@
 {"_id":"HLIH","ds100":"HLIH","eva":0,"stationName":"","found":false}
 {"_id":"HLIHS","ds100":"HLIHS","eva":0,"stationName":"","found":false}
 {"_id":"HLIN","ds100":"HLIN","eva":0,"stationName":"","found":false}
+{"_id":"HLMB","ds100":"HLMB","eva":0,"stationName":"","found":false}
 {"_id":"HLMF","ds100":"HLMF","eva":8003632,"stationName":"Lemförde","found":true}
 {"_id":"HLN","ds100":"HLN","eva":8003780,"stationName":"Lüchtringen","found":true}
 {"_id":"HLNG","ds100":"HLNG","eva":8003522,"stationName":"Langelsheim","found":true}
@@ -4617,6 +4622,7 @@
 {"_id":"KTR","ds100":"KTR","eva":8005910,"stationName":"Trompet","found":true}
 {"_id":"KTST","ds100":"KTST","eva":8070314,"stationName":"Bad Tönisstein","found":true}
 {"_id":"KTUM","ds100":"KTUM","eva":8007834,"stationName":"Niederau-Tuchmühle","found":true}
+{"_id":"KTVD","ds100":"KTVD","eva":0,"stationName":"","found":false}
 {"_id":"KTWE","ds100":"KTWE","eva":0,"stationName":"","found":false}
 {"_id":"KUBP","ds100":"KUBP","eva":8005935,"stationName":"Übach-Palenberg","found":true}
 {"_id":"KUD","ds100":"KUD","eva":8007821,"stationName":"Üdingen","found":true}
@@ -4807,6 +4813,7 @@
 {"_id":"LDRO","ds100":"LDRO","eva":0,"stationName":"","found":false}
 {"_id":"LDS","ds100":"LDS","eva":8011361,"stationName":"Dessau Süd","found":true}
 {"_id":"LDSF","ds100":"LDSF","eva":0,"stationName":"","found":false}
+{"_id":"LDST","ds100":"LDST","eva":0,"stationName":"","found":false}
 {"_id":"LDT","ds100":"LDT","eva":8011383,"stationName":"Ditfurt","found":true}
 {"_id":"LDTZ","ds100":"LDTZ","eva":8011371,"stationName":"Deutzen","found":true}
 {"_id":"LDU","ds100":"LDU","eva":0,"stationName":"","found":false}
@@ -4937,6 +4944,7 @@
 {"_id":"LHE","ds100":"LHE","eva":8010168,"stationName":"Hettstedt","found":true}
 {"_id":"LHEL","ds100":"LHEL","eva":0,"stationName":"","found":false}
 {"_id":"LHEW","ds100":"LHEW","eva":8011838,"stationName":"Hedersleben-Wedderstedt","found":true}
+{"_id":"LHFS","ds100":"LHFS","eva":0,"stationName":"","found":false}
 {"_id":"LHG","ds100":"LHG","eva":8098159,"stationName":"Halle(Saale)Hbf Gl. 13a","found":true}
 {"_id":"LHG M","ds100":"LHG M","eva":0,"stationName":"","found":false}
 {"_id":"LHG N","ds100":"LHG N","eva":0,"stationName":"","found":false}
@@ -9789,6 +9797,7 @@
 {"_id":"XBBA","ds100":"XBBA","eva":8800262,"stationName":"Bierset-Awans","found":true}
 {"_id":"XBBC","ds100":"XBBC","eva":8800008,"stationName":"Antwerpen-Berchem","found":true}
 {"_id":"XBBCS","ds100":"XBBCS","eva":8800212,"stationName":"Bruxelles-Congres","found":true}
+{"_id":"XBBE","ds100":"XBBE","eva":8800302,"stationName":"Beernem","found":true}
 {"_id":"XBBF","ds100":"XBBF","eva":8800598,"stationName":"Blandain(fr)","found":true}
 {"_id":"XBBFV","ds100":"XBBFV","eva":8800526,"stationName":"Boitsfort/Bosvoorde","found":true}
 {"_id":"XBBG","ds100":"XBBG","eva":8800499,"stationName":"Bierges","found":true}
@@ -9798,8 +9807,10 @@
 {"_id":"XBBL","ds100":"XBBL","eva":8800003,"stationName":"Bruxelles-Central","found":true}
 {"_id":"XBBLA","ds100":"XBBLA","eva":8800042,"stationName":"Braine-lAlleud","found":true}
 {"_id":"XBBLB","ds100":"XBBLB","eva":8800039,"stationName":"Blankenberge","found":true}
+{"_id":"XBBLL","ds100":"XBBLL","eva":8800299,"stationName":"Bellem","found":true}
 {"_id":"XBBLT","ds100":"XBBLT","eva":8800040,"stationName":"Blaton","found":true}
 {"_id":"XBBM","ds100":"XBBM","eva":0,"stationName":"","found":false}
+{"_id":"XBBMB","ds100":"XBBMB","eva":8800326,"stationName":"Boortmeerbeek","found":true}
 {"_id":"XBBME","ds100":"XBBME","eva":8898004,"stationName":"Bruxelles-Midi Eurostar","found":true}
 {"_id":"XBBN","ds100":"XBBN","eva":8800002,"stationName":"Bruxelles-Nord","found":true}
 {"_id":"XBBNL","ds100":"XBBNL","eva":8800043,"stationName":"Brussels Airport - Zaventem","found":true}
@@ -9852,8 +9863,10 @@
 {"_id":"XBFE","ds100":"XBFE","eva":8800481,"stationName":"Franiere","found":true}
 {"_id":"XBFH","ds100":"XBFH","eva":8800015,"stationName":"Flemalle-Haute","found":true}
 {"_id":"XBFLA","ds100":"XBFLA","eva":0,"stationName":"","found":false}
+{"_id":"XBFM","ds100":"XBFM","eva":8800397,"stationName":"Forest Midi/Vorst Zuid","found":true}
 {"_id":"XBFR","ds100":"XBFR","eva":8800266,"stationName":"Fraipont","found":true}
 {"_id":"XBFS","ds100":"XBFS","eva":8800407,"stationName":"Frameries","found":true}
+{"_id":"XBFV","ds100":"XBFV","eva":8800504,"stationName":"Florival","found":true}
 {"_id":"XBG","ds100":"XBG","eva":0,"stationName":"","found":false}
 {"_id":"XBGB","ds100":"XBGB","eva":8800328,"stationName":"Gentbrugge","found":true}
 {"_id":"XBGD","ds100":"XBGD","eva":8800058,"stationName":"Gent-Dampoort","found":true}
@@ -9888,6 +9901,7 @@
 {"_id":"XBHNY","ds100":"XBHNY","eva":8800403,"stationName":"Hennuyeres","found":true}
 {"_id":"XBHNZ","ds100":"XBHNZ","eva":8800587,"stationName":"Haren-Zuid/Haren-Sud","found":true}
 {"_id":"XBHO","ds100":"XBHO","eva":8800528,"stationName":"Hoeilaart","found":true}
+{"_id":"XBHP","ds100":"XBHP","eva":8800487,"stationName":"Hourpes","found":true}
 {"_id":"XBHR","ds100":"XBHR","eva":8800063,"stationName":"Herentals","found":true}
 {"_id":"XBHRB","ds100":"XBHRB","eva":8800161,"stationName":"Harelbeke","found":true}
 {"_id":"XBHRG","ds100":"XBHRG","eva":8800386,"stationName":"Houraing","found":true}
@@ -9901,6 +9915,7 @@
 {"_id":"XBIM","ds100":"XBIM","eva":8800346,"stationName":"Ingelmunster","found":true}
 {"_id":"XBJ","ds100":"XBJ","eva":8800020,"stationName":"Rochefort-Jemelle","found":true}
 {"_id":"XBJB","ds100":"XBJB","eva":8800522,"stationName":"Jambes","found":true}
+{"_id":"XBJM","ds100":"XBJM","eva":8800571,"stationName":"Jemappes","found":true}
 {"_id":"XBJS","ds100":"XBJS","eva":8800069,"stationName":"Jemeppe-sur-Sambre","found":true}
 {"_id":"XBJU","ds100":"XBJU","eva":8800071,"stationName":"Jurbise","found":true}
 {"_id":"XBKM","ds100":"XBKM","eva":8800076,"stationName":"Kortemark","found":true}
@@ -9910,6 +9925,7 @@
 {"_id":"XBKW","ds100":"XBKW","eva":8800226,"stationName":"Kiewit","found":true}
 {"_id":"XBLA","ds100":"XBLA","eva":0,"stationName":"","found":false}
 {"_id":"XBLB","ds100":"XBLB","eva":8800080,"stationName":"Leopoldsburg","found":true}
+{"_id":"XBLBK","ds100":"XBLBK","eva":8800401,"stationName":"Lembeek","found":true}
 {"_id":"XBLBS","ds100":"XBLBS","eva":8800490,"stationName":"Labuissiere","found":true}
 {"_id":"XBLC","ds100":"XBLC","eva":8800082,"stationName":"Lichtervelde","found":true}
 {"_id":"XBLCP","ds100":"XBLCP","eva":8800475,"stationName":"Le Campinaire","found":true}
@@ -9930,6 +9946,7 @@
 {"_id":"XBLOZ","ds100":"XBLOZ","eva":8800158,"stationName":"Londerzeel","found":true}
 {"_id":"XBLUB","ds100":"XBLUB","eva":8800187,"stationName":"Antwerpen-Luchtbal","found":true}
 {"_id":"XBLW","ds100":"XBLW","eva":8800308,"stationName":"Lissewege","found":true}
+{"_id":"XBMA","ds100":"XBMA","eva":8800121,"stationName":"Manage","found":true}
 {"_id":"XBMAL","ds100":"XBMAL","eva":8800318,"stationName":"Malderen","found":true}
 {"_id":"XBMAR","ds100":"XBMAR","eva":8800156,"stationName":"Marbehan","found":true}
 {"_id":"XBMCE","ds100":"XBMCE","eva":8800414,"stationName":"Marche-lez-Ecaussinnes","found":true}
@@ -9939,12 +9956,15 @@
 {"_id":"XBMEL","ds100":"XBMEL","eva":8800295,"stationName":"Melle(B)","found":true}
 {"_id":"XBMER","ds100":"XBMER","eva":8800340,"stationName":"Merchtem","found":true}
 {"_id":"XBMG","ds100":"XBMG","eva":8800534,"stationName":"Mont-St.-Guibert","found":true}
+{"_id":"XBMH","ds100":"XBMH","eva":0,"stationName":"","found":false}
 {"_id":"XBMI","ds100":"XBMI","eva":8800301,"stationName":"Maria-Aalter","found":true}
 {"_id":"XBMNP","ds100":"XBMNP","eva":8800179,"stationName":"Mechelen-Nekkerspoel","found":true}
 {"_id":"XBMO","ds100":"XBMO","eva":0,"stationName":"","found":false}
 {"_id":"XBMOG","ds100":"XBMOG","eva":8800221,"stationName":"Mortsel-Oude-God","found":true}
+{"_id":"XBMOL","ds100":"XBMOL","eva":8800339,"stationName":"Mollem","found":true}
 {"_id":"XBMOR","ds100":"XBMOR","eva":8800194,"stationName":"Mortsel","found":true}
 {"_id":"XBMUG","ds100":"XBMUG","eva":0,"stationName":"","found":false}
+{"_id":"XBN","ds100":"XBN","eva":8800130,"stationName":"Neerpelt","found":true}
 {"_id":"XBNC","ds100":"XBNC","eva":8800181,"stationName":"Neufchateau(B)","found":true}
 {"_id":"XBNF","ds100":"XBNF","eva":8800404,"stationName":"Neufvilles","found":true}
 {"_id":"XBNG","ds100":"XBNG","eva":8800248,"stationName":"Nossegem","found":true}
@@ -9962,6 +9982,7 @@
 {"_id":"XBRK","ds100":"XBRK","eva":8800398,"stationName":"Ruisbroek","found":true}
 {"_id":"XBRL","ds100":"XBRL","eva":8800164,"stationName":"Roeselare","found":true}
 {"_id":"XBRP","ds100":"XBRP","eva":0,"stationName":"","found":false}
+{"_id":"XBRV","ds100":"XBRV","eva":8800014,"stationName":"Rivage","found":true}
 {"_id":"XBS","ds100":"XBS","eva":8800001,"stationName":"Schaerbeek","found":true}
 {"_id":"XBSA","ds100":"XBSA","eva":8800169,"stationName":"Statte","found":true}
 {"_id":"XBSAB","ds100":"XBSAB","eva":8800283,"stationName":"St.-Agatha-Berchem","found":true}
@@ -9973,6 +9994,7 @@
 {"_id":"XBSF","ds100":"XBSF","eva":0,"stationName":"","found":false}
 {"_id":"XBSGD","ds100":"XBSGD","eva":8800344,"stationName":"St.-Gillis","found":true}
 {"_id":"XBSGR","ds100":"XBSGR","eva":8800452,"stationName":"St.-Genesius-Rode","found":true}
+{"_id":"XBSJW","ds100":"XBSJW","eva":8800506,"stationName":"St.-Joris-Weert","found":true}
 {"_id":"XBSK","ds100":"XBSK","eva":8800292,"stationName":"Serskamp","found":true}
 {"_id":"XBSL","ds100":"XBSL","eva":8800167,"stationName":"Silly","found":true}
 {"_id":"XBSM","ds100":"XBSM","eva":8800190,"stationName":"Sint-Mariaburg","found":true}
@@ -9982,6 +10004,7 @@
 {"_id":"XBSTD","ds100":"XBSTD","eva":8800209,"stationName":"Sint-Truiden","found":true}
 {"_id":"XBSU","ds100":"XBSU","eva":8800245,"stationName":"Schulen","found":true}
 {"_id":"XBTA","ds100":"XBTA","eva":8800135,"stationName":"Tamines","found":true}
+{"_id":"XBTB","ds100":"XBTB","eva":8800444,"stationName":"Tollembeek","found":true}
 {"_id":"XBTG","ds100":"XBTG","eva":8800086,"stationName":"Tongeren","found":true}
 {"_id":"XBTH","ds100":"XBTH","eva":8800368,"stationName":"Terhagen","found":true}
 {"_id":"XBTLN","ds100":"XBTLN","eva":8800411,"stationName":"Thulin","found":true}
@@ -10092,6 +10115,7 @@
 {"_id":"XDBV","ds100":"XDBV","eva":8600285,"stationName":"Boulevarden st","found":true}
 {"_id":"XDDS","ds100":"XDDS","eva":8600416,"stationName":"Doestrup(Soenderjylland) st","found":true}
 {"_id":"XDE","ds100":"XDE","eva":8600508,"stationName":"Esbjerg st","found":true}
+{"_id":"XDEL","ds100":"XDEL","eva":0,"stationName":"","found":false}
 {"_id":"XDF","ds100":"XDF","eva":8600623,"stationName":"Fredericia st","found":true}
 {"_id":"XDFH","ds100":"XDFH","eva":0,"stationName":"","found":false}
 {"_id":"XDFHH","ds100":"XDFHH","eva":0,"stationName":"","found":false}
@@ -10134,6 +10158,7 @@
 {"_id":"XDLD","ds100":"XDLD","eva":8601509,"stationName":"Lunde J st","found":true}
 {"_id":"XDLF","ds100":"XDLF","eva":8601472,"stationName":"Loeftgaard st","found":true}
 {"_id":"XDLI","ds100":"XDLI","eva":0,"stationName":"","found":false}
+{"_id":"XDLM","ds100":"XDLM","eva":0,"stationName":"","found":false}
 {"_id":"XDLU","ds100":"XDLU","eva":8601512,"stationName":"Lunderskov st","found":true}
 {"_id":"XDLUN","ds100":"XDLUN","eva":0,"stationName":"","found":false}
 {"_id":"XDMF","ds100":"XDMF","eva":8601593,"stationName":"Middelfart st","found":true}
@@ -10207,6 +10232,7 @@
 {"_id":"XFAL","ds100":"XFAL","eva":8700128,"stationName":"Albertville","found":true}
 {"_id":"XFALB","ds100":"XFALB","eva":8700599,"stationName":"Albert(Amiens)","found":true}
 {"_id":"XFALK","ds100":"XFALK","eva":8700282,"stationName":"Altkirch","found":true}
+{"_id":"XFANG","ds100":"XFANG","eva":8700063,"stationName":"Angouleme","found":true}
 {"_id":"XFAP","ds100":"XFAP","eva":8700187,"stationName":"Apach(Moselle)","found":true}
 {"_id":"XFAPM","ds100":"XFAPM","eva":0,"stationName":"","found":false}
 {"_id":"XFARG","ds100":"XFARG","eva":0,"stationName":"","found":false}
@@ -10304,6 +10330,7 @@
 {"_id":"XFES","ds100":"XFES","eva":8700281,"stationName":"Erstein","found":true}
 {"_id":"XFESA","ds100":"XFESA","eva":8703261,"stationName":"Elbeuf St Aubin","found":true}
 {"_id":"XFET","ds100":"XFET","eva":0,"stationName":"","found":false}
+{"_id":"XFETP","ds100":"XFETP","eva":8700548,"stationName":"Etampes","found":true}
 {"_id":"XFEV","ds100":"XFEV","eva":8700219,"stationName":"Evreux Normandie","found":true}
 {"_id":"XFFB","ds100":"XFFB","eva":8700271,"stationName":"Forbach(F)","found":true}
 {"_id":"XFFEL","ds100":"XFFEL","eva":8703308,"stationName":"Felletin","found":true}
@@ -10360,6 +10387,7 @@
 {"_id":"XFLF","ds100":"XFLF","eva":0,"stationName":"","found":false}
 {"_id":"XFLFH","ds100":"XFLFH","eva":0,"stationName":"","found":false}
 {"_id":"XFLI","ds100":"XFLI","eva":8700030,"stationName":"Lille Flandres","found":true}
+{"_id":"XFLM","ds100":"XFLM","eva":8700435,"stationName":"Le Mans","found":true}
 {"_id":"XFLMA","ds100":"XFLMA","eva":8701500,"stationName":"La Madeleine (Nord)","found":true}
 {"_id":"XFLO","ds100":"XFLO","eva":8700356,"stationName":"Lourches","found":true}
 {"_id":"XFLP","ds100":"XFLP","eva":0,"stationName":"","found":false}
@@ -10411,6 +10439,7 @@
 {"_id":"XFMST","ds100":"XFMST","eva":8700563,"stationName":"Munster(Metzeral)","found":true}
 {"_id":"XFMSY","ds100":"XFMSY","eva":0,"stationName":"","found":false}
 {"_id":"XFMT","ds100":"XFMT","eva":8700129,"stationName":"Moutiers-Salins-Brides-les-Bains","found":true}
+{"_id":"XFMTE","ds100":"XFMTE","eva":8703900,"stationName":"Mantes La Jolie","found":true}
 {"_id":"XFMTU","ds100":"XFMTU","eva":8701535,"stationName":"Montereau","found":true}
 {"_id":"XFMUM","ds100":"XFMUM","eva":8701497,"stationName":"Mundolsheim","found":true}
 {"_id":"XFMUS","ds100":"XFMUS","eva":8700183,"stationName":"Mussidan","found":true}
@@ -10471,6 +10500,7 @@
 {"_id":"XFRSS","ds100":"XFRSS","eva":8704388,"stationName":"Rosny sur Seine","found":true}
 {"_id":"XFRSW","ds100":"XFRSW","eva":8700412,"stationName":"Roeschwoog","found":true}
 {"_id":"XFRV","ds100":"XFRV","eva":8700489,"stationName":"Rivesaltes","found":true}
+{"_id":"XFRVM","ds100":"XFRVM","eva":8703727,"stationName":"Le Raincy Villemomble Montferm","found":true}
 {"_id":"XFS","ds100":"XFS","eva":0,"stationName":"","found":false}
 {"_id":"XFSAC","ds100":"XFSAC","eva":8702380,"stationName":"St-Avre-la-Chambre","found":true}
 {"_id":"XFSAN","ds100":"XFSAN","eva":8704524,"stationName":"St Aignan Noyers","found":true}
@@ -10503,6 +10533,7 @@
 {"_id":"XFSTN","ds100":"XFSTN","eva":0,"stationName":"","found":false}
 {"_id":"XFSTS","ds100":"XFSTS","eva":0,"stationName":"","found":false}
 {"_id":"XFSUB","ds100":"XFSUB","eva":0,"stationName":"","found":false}
+{"_id":"XFSUD","ds100":"XFSUD","eva":8704969,"stationName":"Saumur Rive Droit","found":true}
 {"_id":"XFSV","ds100":"XFSV","eva":8700266,"stationName":"Saverne","found":true}
 {"_id":"XFSVF","ds100":"XFSVF","eva":8704683,"stationName":"Survilliers Fosses","found":true}
 {"_id":"XFSW","ds100":"XFSW","eva":0,"stationName":"","found":false}
@@ -10518,6 +10549,7 @@
 {"_id":"XFTRA","ds100":"XFTRA","eva":0,"stationName":"","found":false}
 {"_id":"XFTRC","ds100":"XFTRC","eva":8700494,"stationName":"Tarascon-sur-Ariege","found":true}
 {"_id":"XFTT","ds100":"XFTT","eva":8700556,"stationName":"Teting (Moselle)","found":true}
+{"_id":"XFTVO","ds100":"XFTVO","eva":8704739,"stationName":"Trappes Voyageurs","found":true}
 {"_id":"XFVAR","ds100":"XFVAR","eva":8700378,"stationName":"Vaires Torcy","found":true}
 {"_id":"XFVDS","ds100":"XFVDS","eva":8704852,"stationName":"Villedieu les Poeles","found":true}
 {"_id":"XFVE","ds100":"XFVE","eva":8700380,"stationName":"Venissieux","found":true}
@@ -10563,6 +10595,7 @@
 {"_id":"XIAG","ds100":"XIAG","eva":0,"stationName":"","found":false}
 {"_id":"XIAI","ds100":"XIAI","eva":0,"stationName":"","found":false}
 {"_id":"XIALT","ds100":"XIALT","eva":0,"stationName":"","found":false}
+{"_id":"XIAQ","ds100":"XIAQ","eva":0,"stationName":"","found":false}
 {"_id":"XIAQT","ds100":"XIAQT","eva":0,"stationName":"","found":false}
 {"_id":"XIAS","ds100":"XIAS","eva":0,"stationName":"","found":false}
 {"_id":"XIAT","ds100":"XIAT","eva":8300950,"stationName":"Albate-Camerlata","found":true}
@@ -10694,11 +10727,15 @@
 {"_id":"XIOS","ds100":"XIOS","eva":0,"stationName":"","found":false}
 {"_id":"XIOT","ds100":"XIOT","eva":0,"stationName":"","found":false}
 {"_id":"XIOU","ds100":"XIOU","eva":0,"stationName":"","found":false}
+{"_id":"XIP","ds100":"XIP","eva":0,"stationName":"","found":false}
+{"_id":"XIPAM","ds100":"XIPAM","eva":8300967,"stationName":"Palmanova","found":true}
 {"_id":"XIPBG","ds100":"XIPBG","eva":0,"stationName":"","found":false}
+{"_id":"XIPC","ds100":"XIPC","eva":0,"stationName":"","found":false}
 {"_id":"XIPCM","ds100":"XIPCM","eva":0,"stationName":"","found":false}
 {"_id":"XIPCO","ds100":"XIPCO","eva":0,"stationName":"","found":false}
 {"_id":"XIPD","ds100":"XIPD","eva":8300110,"stationName":"Pordenone","found":true}
 {"_id":"XIPDG","ds100":"XIPDG","eva":8300124,"stationName":"Peschiera del Garda","found":true}
+{"_id":"XIPE","ds100":"XIPE","eva":0,"stationName":"","found":false}
 {"_id":"XIPF","ds100":"XIPF","eva":0,"stationName":"","found":false}
 {"_id":"XIPGC","ds100":"XIPGC","eva":0,"stationName":"","found":false}
 {"_id":"XIPIP","ds100":"XIPIP","eva":0,"stationName":"","found":false}
@@ -10709,8 +10746,10 @@
 {"_id":"XIPPI","ds100":"XIPPI","eva":0,"stationName":"","found":false}
 {"_id":"XIPPM","ds100":"XIPPM","eva":0,"stationName":"","found":false}
 {"_id":"XIPS","ds100":"XIPS","eva":0,"stationName":"","found":false}
+{"_id":"XIPSS","ds100":"XIPSS","eva":0,"stationName":"","found":false}
 {"_id":"XIPW","ds100":"XIPW","eva":8300125,"stationName":"Ponte Gardena-Laion/Waidbruck-Lajen","found":true}
 {"_id":"XIRAP","ds100":"XIRAP","eva":0,"stationName":"","found":false}
+{"_id":"XIRB","ds100":"XIRB","eva":0,"stationName":"","found":false}
 {"_id":"XIRC","ds100":"XIRC","eva":0,"stationName":"","found":false}
 {"_id":"XIRES","ds100":"XIRES","eva":0,"stationName":"","found":false}
 {"_id":"XIREV","ds100":"XIREV","eva":0,"stationName":"","found":false}
@@ -10798,6 +10837,7 @@
 {"_id":"XIVS","ds100":"XIVS","eva":8300121,"stationName":"Vipiteno-Val di Vizze/Sterzing-Pfitsch","found":true}
 {"_id":"XIVU","ds100":"XIVU","eva":0,"stationName":"","found":false}
 {"_id":"XIVV","ds100":"XIVV","eva":0,"stationName":"","found":false}
+{"_id":"XJCK","ds100":"XJCK","eva":0,"stationName":"","found":false}
 {"_id":"XJSA","ds100":"XJSA","eva":0,"stationName":"","found":false}
 {"_id":"XJSC","ds100":"XJSC","eva":0,"stationName":"","found":false}
 {"_id":"XJSP","ds100":"XJSP","eva":7200174,"stationName":"Stara Pazova","found":true}
@@ -10906,15 +10946,20 @@
 {"_id":"XMBGY","ds100":"XMBGY","eva":0,"stationName":"","found":false}
 {"_id":"XMBH","ds100":"XMBH","eva":5500074,"stationName":"Biharkeresztes","found":true}
 {"_id":"XMBI","ds100":"XMBI","eva":0,"stationName":"","found":false}
+{"_id":"XMBJ","ds100":"XMBJ","eva":0,"stationName":"","found":false}
+{"_id":"XMBK","ds100":"XMBK","eva":5500003,"stationName":"Budapest-Keleti","found":true}
 {"_id":"XMBKD","ds100":"XMBKD","eva":0,"stationName":"","found":false}
 {"_id":"XMBKE","ds100":"XMBKE","eva":0,"stationName":"","found":false}
 {"_id":"XMBLE","ds100":"XMBLE","eva":0,"stationName":"","found":false}
 {"_id":"XMBLF","ds100":"XMBLF","eva":0,"stationName":"","found":false}
 {"_id":"XMBM","ds100":"XMBM","eva":0,"stationName":"","found":false}
+{"_id":"XMBN","ds100":"XMBN","eva":5500728,"stationName":"Budapest-Nyugati","found":true}
+{"_id":"XMBO","ds100":"XMBO","eva":0,"stationName":"","found":false}
 {"_id":"XMBR","ds100":"XMBR","eva":0,"stationName":"","found":false}
 {"_id":"XMBRS","ds100":"XMBRS","eva":0,"stationName":"","found":false}
 {"_id":"XMBS","ds100":"XMBS","eva":5500109,"stationName":"Bekescsaba","found":true}
 {"_id":"XMBSO","ds100":"XMBSO","eva":0,"stationName":"","found":false}
+{"_id":"XMBSR","ds100":"XMBSR","eva":0,"stationName":"","found":false}
 {"_id":"XMBSS","ds100":"XMBSS","eva":0,"stationName":"","found":false}
 {"_id":"XMBSZ","ds100":"XMBSZ","eva":0,"stationName":"","found":false}
 {"_id":"XMBTU","ds100":"XMBTU","eva":5500116,"stationName":"Berettyoujfalu","found":true}
@@ -10935,7 +10980,9 @@
 {"_id":"XMKF","ds100":"XMKF","eva":0,"stationName":"","found":false}
 {"_id":"XMKG","ds100":"XMKG","eva":0,"stationName":"","found":false}
 {"_id":"XMKI","ds100":"XMKI","eva":0,"stationName":"","found":false}
+{"_id":"XMKK","ds100":"XMKK","eva":0,"stationName":"","found":false}
 {"_id":"XMKU","ds100":"XMKU","eva":0,"stationName":"","found":false}
+{"_id":"XMKV","ds100":"XMKV","eva":0,"stationName":"","found":false}
 {"_id":"XMMB","ds100":"XMMB","eva":0,"stationName":"","found":false}
 {"_id":"XMMP","ds100":"XMMP","eva":0,"stationName":"","found":false}
 {"_id":"XMMV","ds100":"XMMV","eva":0,"stationName":"","found":false}
@@ -10949,6 +10996,7 @@
 {"_id":"XMPT","ds100":"XMPT","eva":0,"stationName":"","found":false}
 {"_id":"XMPZ","ds100":"XMPZ","eva":0,"stationName":"","found":false}
 {"_id":"XMRR","ds100":"XMRR","eva":0,"stationName":"","found":false}
+{"_id":"XMRU","ds100":"XMRU","eva":0,"stationName":"","found":false}
 {"_id":"XMSG","ds100":"XMSG","eva":5500029,"stationName":"Szentgotthárd","found":true}
 {"_id":"XMSO","ds100":"XMSO","eva":0,"stationName":"","found":false}
 {"_id":"XMSR","ds100":"XMSR","eva":0,"stationName":"","found":false}
@@ -10957,6 +11005,7 @@
 {"_id":"XMSZS","ds100":"XMSZS","eva":0,"stationName":"","found":false}
 {"_id":"XMTT","ds100":"XMTT","eva":0,"stationName":"","found":false}
 {"_id":"XMVC","ds100":"XMVC","eva":0,"stationName":"","found":false}
+{"_id":"XMVD","ds100":"XMVD","eva":0,"stationName":"","found":false}
 {"_id":"XMZE","ds100":"XMZE","eva":0,"stationName":"","found":false}
 {"_id":"XMZF","ds100":"XMZF","eva":0,"stationName":"","found":false}
 {"_id":"XNAA","ds100":"XNAA","eva":8400057,"stationName":"Amsterdam Amstel","found":true}
@@ -11007,6 +11056,7 @@
 {"_id":"XNGM","ds100":"XNGM","eva":8400244,"stationName":"Geldermalsen","found":true}
 {"_id":"XNGO","ds100":"XNGO","eva":0,"stationName":"","found":false}
 {"_id":"XNGR","ds100":"XNGR","eva":8400263,"stationName":"Groningen","found":true}
+{"_id":"XNH","ds100":"XNH","eva":8400307,"stationName":"Heerlen","found":true}
 {"_id":"XNHB","ds100":"XNHB","eva":0,"stationName":"","found":false}
 {"_id":"XNHD","ds100":"XNHD","eva":8400332,"stationName":"Hoofddorp","found":true}
 {"_id":"XNHE","ds100":"XNHE","eva":8400285,"stationName":"Haarlem","found":true}
@@ -11018,6 +11068,7 @@
 {"_id":"XNHL","ds100":"XNHL","eva":8400316,"stationName":"Hengelo","found":true}
 {"_id":"XNHLS","ds100":"XNHLS","eva":8402735,"stationName":"Haarlem Spaarnwoude","found":true}
 {"_id":"XNHOK","ds100":"XNHOK","eva":8400336,"stationName":"Hoorn Kersenboogerd","found":true}
+{"_id":"XNHR","ds100":"XNHR","eva":8400305,"stationName":"Heerenveen","found":true}
 {"_id":"XNHS","ds100":"XNHS","eva":8400331,"stationName":"Hoogezand-Sappemeer","found":true}
 {"_id":"XNKA","ds100":"XNKA","eva":8400368,"stationName":"Krommenie-Assendelft","found":true}
 {"_id":"XNKE","ds100":"XNKE","eva":8400359,"stationName":"Kesteren","found":true}
@@ -11079,7 +11130,9 @@
 {"_id":"XNVT","ds100":"XNVT","eva":8400651,"stationName":"Vleuten","found":true}
 {"_id":"XNVW","ds100":"XNVW","eva":0,"stationName":"","found":false}
 {"_id":"XNWI","ds100":"XNWI","eva":8400696,"stationName":"Winschoten","found":true}
+{"_id":"XNWM","ds100":"XNWM","eva":8400707,"stationName":"Wormerveer","found":true}
 {"_id":"XNWO","ds100":"XNWO","eva":8400702,"stationName":"Woerden","found":true}
+{"_id":"XNWT","ds100":"XNWT","eva":8400684,"stationName":"Weert","found":true}
 {"_id":"XNWV","ds100":"XNWV","eva":0,"stationName":"","found":false}
 {"_id":"XNWW","ds100":"XNWW","eva":8400698,"stationName":"Winterswijk","found":true}
 {"_id":"XNZA","ds100":"XNZA","eva":8400733,"stationName":"Zandvoort aan Zee","found":true}
@@ -11143,7 +11196,9 @@
 {"_id":"XOLR","ds100":"XOLR","eva":0,"stationName":"","found":false}
 {"_id":"XOLT","ds100":"XOLT","eva":0,"stationName":"","found":false}
 {"_id":"XOLU","ds100":"XOLU","eva":0,"stationName":"","found":false}
+{"_id":"XOMD","ds100":"XOMD","eva":0,"stationName":"","found":false}
 {"_id":"XOMS","ds100":"XOMS","eva":0,"stationName":"","found":false}
+{"_id":"XOMY","ds100":"XOMY","eva":0,"stationName":"","found":false}
 {"_id":"XONA","ds100":"XONA","eva":0,"stationName":"","found":false}
 {"_id":"XONDV","ds100":"XONDV","eva":0,"stationName":"","found":false}
 {"_id":"XONO","ds100":"XONO","eva":0,"stationName":"","found":false}
@@ -11381,6 +11436,7 @@
 {"_id":"XSHG","ds100":"XSHG","eva":8503204,"stationName":"Horgen","found":true}
 {"_id":"XSHL","ds100":"XSHL","eva":8506212,"stationName":"Hauptwil","found":true}
 {"_id":"XSHP","ds100":"XSHP","eva":0,"stationName":"","found":false}
+{"_id":"XSHR","ds100":"XSHR","eva":8506317,"stationName":"Heerbrugg","found":true}
 {"_id":"XSHT","ds100":"XSHT","eva":0,"stationName":"","found":false}
 {"_id":"XSHU","ds100":"XSHU","eva":8503403,"stationName":"Hüntwangen-Wil","found":true}
 {"_id":"XSHW","ds100":"XSHW","eva":8506395,"stationName":"Häggenschwil-Winden","found":true}
@@ -11467,6 +11523,7 @@
 {"_id":"XSSE","ds100":"XSSE","eva":8503147,"stationName":"Stettbach","found":true}
 {"_id":"XSSF","ds100":"XSSF","eva":8503285,"stationName":"Schindellegi-Feusisberg","found":true}
 {"_id":"XSSG","ds100":"XSSG","eva":8506302,"stationName":"St. Gallen(CH)","found":true}
+{"_id":"XSSGE","ds100":"XSSGE","eva":0,"stationName":"","found":false}
 {"_id":"XSSGH","ds100":"XSSGH","eva":8506392,"stationName":"St. Gallen(CH) Haggen","found":true}
 {"_id":"XSSGW","ds100":"XSSGW","eva":8506300,"stationName":"St. Gallen(CH) Winkeln","found":true}
 {"_id":"XSSH","ds100":"XSSH","eva":8506195,"stationName":"Siegershausen","found":true}
@@ -11603,6 +11660,7 @@
 {"_id":"XTPOZ","ds100":"XTPOZ","eva":5400230,"stationName":"Potucky zastavka","found":true}
 {"_id":"XTPS","ds100":"XTPS","eva":0,"stationName":"","found":false}
 {"_id":"XTRE","ds100":"XTRE","eva":5402744,"stationName":"Retenice","found":true}
+{"_id":"XTRK","ds100":"XTRK","eva":0,"stationName":"","found":false}
 {"_id":"XTRU","ds100":"XTRU","eva":5400227,"stationName":"Rumburk","found":true}
 {"_id":"XTS","ds100":"XTS","eva":5400239,"stationName":"Nejdek-Sucha","found":true}
 {"_id":"XTSA","ds100":"XTSA","eva":0,"stationName":"","found":false}
@@ -11626,6 +11684,7 @@
 {"_id":"XTVH","ds100":"XTVH","eva":0,"stationName":"","found":false}
 {"_id":"XTVHM","ds100":"XTVHM","eva":0,"stationName":"","found":false}
 {"_id":"XTVK","ds100":"XTVK","eva":5454532,"stationName":"Varnsdorf Pivovar Kocour","found":true}
+{"_id":"XTVL","ds100":"XTVL","eva":5403384,"stationName":"Vilemov u Sluknova","found":true}
 {"_id":"XTVS","ds100":"XTVS","eva":0,"stationName":"","found":false}
 {"_id":"XTVSV","ds100":"XTVSV","eva":0,"stationName":"","found":false}
 {"_id":"XTVV","ds100":"XTVV","eva":5403355,"stationName":"Velky Senov","found":true}
@@ -11640,11 +11699,13 @@
 {"_id":"XUCOF","ds100":"XUCOF","eva":0,"stationName":"","found":false}
 {"_id":"XUCP","ds100":"XUCP","eva":0,"stationName":"","found":false}
 {"_id":"XUCPB","ds100":"XUCPB","eva":0,"stationName":"","found":false}
+{"_id":"XUCT","ds100":"XUCT","eva":0,"stationName":"","found":false}
 {"_id":"XUDT","ds100":"XUDT","eva":0,"stationName":"","found":false}
 {"_id":"XUEB","ds100":"XUEB","eva":5300095,"stationName":"Episcopia Bihor","found":true}
 {"_id":"XUGI","ds100":"XUGI","eva":0,"stationName":"","found":false}
 {"_id":"XUGN","ds100":"XUGN","eva":0,"stationName":"","found":false}
 {"_id":"XUPT","ds100":"XUPT","eva":0,"stationName":"","found":false}
+{"_id":"XURM","ds100":"XURM","eva":0,"stationName":"","found":false}
 {"_id":"XURN","ds100":"XURN","eva":0,"stationName":"","found":false}
 {"_id":"XURV","ds100":"XURV","eva":0,"stationName":"","found":false}
 {"_id":"XUSH","ds100":"XUSH","eva":0,"stationName":"","found":false}
@@ -11726,8 +11787,10 @@
 {"_id":"XVMD","ds100":"XVMD","eva":0,"stationName":"","found":false}
 {"_id":"XVME","ds100":"XVME","eva":0,"stationName":"","found":false}
 {"_id":"XVMG","ds100":"XVMG","eva":0,"stationName":"","found":false}
+{"_id":"XVMN","ds100":"XVMN","eva":0,"stationName":"","found":false}
 {"_id":"XVMR","ds100":"XVMR","eva":0,"stationName":"","found":false}
 {"_id":"XVMS","ds100":"XVMS","eva":0,"stationName":"","found":false}
+{"_id":"XVMT","ds100":"XVMT","eva":0,"stationName":"","found":false}
 {"_id":"XVMTA","ds100":"XVMTA","eva":0,"stationName":"","found":false}
 {"_id":"XVMY","ds100":"XVMY","eva":0,"stationName":"","found":false}
 {"_id":"XVNC","ds100":"XVNC","eva":0,"stationName":"","found":false}
@@ -11737,12 +11800,14 @@
 {"_id":"XVO","ds100":"XVO","eva":0,"stationName":"","found":false}
 {"_id":"XVOB","ds100":"XVOB","eva":0,"stationName":"","found":false}
 {"_id":"XVOH","ds100":"XVOH","eva":0,"stationName":"","found":false}
+{"_id":"XVOS","ds100":"XVOS","eva":0,"stationName":"","found":false}
 {"_id":"XVOSV","ds100":"XVOSV","eva":0,"stationName":"","found":false}
 {"_id":"XVOV","ds100":"XVOV","eva":0,"stationName":"","found":false}
 {"_id":"XVOX","ds100":"XVOX","eva":0,"stationName":"","found":false}
 {"_id":"XVPT","ds100":"XVPT","eva":0,"stationName":"","found":false}
 {"_id":"XVRJ","ds100":"XVRJ","eva":0,"stationName":"","found":false}
 {"_id":"XVRL","ds100":"XVRL","eva":0,"stationName":"","found":false}
+{"_id":"XVRP","ds100":"XVRP","eva":0,"stationName":"","found":false}
 {"_id":"XVSA","ds100":"XVSA","eva":0,"stationName":"","found":false}
 {"_id":"XVSD","ds100":"XVSD","eva":0,"stationName":"","found":false}
 {"_id":"XVSG","ds100":"XVSG","eva":0,"stationName":"","found":false}
@@ -11776,6 +11841,8 @@
 {"_id":"XVY","ds100":"XVY","eva":0,"stationName":"","found":false}
 {"_id":"XVYB","ds100":"XVYB","eva":0,"stationName":"","found":false}
 {"_id":"XWCB","ds100":"XWCB","eva":0,"stationName":"","found":false}
+{"_id":"XWDR","ds100":"XWDR","eva":0,"stationName":"","found":false}
+{"_id":"XWK","ds100":"XWK","eva":0,"stationName":"","found":false}
 {"_id":"XWKS","ds100":"XWKS","eva":0,"stationName":"","found":false}
 {"_id":"XWPD","ds100":"XWPD","eva":0,"stationName":"","found":false}
 {"_id":"XWSN","ds100":"XWSN","eva":0,"stationName":"","found":false}
@@ -11805,6 +11872,7 @@
 {"_id":"XZV","ds100":"XZV","eva":0,"stationName":"","found":false}
 {"_id":"XZZM","ds100":"XZZM","eva":7900004,"stationName":"Zidani Most","found":true}
 {"_id":"ZADP","ds100":"ZADP","eva":0,"stationName":"","found":false}
+{"_id":"ZAKU","ds100":"ZAKU","eva":5400565,"stationName":"Zakupy-Bozikov","found":true}
 {"_id":"ZBM","ds100":"ZBM","eva":0,"stationName":"","found":false}
 {"_id":"ZBPR","ds100":"ZBPR","eva":0,"stationName":"","found":false}
 {"_id":"ZBS","ds100":"ZBS","eva":0,"stationName":"","found":false}
@@ -11820,6 +11888,7 @@
 {"_id":"ZLI","ds100":"ZLI","eva":0,"stationName":"","found":false}
 {"_id":"ZLPO","ds100":"ZLPO","eva":0,"stationName":"","found":false}
 {"_id":"ZLSI","ds100":"ZLSI","eva":0,"stationName":"","found":false}
+{"_id":"ZLT","ds100":"ZLT","eva":0,"stationName":"","found":false}
 {"_id":"ZMBZ","ds100":"ZMBZ","eva":0,"stationName":"","found":false}
 {"_id":"ZTM","ds100":"ZTM","eva":0,"stationName":"","found":false}
 {"_id":"ZTR","ds100":"ZTR","eva":0,"stationName":"","found":false}
@@ -11840,6 +11909,8 @@
 {"_id":"ZUIP","ds100":"ZUIP","eva":0,"stationName":"","found":false}
 {"_id":"ZUITS","ds100":"ZUITS","eva":0,"stationName":"","found":false}
 {"_id":"ZUK","ds100":"ZUK","eva":0,"stationName":"","found":false}
+{"_id":"ZUKC","ds100":"ZUKC","eva":0,"stationName":"","found":false}
+{"_id":"ZUKL","ds100":"ZUKL","eva":0,"stationName":"","found":false}
 {"_id":"ZUKN","ds100":"ZUKN","eva":0,"stationName":"","found":false}
 {"_id":"ZUKS","ds100":"ZUKS","eva":0,"stationName":"","found":false}
 {"_id":"ZUKSS","ds100":"ZUKSS","eva":0,"stationName":"","found":false}
