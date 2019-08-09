@@ -8,14 +8,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
 scalaVersion := "2.12.6"
-//val scalazVersion = "7.2.15"
-//
-//libraryDependencies ++= Seq(
-//  "org.scalaz" %% "scalaz-core" % scalazVersion,
-//  "org.scalaz" %% "scalaz-concurrent" % scalazVersion,
-//  "org.scalaz" %% "scalaz-effect" % scalazVersion,
-//  "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test",
-//)
+
 
 //libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 //libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
@@ -30,6 +23,10 @@ libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
 libraryDependencies += "javax.xml.bind" % "jaxb-api" % "2.3.0"
 
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-RC1"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "1.3.1"
+libraryDependencies += "org.typelevel" %% "cats-effect-laws" % "1.3.1" % "test"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
@@ -37,6 +34,8 @@ libraryDependencies += "com.h2database" % "h2" % "1.4.194"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
 scalacOptions += "-feature"
+
+scalacOptions += "-Ypartial-unification"
 
 //initialCommands in console := "import scalaz._, Scalaz._"
 
