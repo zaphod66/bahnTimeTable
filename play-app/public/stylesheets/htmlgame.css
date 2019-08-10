@@ -1,5 +1,5 @@
 
-header h1{
+header h1 {
   padding: 5px 20px;
   font-weight: bold;
   font-size: 120%;
@@ -176,17 +176,14 @@ footer {
 
 table {
   border-collapse: separate;
-  border-spacing: 1px;
-  border: 2px solid #42b983;
-  border-radius: 3px;
-  background-color: #fff;
+  border-spacing: 10px;
   width: 100%;
 }
 
 th {
   text-align: left;
   font-weight: bold;
-  background-color: #42b983;
+  background-color: #00b983;
   min-width: 20px;
   color: rgba(255,255,255,0.66);
   cursor: pointer;
@@ -204,23 +201,17 @@ td {
   padding: 4px 4px;
 }
 
-td, tr: nth-of-type(odd)
-{
-  background: #f0f0fa;
-}
-
 caption, th, td {
-  text-align:left;
-  font-weight:normal;
+  text-align: left;
+  font-weight: normal;
 }
 
 table tr {
-  background: #F0F0F7;
-  border-bottom:1px solid #eee;
+  background: #e0e0f7;
 }
 
 table tr:nth-of-type(odd) {
-  background: #FAFAFA;
+  background: #f0f0ff;
 }
 
 // tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;}
