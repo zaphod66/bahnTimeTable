@@ -13,16 +13,16 @@ GET     /message                    controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
-GET     /htmlgame                   controllers.HtmlGameController.htmlgame
 GET     /timeTable/*eva             controllers.BahnController.timeTableServerEva(eva: Int)
 GET     /btt                        controllers.BahnController.timeTable
 GET     /timeTableJson/*eva         controllers.BahnController.timeTableServerJson(eva: Int)
-GET     /station/*ds100             controllers.BahnController.station(ds100: String)
 GET     /stationJson/*ds100         controllers.BahnController.getStationDs100Json(ds100: String)
 GET     /betriebJson/*name          controllers.BahnController.betriebstellenJson(name: String)
-GET     /public/htmlgame            controllers.Assets.at(path="/public", file="htmlgame.html")
-GET     /public/bahnTimeTable       controllers.Assets.at(path="/public", file="bahnTimeTable.html")
-GET     /bahnTimeTable              controllers.Assets.at(path="/public", file="bahnTimeTable.html")
+# GET     /public/bahnTimeTable       controllers.Assets.at(path="/public", file="bahnTimeTable.html")
+# GET     /bahnTimeTable              controllers.Assets.at(path="/public", file="bahnTimeTable.html")
+
+GET     /htmlgame                   controllers.HtmlGameController.htmlgame
+# GET     /public/htmlgame            controllers.Assets.at(path="/public", file="htmlgame.html")
 
 GET     /public/javascripts/htmlgame.js     controllers.Assets.at(path="/public/javascripts", file="htmlgame.js")
 GET     /public/javascripts/gamedata.js     controllers.Assets.at(path="/public/javascripts", file="gamedata.js")
