@@ -6,7 +6,7 @@ header h1 {
 }
 
 header {
-  background-color: rgba(63, 255, 63, 0.2);
+  background-color: rgba(127, 255, 127, 0.2);
 }
 
 body {
@@ -207,11 +207,11 @@ caption, th, td {
 }
 
 table tr {
-  background: #e0e0f7;
+  background: #c0ffc0;
 }
 
 table tr:nth-of-type(odd) {
-  background: #f0f0ff;
+  background: #f0fff0;
 }
 
 // tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;}
