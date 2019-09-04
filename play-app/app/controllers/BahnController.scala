@@ -9,7 +9,7 @@ import com.typesafe.scalalogging.StrictLogging
 import javax.inject._
 import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Writes}
+import play.api.libs.json.{JsObject, JsPath, Json, Writes}
 import play.api.mvc._
 import utils.{LoggingSttpBackend, ThrottlingSttpBackend}
 
@@ -166,16 +166,14 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
       logger.info(s"getBetriebsstellen($name)")
 
-//      stations foreach println
-//      println("---------------------------")
-//      stations.filter(cond) foreach println
-//      println("---------------------------")
-
       stations.filter(cond).toList
     } catch {
       case e: NoSuchElementException =>
         logger.error(s"getBetriebsstellen($name) failed: ${e.getMessage}")
-        List.empty[StationEntry]
+
+        val futureList = findByNamePattern(name)
+
+        Await.result(futureList, Duration.Inf)
     }
   }
 
@@ -369,10 +367,21 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val f = mongo.find[DBDs100Entry](Json.obj("ds100" -> ds100)).first
 
-    f.map{ dbfM =>
-      dbfM.flatMap { dbf =>
-        Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found))
-      }
+    f.map { dbfM =>
+      dbfM.map { dbf => Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found) }
+    }
+  }
+
+  private def findByNamePattern(name: String): Future[List[StationEntry]] = {
+
+    logger.info(s"findByNamePattern($name)")
+
+    val query = Json.obj("stationName" -> Json.obj("$regex" -> name, "$options" -> "i"), "found" -> true)
+
+    val f = mongo.find[DBDs100Entry](query).list()
+
+    f.map { dbfM =>
+      dbfM.map { dbf => StationEntry(dbf.stationName, dbf.stationName, dbf.ds100, "", "") }
     }
   }
 
