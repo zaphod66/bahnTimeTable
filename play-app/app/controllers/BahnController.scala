@@ -9,7 +9,7 @@ import com.typesafe.scalalogging.StrictLogging
 import javax.inject._
 import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Writes}
+import play.api.libs.json.{JsObject, JsPath, Json, Writes}
 import play.api.mvc._
 import utils.{LoggingSttpBackend, ThrottlingSttpBackend}
 
@@ -117,14 +117,14 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     }
   }
 
-  private def getStationEva(eva: Int): String = {
+  private def getStationEva(eva: Int): Option[String] = {
     // https://api.deutschebahn.com/timetables/v1/station/8003518
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$eva")
     val res = req.send()
 
     logger.info(s"getStationEva($eva)")
 
-    try {
+    Try {
       val resStr = res.unsafeBody
       val resXml = scala.xml.XML.loadString(resStr)
 
@@ -132,9 +132,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       val t2 = t1 \@ "name"
 
       t2
-    } catch {
-      case _: NoSuchElementException => "<unknown>"
-    }
+    }.toOption
   }
 
   private def getBetriebsstellen(name: String): List[StationEntry] = {
@@ -168,16 +166,14 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
       logger.info(s"getBetriebsstellen($name)")
 
-//      stations foreach println
-//      println("---------------------------")
-//      stations.filter(cond) foreach println
-//      println("---------------------------")
-
       stations.filter(cond).toList
     } catch {
       case e: NoSuchElementException =>
         logger.error(s"getBetriebsstellen($name) failed: ${e.getMessage}")
-        List.empty[StationEntry]
+
+        val futureList = findByNamePattern(name)
+
+        Await.result(futureList, Duration.Inf)
     }
   }
 
@@ -310,18 +306,14 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   private def timeTableEntries(eva: Int): List[TableEntry] = {
     val entries = getEntries(eva)
-    val fchgs = getFullChanges(eva)
+    val fchgs   = getFullChanges(eva)
 
-    val entriesMap = entries.map(t => t.id -> t).toMap
     val fchgsMap = fchgs.map(t => t.id -> t).toMap
 
-    val ek = entriesMap.keySet
-    val fk = fchgsMap.filter { case (k, _) => ek.contains(k) }
+    val entries2 = entries map { te =>
+      val delay = fchgsMap.get(te.id)
 
-    val entries2 = entries map { t =>
-      val delay = fk.get(t.id)
-
-      delay.fold(t)(_ => t.copy(arDelay = delay.get.arDelay, dpDelay = delay.get.dpDelay))
+      delay.fold(te)(fc => te.copy(arDelay = fc.arDelay, dpDelay = fc.dpDelay))
     }
 
     entries2.sortWith(lessThan)
@@ -334,11 +326,11 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val station = getStationEva(eva)
     val entries = timeTableEntries(eva)
 
-    Ok(views.html.index(station, entries.sortWith(lessThan)))
+    Ok(views.html.index(station.fold("failed")(identity), entries.sortWith(lessThan)))
   }
 
   def timeTableServerJson(eva: Int) = Action {
-    implicit val entriesWrites = Json.writes[TableEntry]
+    implicit val entriesWrites: Writes[TableEntry] = Json.writes[TableEntry]
 
     val entries = timeTableEntries(eva)
 
@@ -347,15 +339,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
   def timeTable = Action { _ =>
     Ok.sendFile(new java.io.File("public/bahnTimeTable.html"))
-  }
-
-  def station(ds100: String) = Action {
-
-    logger.info(s"station($ds100)")
-
-    val (name, eva) = getStationDs100(ds100).getOrElse(("<unknown>", 0))
-
-    Ok(views.html.welcome(s"$ds100: ($name - $eva)"))
   }
 
   def betriebstellenJson(name: String) = Action {
@@ -384,10 +367,21 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val f = mongo.find[DBDs100Entry](Json.obj("ds100" -> ds100)).first
 
-    f.map{ dbfM =>
-      dbfM.flatMap { dbf =>
-        Option(Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found))
-      }
+    f.map { dbfM =>
+      dbfM.map { dbf => Ds100Entry(dbf.ds100, dbf.eva, dbf.stationName, dbf.found) }
+    }
+  }
+
+  private def findByNamePattern(name: String): Future[List[StationEntry]] = {
+
+    logger.info(s"findByNamePattern($name)")
+
+    val query = Json.obj("stationName" -> Json.obj("$regex" -> name, "$options" -> "i"), "found" -> true)
+
+    val f = mongo.find[DBDs100Entry](query).list()
+
+    f.map { dbfM =>
+      dbfM.map { dbf => StationEntry(dbf.stationName, dbf.stationName, dbf.ds100, "", "") }
     }
   }
 
