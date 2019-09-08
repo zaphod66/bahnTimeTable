@@ -26,7 +26,3 @@ object DelayedFuture {
     makeFuture(duration.toMillis)(body)
   }
 }
-
-object CatsDelayedFuture {
-  import cats.effect.Timer
-}
