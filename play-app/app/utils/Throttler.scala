@@ -2,37 +2,23 @@ package utils
 
 import com.typesafe.scalalogging.StrictLogging
 
-object Throttler extends StrictLogging {
-  private val delta      = 3000L  // in millis
-  private var lastAccess = System.currentTimeMillis() - delta
-  private var lastInc    = 0L
-  private var token      = 3
+import scala.concurrent.duration.FiniteDuration
 
-  def bracket[T](body: => T): T = {
+class Throttler(token: Int, duration: FiniteDuration) extends StrictLogging {
+  import java.util.concurrent.Semaphore
+
+  private val sem =  new Semaphore(token)
+
+  private def throttle[T](thunk: => T): T = {
     val threadId = Thread.currentThread().getId
 
-    this.synchronized {
-      val newAccess  = System.currentTimeMillis()
-      val waitLast   = newAccess - lastAccess
-      val tmp        = delta - waitLast
-      val actualWait = if (tmp < 0) 0 else tmp
+    sem.acquire()
+    DelayedFuture(duration)(sem.release())
 
-      token = token + (waitLast / delta).toInt
-      if (token > 3) token = 3
+    logger.info(s"threadId: $threadId - tokens left: ${sem.availablePermits()}")
 
-      logger.info(s"threadId: $threadId - lastAccess: $lastAccess - newAccess: $newAccess - waitLast: $waitLast - actualWait: $actualWait - token: $token")
-
-      val t = body
-
-      if (token <= 0) {
-        Thread.sleep(actualWait)
-      } else {
-        token = token - 1
-      }
-
-      lastAccess = System.currentTimeMillis()
-
-      t
-    }
+    thunk
   }
+
+  def apply[T](thunk: => T): T = throttle(thunk)
 }

@@ -8,11 +8,11 @@ object DelayedFuture {
 
   val timer   = new Timer(true)
 
-  private def makeFuture[T](delay: Long)(body: => T): Future[T] = {
+  private def makeFuture[T](delay: Long)(thunk: => T): Future[T] = {
     val promise = Promise[T]()
 
     timer.schedule(new TimerTask {
-      override def run(): Unit = promise.complete(Try { body })
+      override def run(): Unit = promise.complete(Try { thunk })
     }, delay)
 
     promise.future

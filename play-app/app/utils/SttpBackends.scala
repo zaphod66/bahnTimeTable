@@ -27,11 +27,12 @@ class LoggingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBacke
 }
 
 class ThrottlingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBackend[R, S] with StrictLogging {
+  import scala.concurrent.duration._
+
+  private val throttler = new Throttler(20, 60.seconds)
 
   override def send[T](request: Request[T, S]): R[Response[T]] = {
-
-    Throttler.bracket( delegate.send(request) )
-
+    throttler( delegate.send(request) )
   }
 
   override def close(): Unit = delegate.close()
