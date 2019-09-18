@@ -428,4 +428,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     Ok(Json.toJson(nameEva))
   }
+
+  def tokenAvailable = Action { Ok(Json.toJson(20)) }
 }
