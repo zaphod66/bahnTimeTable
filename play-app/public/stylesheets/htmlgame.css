@@ -1,12 +1,18 @@
 
-header h1 {
-  padding: 5px 20px;
+header {
+  padding: 5px 50px;
   font-weight: bold;
   font-size: 120%;
 }
 
 header {
-  background-color: rgba(127, 255, 127, 0.2);
+#  background-color: rgba(127, 255, 127, 0.2);
+  background-color: #4a86e8;
+}
+
+h1 {
+  color: #5d4ae8;
+  background-color: #4a86e8;
 }
 
 body {
@@ -32,7 +38,7 @@ main {
 
 button {
   font-size: 16px;
-  color: #80c846;
+  color: #4a86e8;
   width: 15em;
   margin: 1em 0;
 }
@@ -45,7 +51,7 @@ input[type="text"] {
   height: 1.25rem;
   width: calc(100% - 14.5rem);
   padding: .25rem 0;
-  border: .25rem groove rgba(255, 255, 0, .2);
+  border: .25rem groove #4ad5e8;
   margin: 0 .5rem;
 }
 
@@ -55,7 +61,7 @@ input[type="text"][disabled] {
 }
 
 input:focus {
-  box-shadow: 0 0 .25em .25em red;
+  box-shadow: 0 0 .25em .25em #4ad5e8;
 }
 
 #counter {
@@ -64,8 +70,8 @@ input:focus {
   padding: .35rem 0 .15rem;
   text-align: center;
   font-weight: bold;
-  color: rgba(255, 0, 0, .8);
-  background-color: rgba(0, 255, 0, .2);
+  color: #4a86e8;
+  background-color: #4ad5e8;
 }
 
 #timer {
@@ -113,6 +119,21 @@ output span + span::before {
 .blue {
   background-color: rgba(0, 0, 255, 0.2);
   border-color: rgba(0, 0, 255, 0.2);
+}
+
+.ana1 {
+  background-color: #4a86e8;
+  border-color: #5d4ae8;
+}
+
+.ana2 {
+  background-color: #5d4ae8;
+  border-color: #4ad5e8;
+}
+
+.ana3 {
+  background-color: #4ad5e8;
+  border-color: #4a86e8;
 }
 
 p, ul {
@@ -183,9 +204,9 @@ table {
 th {
   text-align: left;
   font-weight: bold;
-  background-color: #00b983;
+  background-color: #4a86e8;
   min-width: 20px;
-  color: rgba(255,255,255,0.66);
+  color: #4ad5e8;
   cursor: pointer;
   padding: 10px 10px;
   -webkit-user-select: none;
@@ -207,11 +228,11 @@ caption, th, td {
 }
 
 table tr {
-  background: #c0ffc0;
+  background: #4ad5e8;
 }
 
 table tr:nth-of-type(odd) {
-  background: #f0fff0;
+  background: #6aa6f8;
 }
 
 // tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;}
