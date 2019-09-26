@@ -4,13 +4,11 @@
     <meta charset="utf-8">
     <title>Bahn Time Table</title>
     <link rel="stylesheet" href="public/stylesheets/bahntime.css">
-    <!--    <link rel="stylesheet" type="text/css" href="public/stylesheets/htmlgame.css">-->
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <!--    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">-->
 </head>
 
 <header>
-    <h1>Bahn Time Tables</h1>
+    <h1 style="text-align: center;">Bahn Time Tables</h1>
 </header>
 
 <body>
@@ -48,15 +46,16 @@
             </ul>
         </div>
 
-        <div v-show="buttonsVisible">
+        <div v-show="buttonsVisible" class="ana3 divpad">
             <span v-show="stations.length" v-for="st in stations">
                 <button class="btn submit" v-on:click="getTimeTable(st.name, st.eva)">{{st.name}}</button> &nbsp;
             </span>
         </div>
 
-        <div v-show="tableVisible"  id="content" class="wrapper doc">
+        <div v-show="tableVisible" id="content" class="wrapper doc">
+            <hr>
             <header>{{ currentStation }}</header>
-            <table>
+            <table style="margin: auto;">
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 <tr v-for="e in timeTable">
                     <td>{{e.line}}</td>
