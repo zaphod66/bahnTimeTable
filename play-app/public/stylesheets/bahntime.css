@@ -23,6 +23,7 @@ body {
   padding: 2em;
   max-width: 80vw;
   margin: 0 auto;
+  background-color: #aae6ff;
 }
 
 main {
@@ -35,14 +36,12 @@ main {
   margin: 1em 0;
 }
 
-
 button {
   font-size: 16px;
   color: #4a86e8;
   width: 15em;
   margin: 1em 0;
 }
-
 .submit {
   margin-top: 0.25em;
 }
