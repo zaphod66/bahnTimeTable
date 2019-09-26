@@ -23,6 +23,7 @@ GET     /public/javascripts/gamedata.js     controllers.Assets.at(path="/public/
 GET     /public/javascripts/timetable.js    controllers.Assets.at(path="/public/javascripts", file="timetable.js")
 
 GET     /public/stylesheets/htmlgame.css    controllers.Assets.at(path="/public/stylesheets", file="htmlgame.css")
+GET     /public/stylesheets/bahntime.css    controllers.Assets.at(path="/public/stylesheets", file="bahntime.css")
 
 ##################################################################################################################
 
