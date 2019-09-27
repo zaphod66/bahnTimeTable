@@ -1,8 +1,9 @@
 package utils
 
-import com.softwaremill.sttp.{MonadError, Response, SttpBackend}
+import cats.effect.IO
+import com.softwaremill.sttp.{HttpURLConnectionBackend, MonadError, Request, Response, SttpBackend, _}
 import com.typesafe.scalalogging.StrictLogging
-import com.softwaremill.sttp.{Request, _}
+
 import scala.language.higherKinds
 
 class LoggingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBackend[R, S] with StrictLogging {
@@ -31,11 +32,39 @@ class ThrottlingSttpBackend[R[_], S](delegate: SttpBackend[R, S]) extends SttpBa
 
   private val throttler = new Throttler(20, 60.seconds)
 
-  override def send[T](request: Request[T, S]): R[Response[T]] = {
-    throttler( delegate.send(request) )
-  }
+  override def send[T](request: Request[T, S]): R[Response[T]] = { throttler( delegate.send(request) ) }
 
   override def close(): Unit = delegate.close()
 
   override def responseMonad: MonadError[R] = delegate.responseMonad
+}
+
+class IOSttpBackend(delegate: SttpBackend[Id, Nothing]) extends SttpBackend[IO, Nothing] with StrictLogging {
+  override def send[T](request: Request[T, Nothing]): IO[Response[T]] = IO { delegate.send(request) }
+
+  override def close(): Unit = delegate.close()
+
+  override def responseMonad: MonadError[IO] = IOMonad
+}
+
+class IOThrottlingSttpBackend(delegate: SttpBackend[IO, Nothing]) extends SttpBackend[IO, Nothing] with StrictLogging {
+  import scala.concurrent.duration._
+
+  private val throttler = new IOThrottler(20, 60.seconds)
+
+  override def send[T](request: Request[T, Nothing]): IO[Response[T]] = throttler( delegate.send(request) ).flatMap(identity)
+
+  override def close(): Unit = delegate.close()
+
+  override def responseMonad: MonadError[IO] = delegate.responseMonad
+}
+
+object IOMonad extends MonadError[IO] {
+  override def unit[T](t: T): IO[T] = IO { t }
+  override def map[T, T2](fa: IO[T])(f: (T) => T2): IO[T2] = fa.map(f)
+  override def flatMap[T, T2](fa: IO[T])(f: (T) => IO[T2]): IO[T2] = fa.flatMap(f)
+
+  override def error[T](t: Throwable): IO[T] = IO.raiseError(t)
+  override protected def handleWrappedError[T](rt: IO[T])(h: PartialFunction[Throwable, IO[T]]): IO[T] =
+    rt.handleErrorWith(h)
 }
