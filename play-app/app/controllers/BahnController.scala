@@ -3,6 +3,8 @@ package controllers
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
+import cats.effect.IO
+import cats.effect.concurrent.Semaphore
 import cn.playscala.mongo.Mongo
 import com.softwaremill.sttp._
 import com.typesafe.scalalogging.StrictLogging
@@ -22,6 +24,10 @@ import scala.language.higherKinds
 class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   extends AbstractController(cc) with StrictLogging {
 
+  implicit val ctx = IO.contextShift(ExecutionContext.global)
+  implicit val timer = IO.timer(ExecutionContext.global)
+
+  val sem = Semaphore[IO](20).unsafeRunSync()
 
   val standardBackend = HttpURLConnectionBackend()
   val loggingBackend  = new LoggingSttpBackend[Id, Nothing](standardBackend)
@@ -90,31 +96,62 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 //    println("---------------------------")
 //  }
 
+  private def semAcquire = {
+    for {
+      b <- sem.available
+      _ <- sem.acquire
+      a <- sem.available
+    } yield(b, a)
+  }
+
+  private def semRelease = {
+    for {
+      b <- sem.available
+      _ <- sem.release
+      a <- sem.available
+    } yield(b, a)
+  }
+
   private def getStationDs100(ds100: String): Option[(String, Int)] = {
 
     val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
-    val res = req.send()
+//    val res: Id[Response[String]] = req.send()
+
+    def doIt(res: Id[Response[String]]) = {
+      try {
+        val resStr = res.unsafeBody
+        val resXml = scala.xml.XML.loadString(resStr)
+
+        val t1 = resXml \\ "station"
+        val t2 = t1 \@ "name"
+        val t3 = t1 \@ "eva"
+
+        if (t3 == "") {
+          logger.info(s"getStationDs100($ds100): Not found")
+          None
+        } else {
+          logger.info(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
+          Option((t2, t3.toInt))
+        }
+      } catch {
+        case e: Exception => logger.error(s"getStationDs100($ds100) fail: ${e.getMessage}"); None
+      }
+    }
+
+    import scala.concurrent.duration._
+    import cats.implicits._
+
+    val resIO = for {
+      a <- semAcquire
+      _ = println(s"acquire: $a")
+      res = req.send()
+      vvv = doIt(res)
+      _ <- (timer.sleep(60.seconds) *> semRelease.map(a => println(s"release: $a"))).start
+    } yield vvv
 
     logger.info(s"getStationDs100($ds100)")
 
-    try {
-      val resStr = res.unsafeBody
-      val resXml = scala.xml.XML.loadString(resStr)
-
-      val t1 = resXml \\ "station"
-      val t2 = t1 \@ "name"
-      val t3 = t1 \@ "eva"
-
-      if (t3 == "") {
-        logger.info(s"getStationDs100($ds100): Not found")
-        None
-      } else {
-        logger.info(s"getStationDs100($ds100): $t1 -> ($t2,$t3)")
-        Option((t2, t3.toInt))
-      }
-    } catch {
-      case e: Exception => logger.error(s"getStationDs100($ds100) fail: ${e.getMessage}"); None
-    }
+    resIO.unsafeRunSync()
   }
 
   private def getStationEva(eva: Int): Option[String] = {
@@ -140,8 +177,10 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd")
     val req = reqHeader.get(uri"https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=$name")
 
-    val res = req.send()
-    try {
+//    val res = req.send()
+
+    def doIt(res: Id[Response[String]]) =
+      try {
       val str = res.unsafeBody
 
       import play.api.libs.json._
@@ -175,6 +214,19 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
         Await.result(futureList, Duration.Inf)
     }
+
+    import scala.concurrent.duration._
+    import cats.implicits._
+
+    val resIO = for {
+      a <- semAcquire
+      _ = println(s"acquire: $a")
+      res = req.send()
+      vvv = doIt(res)
+      _ <- (timer.sleep(60.seconds) *> semRelease.map(a => println(s"release: $a"))).start
+    } yield vvv
+
+    resIO.unsafeRunSync()
   }
 
   private def getFullChanges(eva: Int): List[TableEntry] = {
