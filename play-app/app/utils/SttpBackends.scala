@@ -57,6 +57,8 @@ class IOThrottlingSttpBackend(delegate: SttpBackend[IO, Nothing]) extends SttpBa
   override def close(): Unit = delegate.close()
 
   override def responseMonad: MonadError[IO] = delegate.responseMonad
+
+  def avail: IO[Long] = throttler.avail
 }
 
 object IOMonad extends MonadError[IO] {

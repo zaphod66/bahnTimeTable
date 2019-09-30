@@ -27,8 +27,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   implicit val ctx: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
   implicit val timer: Timer[IO] = IO.timer(ExecutionContext.global)
 
-  val sem: Semaphore[IO] = Semaphore[IO](20).unsafeRunSync()
-
   val standardBackend = HttpURLConnectionBackend()
   val loggingBackend  = new LoggingSttpBackend[Id, Nothing](standardBackend)
   val ioBackend = new IOSttpBackend(loggingBackend)
@@ -446,5 +444,5 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     Ok(Json.toJson(nameEva))
   }
 
-  def tokenAvailable = Action { Ok(Json.toJson(20)) }
+  def tokenAvailable = Action { Ok(Json.toJson(ioThrottlingBackend.avail.unsafeRunSync())) }
 }

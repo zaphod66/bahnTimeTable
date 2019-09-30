@@ -45,4 +45,6 @@ class IOThrottler(token: Int, duration: FiniteDuration) extends StrictLogging {
   }
 
   def apply[T](thunk: => T): IO[T] = throttle(thunk)
+
+  def avail: IO[Long] = sem.available
 }
