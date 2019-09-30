@@ -3,7 +3,7 @@ package controllers
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
 
-import cats.effect.IO
+import cats.effect.{ContextShift, IO, Timer}
 import cats.effect.concurrent.Semaphore
 import cn.playscala.mongo.Mongo
 import com.softwaremill.sttp._
@@ -13,7 +13,7 @@ import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsObject, JsPath, Json, Writes}
 import play.api.mvc._
-import utils.{LoggingSttpBackend, ThrottlingSttpBackend}
+import utils.{IOSttpBackend, IOThrottlingSttpBackend, LoggingSttpBackend, ThrottlingSttpBackend}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -24,16 +24,20 @@ import scala.language.higherKinds
 class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   extends AbstractController(cc) with StrictLogging {
 
-  implicit val ctx = IO.contextShift(ExecutionContext.global)
-  implicit val timer = IO.timer(ExecutionContext.global)
+  implicit val ctx: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+  implicit val timer: Timer[IO] = IO.timer(ExecutionContext.global)
 
-  val sem = Semaphore[IO](20).unsafeRunSync()
+  val sem: Semaphore[IO] = Semaphore[IO](20).unsafeRunSync()
 
   val standardBackend = HttpURLConnectionBackend()
   val loggingBackend  = new LoggingSttpBackend[Id, Nothing](standardBackend)
-  val throttlingBackend = new ThrottlingSttpBackend[Id, Nothing](loggingBackend)
+  val ioBackend = new IOSttpBackend(loggingBackend)
+  val ioThrottlingBackend = new IOThrottlingSttpBackend(ioBackend)
 
-  private implicit val backend: SttpBackend[Id, Nothing] = throttlingBackend
+//  val throttlingBackend = new ThrottlingSttpBackend[Id, Nothing](loggingBackend)
+//  private implicit val backend: SttpBackend[Id, Nothing] = throttlingBackend
+
+  private implicit val backend: SttpBackend[IO, Nothing] = ioThrottlingBackend
 
   private def dateString2Iso(str: String): String = {
     val yea = str.substring(0, 2)
@@ -60,14 +64,6 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     instant map { i => LocalDateTime.ofInstant(i, ZoneId.of("UTC")) }
   }
-
-  //  private def minutesBetween(t1: Instant, t2: Instant): Long = {
-  //    import java.time.Duration
-  //
-  //    val d = Duration.between(t1, t2)
-  //
-  //    d.toMinutes
-  //  }
 
   private def lessThan(e1: TableEntry, e2: TableEntry): Boolean = {
     val arr1 = e1.arrival
@@ -96,28 +92,9 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 //    println("---------------------------")
 //  }
 
-  private def semAcquire = {
-    for {
-      b <- sem.available
-      _ <- sem.acquire
-      a <- sem.available
-    } yield(b, a)
-  }
-
-  private def semRelease = {
-    for {
-      b <- sem.available
-      _ <- sem.release
-      a <- sem.available
-    } yield(b, a)
-  }
-
   private def getStationDs100(ds100: String): Option[(String, Int)] = {
 
-    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
-//    val res: Id[Response[String]] = req.send()
-
-    def doIt(res: Id[Response[String]]) = {
+    def doIt(res: Id[Response[String]]): Option[(String, StatusCode)] = {
       try {
         val resStr = res.unsafeBody
         val resXml = scala.xml.XML.loadString(resStr)
@@ -138,48 +115,38 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
       }
     }
 
-    import scala.concurrent.duration._
-    import cats.implicits._
-
-    val resIO = for {
-      a <- semAcquire
-      _ = println(s"acquire: $a")
-      res = req.send()
-      vvv = doIt(res)
-      _ <- (timer.sleep(60.seconds) *> semRelease.map(a => println(s"release: $a"))).start
-    } yield vvv
-
     logger.info(s"getStationDs100($ds100)")
 
-    resIO.unsafeRunSync()
+    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$ds100")
+
+    req.send().map(doIt).unsafeRunSync()
   }
 
   private def getStationEva(eva: Int): Option[String] = {
-    // https://api.deutschebahn.com/timetables/v1/station/8003518
-    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$eva")
-    val res = req.send()
+
+    def doIt(res: Id[Response[String]]): Option[String] = {
+      Try {
+        val resStr = res.unsafeBody
+        val resXml = scala.xml.XML.loadString(resStr)
+
+        val t1 = resXml \\ "station"
+        val t2 = t1 \@ "name"
+
+        t2
+      }.toOption
+    }
 
     logger.info(s"getStationEva($eva)")
 
-    Try {
-      val resStr = res.unsafeBody
-      val resXml = scala.xml.XML.loadString(resStr)
+    // https://api.deutschebahn.com/timetables/v1/station/8003518
+    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/station/$eva")
 
-      val t1 = resXml \\ "station"
-      val t2 = t1 \@ "name"
-
-      t2
-    }.toOption
+    req.send().map(doIt).unsafeRunSync()
   }
 
   private def getBetriebsstellen(name: String): List[StationEntry] = {
-    // https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=altona
-    val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd")
-    val req = reqHeader.get(uri"https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=$name")
 
-//    val res = req.send()
-
-    def doIt(res: Id[Response[String]]) =
+    def doIt(res: Id[Response[String]]): List[StationEntry] =
       try {
       val str = res.unsafeBody
 
@@ -215,50 +182,46 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
         Await.result(futureList, Duration.Inf)
     }
 
-    import scala.concurrent.duration._
-    import cats.implicits._
+    // https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=altona
+    val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd")
+    val req = reqHeader.get(uri"https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=$name")
 
-    val resIO = for {
-      a <- semAcquire
-      _ = println(s"acquire: $a")
-      res = req.send()
-      vvv = doIt(res)
-      _ <- (timer.sleep(60.seconds) *> semRelease.map(a => println(s"release: $a"))).start
-    } yield vvv
-
-    resIO.unsafeRunSync()
+    req.send().map(doIt).unsafeRunSync()
   }
 
   private def getFullChanges(eva: Int): List[TableEntry] = {
-    val fchgReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$eva")
+    def doIt(res: Id[Response[String]]): List[TableEntry] = {
+      try {
+        val fchgStr = res.unsafeBody
+        val fchgXml = scala.xml.XML.loadString(fchgStr)
+
+        val items = fchgXml \\ "s"
+
+        val resMap = items.map(s => s.attribute("id") -> s).toMap
+          .filter { case (k, _) => k.isDefined }
+          .map { case (k, v) => (k.get, v) }
+
+        val resMap2 = resMap.mapValues { n =>
+          val ar = n \\ "ar"
+          val dp = n \\ "dp"
+
+          val arLDT = dateString2LocalDateTime(ar.\@("ct"))
+          val dpLDT = dateString2LocalDateTime(dp.\@("ct"))
+
+          (arLDT, dpLDT)
+        }.filter { case (k, _) => k.nonEmpty }.map { case (k, v) => (k.head.toString, v) }
+
+        resMap2.map { case (k, v) => TableEntry(k, "", "", None, None, "", "", v._1, v._2) }.toList
+      } catch {
+        case e: NoSuchElementException => logger.error(s"Error in getFullChanges($eva): ${e.getMessage}"); List.empty[TableEntry]
+      }
+    }
+
+    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/fchg/$eva")
 
     logger.info(s"getFullChanges($eva)")
 
-    val fchgRes = fchgReq.send()
-    try {
-      val fchgStr = fchgRes.unsafeBody
-      val fchgXml = scala.xml.XML.loadString(fchgStr)
-
-      val items = fchgXml \\ "s"
-
-      val resMap = items.map(s => s.attribute("id") -> s).toMap
-        .filter { case (k, _) => k.isDefined }
-        .map { case (k, v) => (k.get, v) }
-
-      val resMap2 = resMap.mapValues { n =>
-        val ar = n \\ "ar"
-        val dp = n \\ "dp"
-
-        val arLDT = dateString2LocalDateTime(ar.\@("ct"))
-        val dpLDT = dateString2LocalDateTime(dp.\@("ct"))
-
-        (arLDT, dpLDT)
-      }.filter { case (k, _) => k.nonEmpty }.map { case (k, v) => (k.head.toString, v) }
-
-      resMap2.map { case (k, v) => TableEntry(k, "", "", None, None, "", "", v._1, v._2) }.toList
-    } catch {
-      case e: NoSuchElementException => logger.error(s"Error in getFullChanges($eva): ${e.getMessage}"); List.empty[TableEntry]
-    }
+    req.send().map(doIt).unsafeRunSync()
   }
 
   private def getEntries(eva: Int): List[TableEntry] = {
@@ -270,90 +233,92 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val dateStr = dt.format(dfDate)
     val hourStr = dt.format(dfHour)
 
-
-    val planReq = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
-    val planRes = planReq.send()
-
     logger.info(s"getEntries($eva)")
 
-    try {
-      val planStr = planRes.unsafeBody
-      val resXml = scala.xml.XML.loadString(planStr)
+    def doIt(res: Id[Response[String]]): List[TableEntry] = {
+      try {
+        val planStr = res.unsafeBody
+        val resXml = scala.xml.XML.loadString(planStr)
 
-      //      println(s"""======> ${resXml.attributes.asAttrMap}""")
+        //      println(s"""======> ${resXml.attributes.asAttrMap}""")
 
-      val station = resXml.attribute("station").map(_.toString).getOrElse("-")
+        val station = resXml.attribute("station").map(_.toString).getOrElse("-")
 
-      val items = resXml \\ "s"
+        val items = resXml \\ "s"
 
-      val entries = items map { item =>
-        val tl = item \\ "tl"
-        val ar = item \\ "ar"
-        val dp = item \\ "dp"
+        val entries = items map { item =>
+          val tl = item \\ "tl"
+          val ar = item \\ "ar"
+          val dp = item \\ "dp"
 
-        val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
-        val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+          val an = ar.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
+          val dn = dp.aggregate("-")((_, n) => n.attributes.asAttrMap.getOrElse("pt", "-"), _ + _)
 
-        val arLDT = dateString2LocalDateTime(an)
-        val dpLDT = dateString2LocalDateTime(dn)
+          val arLDT = dateString2LocalDateTime(an)
+          val dpLDT = dateString2LocalDateTime(dn)
 
-        //        val ln =
-        //          if (ar.nonEmpty)
-        //            ar.head.attributes.asAttrMap.getOrElse("l", "+")
-        //          else if (dp.nonEmpty)
-        //            dp.head.attributes.asAttrMap.getOrElse("l", "++")
-        //          else
-        //            "+++"
+          //        val ln =
+          //          if (ar.nonEmpty)
+          //            ar.head.attributes.asAttrMap.getOrElse("l", "+")
+          //          else if (dp.nonEmpty)
+          //            dp.head.attributes.asAttrMap.getOrElse("l", "++")
+          //          else
+          //            "+++"
 
-        val lnM = if (ar.nonEmpty)
-          ar.head.attributes.asAttrMap.get("l")
-        else if (dp.nonEmpty)
-          dp.head.attributes.asAttrMap.get("l")
-        else
-          Option.empty[String]
+          val lnM = if (ar.nonEmpty)
+            ar.head.attributes.asAttrMap.get("l")
+          else if (dp.nonEmpty)
+            dp.head.attributes.asAttrMap.get("l")
+          else
+            Option.empty[String]
 
-        val ln = lnM.getOrElse("+")
+          val ln = lnM.getOrElse("+")
 
-        val ca =
-          if (tl.nonEmpty)
-            tl.head.attributes.asAttrMap.getOrElse("c", "*")
-          else "**"
+          val ca =
+            if (tl.nonEmpty)
+              tl.head.attributes.asAttrMap.getOrElse("c", "*")
+            else "**"
 
-        val n =
-          if (tl.nonEmpty)
-            tl.head.attributes.asAttrMap.getOrElse("n", "#")
-          else "##"
+          val n =
+            if (tl.nonEmpty)
+              tl.head.attributes.asAttrMap.getOrElse("n", "#")
+            else "##"
 
-        val pp = if (ar.nonEmpty)
-          ar.head.attributes.asAttrMap.getOrElse("pp", "$")
-        else if (dp.nonEmpty)
-          dp.head.attributes.asAttrMap.getOrElse("pp", "$$")
-        else
-          "$$$"
+          val pp = if (ar.nonEmpty)
+            ar.head.attributes.asAttrMap.getOrElse("pp", "$")
+          else if (dp.nonEmpty)
+            dp.head.attributes.asAttrMap.getOrElse("pp", "$$")
+          else
+            "$$$"
 
-        val pptha = ar.aggregate(station)((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "%"), _ + _)
-        val ppthd = dp.aggregate(station)((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "%%"), _ + _)
+          val pptha = ar.aggregate(station)((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "%"), _ + _)
+          val ppthd = dp.aggregate(station)((_, n) => n.attributes.asAttrMap.getOrElse("ppth", "%%"), _ + _)
 
-        val depa = pptha.split('|').headOption.getOrElse(station)
-        val dest = ppthd.split('|').lastOption.getOrElse(station)
+          val depa = pptha.split('|').headOption.getOrElse(station)
+          val dest = ppthd.split('|').lastOption.getOrElse(station)
 
-        //        val line = if (ca == "S") s"$ca-$ln"
-        //        else if (ca =="IC" || ca =="ICE" || ca =="NJ" || ca == "EC" || ca =="IRE") s"$ca $n"
-        //        else s"$ca $ln ($n)"
+          //        val line = if (ca == "S") s"$ca-$ln"
+          //        else if (ca =="IC" || ca =="ICE" || ca =="NJ" || ca == "EC" || ca =="IRE") s"$ca $n"
+          //        else s"$ca $ln ($n)"
 
-        val line = if (ca == "S")
-          s"""$ca${lnM.getOrElse("?")}"""
-        else if (lnM.isEmpty) s"$ca $n"
-        else s"$ca $ln ($n)"
+          val line = if (ca == "S")
+            s"""$ca${lnM.getOrElse("?")}"""
+          else if (lnM.isEmpty) s"$ca $n"
+          else s"$ca $ln ($n)"
 
-        val id = item.attribute("id").get.head.buildString(true)
-        TableEntry(id, line, pp, arLDT, dpLDT, depa, dest)
+          val id = item.attribute("id").get.head.buildString(true)
+          TableEntry(id, line, pp, arLDT, dpLDT, depa, dest)
+        }
+
+        entries.toList
+      } catch {
+        case e: NoSuchElementException => /*e.printStackTrace();*/ logger.error(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
       }
-
-      entries.toList
-    } catch {
-      case e: NoSuchElementException => /*e.printStackTrace();*/ logger.error(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
     }
+
+    val req = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd").get(uri"https://api.deutschebahn.com/timetables/v1/plan/$eva/$dateStr/$hourStr")
+
+    req.send().map(doIt).unsafeRunSync()
   }
 
   private def timeTableEntries(eva: Int): List[TableEntry] = {
