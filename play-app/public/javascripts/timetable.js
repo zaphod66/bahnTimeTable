@@ -45,7 +45,7 @@ const timeTable = new Vue({
                   .then(response => (this.token = response.data))
                   .catch(error => console.log('Error searchStations:' + error))
 
-		        console.log('token available: ' + this.token)
+//		        console.log('token available: ' + this.token)
 		    }, 500)
 		},
 		calcDiff: function(dateSch, dateAct) {

@@ -29,8 +29,8 @@
         </div>
         <div style="display: flex">
             <div id="counter" v-show="stations.length">
-                <b>Stations ({{stations.length}}):</b>
-                <b v-show="counterVisible">({{counter}}/{{stations.length}})</b>
+                <b>Stations: {{stations.length}}</b>
+                <b v-show="counterVisible"> ({{counter}}/{{stations.length}})</b>
             </div>
             <div id="counter">
                 <b>Token available: {{token}}</b>
