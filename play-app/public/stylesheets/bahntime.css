@@ -136,7 +136,9 @@ output span + span::before {
 }
 
 .divpad {
-  padding: 0.51em
+  padding: 0.51em;
+  max-height: 7.0em;
+  overflow: scroll;
 }
 
 p, ul {
@@ -237,5 +239,3 @@ table tr {
 table tr:nth-of-type(odd) {
   background: #6aa6f8;
 }
-
-// tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;}
