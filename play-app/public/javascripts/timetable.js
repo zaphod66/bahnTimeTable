@@ -14,10 +14,18 @@ const timeTable = new Vue({
 		hostname: location.hostname,
 		port: location.port,
 		counter: 0,
+		token: 0,
+		tokenPoll: null,
 		counterVisible: false,
 		checkBtnVisible: false,
 		tableVisible: false,
 		buttonsVisible: false
+	},
+	created: function() {
+	    this.tokenAvail();
+	},
+	beforeDestroy: function() {
+	    clearInterval(this.tokenPoll);
 	},
 	filters: {
 	    filterDate: function(date) {
@@ -28,6 +36,17 @@ const timeTable = new Vue({
 	},
 	methods: {
 		handleInput: function() {
+		},
+		tokenAvail: function() {
+		    this.tokenPoll = setInterval( () => {
+                var url = this.protocol + '//' + this.hostname + ':' + this.port + "/tokens"
+                axios
+                  .get(url)
+                  .then(response => (this.token = response.data))
+                  .catch(error => console.log('Error searchStations:' + error))
+
+//		        console.log('token available: ' + this.token)
+		    }, 500)
 		},
 		calcDiff: function(dateSch, dateAct) {
             if (dateSch === undefined || dateSch === "") { return ""; }
