@@ -131,66 +131,23 @@ li {
   border: 1px solid black
 }
 
-//.found code {
-//  background-color: rgba(0, 255, 0, 0.2);
-//}
-//
-//.missing code {
-//  background-color: rgba(255, 0, 0, 0.2);
-//}
-//
-//code {
-//  background-color: #f8f8f8;
-//  border: 1px solid #ddd;
-//  border-radius: 3px;
-//  font-family: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
-//  font-size: 12px;
-//  margin: 0 2px;
-//  padding: 0px 5px;
-//}
-//
-//code[title] {
-//  cursor: pointer;
-//}
-//
-//footer {
-//  margin-top: 2em;
-//  border-top: 2px dotted grey;
-//  font-size: small;
-//}
-//
-//.fade-enter-active, .fade-leave-active {
-//  transition: opacity 10s;
-//}
-//
-//.fade-enter, .fade-leave-to
-//  opacity: 0;
-//}
-
 table {
   border-collapse: separate;
-  border-spacing: 10px;
-  width: 100%;
 }
 
 th {
   text-align: left;
   font-weight: bold;
   background-color: #4a86e8;
-  min-width: 20px;
   color: #4ad5e8;
   cursor: pointer;
   padding: 10px 10px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 td {
   text-align: left;
   font-weight: normal;
-  min-width: 60px;
+  min-width: 30px;
   padding: 4px 4px;
 }
 
