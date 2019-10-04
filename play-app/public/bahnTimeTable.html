@@ -36,21 +36,24 @@
                 <b>Token available: {{token}}</b>
             </div>
         </div>
+
         <div>
             <button type="submit"
                     class="btn btn-primary submit"
                     v-on:click="checkData"
                     v-show="checkBtnVisible && stations.length">Auflösen</button>
-
-            <ul>
-                <li class="ana3" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
-            </ul>
         </div>
 
-        <div v-show="buttonsVisible" class="ana3 divpad">
-            <span v-show="stations.length" v-for="st in stations">
-                <button class="btn submit" v-on:click="getTimeTable(st.name, st.eva)">{{st.name}}</button> &nbsp;
-            </span>
+        <div style="border: 1px solid black; padding: 1em; margin-top: 1em; background-color: #8ac6df;" v-show="stations.length">
+            <ul style="max-height: 15.5em; overflow: scroll; border: 1px solid black; padding: 1em; background-color: #9ad6ef;">
+                <li class="ana3" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
+            </ul>
+
+            <div v-show="buttonsVisible" class="ana3 divpad" style="border: 1px solid black; padding: 1em; background-color: #9ad6ef;">
+                <span v-show="stations.length" v-for="st in stations">
+                    <button class="btn" style="padding: 5px; margin: 0.1em; vertical-align: middle;" v-on:click="getTimeTable(st.name, st.eva)">{{st.name}}</button> &nbsp;
+                </span>
+            </div>
         </div>
 
         <div v-show="tableVisible" id="content" class="wrapper doc">
