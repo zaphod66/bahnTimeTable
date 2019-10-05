@@ -16,16 +16,15 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <main>
-        <div class="flex">
+        <div style="display: flex; justify-content: space-between; padding: 1em 0;">
             <input type="text" autofocus
                    v-bind:disabled="inputDisabled"
                    v-model.trim="inputValue"
                    v-on:input="handleInput">
-            <div>
-                <button type="submit"
-                        class="btn btn-default submit"
-                        v-on:click="searchStations">Suchen</button>
-            </div>
+
+            <button type="submit"
+                    class="btn btn-default submit"
+                    v-on:click="searchStations">Suchen</button>
         </div>
         <div style="display: flex">
             <div id="counter" v-show="stations.length">

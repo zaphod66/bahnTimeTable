@@ -1,3 +1,6 @@
+* {
+//  outline: 1px dashed red;
+}
 
 header {
   padding: 5px 50px;
@@ -27,6 +30,7 @@ body {
 
 main {
   display: block;
+//  outline: 2px dotted blue;
 }
 
 .flex {
