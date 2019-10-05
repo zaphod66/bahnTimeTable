@@ -68,8 +68,9 @@ input:focus {
 
 #counter {
   width: 15rem;
-  margin: 0 .5rem 0 0;
-  padding: .35rem 0 .15rem;
+  margin-right: 0.35rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
   text-align: center;
   font-weight: bold;
   color: #4a86e8;
@@ -108,7 +109,6 @@ input:focus {
 
 .divpad {
   padding: 0.51em;
-  max-height: 7.0em;
   overflow: scroll;
 }
 
