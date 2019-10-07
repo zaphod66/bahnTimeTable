@@ -22,14 +22,16 @@
                    v-model.trim="inputValue"
                    v-on:input="handleInput">
 
-            <button type="submit"
-                    style="padding: 5px; margin: 0.1em; margin-right: 0.35em; "
-                    v-on:click="searchStations">Suchen</button>
+            <div style="display: flex; width: 45em;">
+                <button type="submit"
+                        style="padding: 5px; margin: 0.1em; margin-right: 0.35em; "
+                        v-on:click="searchStations">Suchen</button>
 
-            <button type="submit"
-                    style="padding: 5px; margin: 0.1em;"
-                    v-show="checkBtnVisible && stations.length"
-                    v-on:click="checkData">Auflösen</button>
+                <button type="submit"
+                        style="padding: 5px; margin: 0.1em;"
+                        v-show="checkBtnVisible && stations.length"
+                        v-on:click="checkData">Auflösen</button>
+            </div>
         </div>
 
         <div style="display: flex">
