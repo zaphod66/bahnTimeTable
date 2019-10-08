@@ -109,9 +109,12 @@ input:focus {
   border-color: #4a86e8;
 }
 
-.divpad {
-  padding: 0.51em;
+.divscroll {
+  max-height: 8.0em;
   overflow: scroll;
+  border: 1px solid black;
+  padding: 1em;
+  background-color: #9ad6ef;
 }
 
 p, ul {

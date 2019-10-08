@@ -45,13 +45,13 @@
         </div>
 
         <div style="border: 1px solid black; padding: 1em; margin-top: 1em; background-color: #8ac6df;" v-show="stations.length">
-            <div style="max-height: 8.0em; overflow: scroll; border: 1px solid black; padding: 1em; background-color: #9ad6ef;>
-                <ul">
+            <div class="divscroll">
+                <ul>
                     <li class="ana3" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
                 </ul>
             </div>
 
-            <div v-show="buttonsVisible" class="ana3 divpad" style="border: 1px solid black; padding: 1em; background-color: #9ad6ef; margin-top: 1em; max-height: 8.0em;">
+            <div v-show="buttonsVisible" class="ana3 divscroll" style="margin-top: 1em;">
                 <span v-show="stations.length" v-for="st in stations">
                     <button style="padding: 5px; margin: 0.1em; vertical-align: middle;" v-on:click="getTimeTable(st.name, st.eva)">{{st.name}}</button> &nbsp;
                 </span>
