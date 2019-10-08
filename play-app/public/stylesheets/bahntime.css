@@ -15,10 +15,12 @@ header {
 h1 {
   color: #5d4ae8;
   background-color: #4a86e8;
+  font-variant: small-caps;
 }
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+//  font-family: Optima, Calibri, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.7;
   margin: 0;
