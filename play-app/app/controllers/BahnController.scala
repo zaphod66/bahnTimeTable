@@ -369,7 +369,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val stations = getBetriebsstellen(decodedName)
 
-    val pairs = stations map (s => NameDs100(s"${s.longName}", s.ds100))
+    val pairs = stations map (s => NameDs100(s.longName, s.ds100))
 
     Ok(Json.toJson(pairs))
   }
