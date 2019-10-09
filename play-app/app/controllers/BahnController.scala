@@ -11,7 +11,7 @@ import com.typesafe.scalalogging.StrictLogging
 import javax.inject._
 import model.{DBDs100Entry, Ds100Entry, StationEntry, TableEntry}
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsObject, JsPath, Json, Writes}
+import play.api.libs.json.{JsObject, JsPath, JsValue, Json, Writes}
 import play.api.mvc._
 import utils.{IOSttpBackend, IOThrottlingSttpBackend, LoggingSttpBackend, ThrottlingSttpBackend}
 
@@ -146,39 +146,39 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     def doIt(res: Id[Response[String]]): List[StationEntry] =
       try {
-      val str = res.unsafeBody
+        val str = res.unsafeBody
 
-      import play.api.libs.json._
+        import play.api.libs.json._
 
-      val json = Json.parse(str)
-      val jsonArr = json.asInstanceOf[JsArray]
-      val jsonSeq = jsonArr.value
+        val json = Json.parse(str)
+        val jsonArr = json.asInstanceOf[JsArray]
+        val jsonSeq = jsonArr.value
 
-      val stations = jsonSeq map { js =>
-        val lName = (js \ "name").as[String]
-        val sName = (js \ "short").as[String]
-        val abbr = (js \ "abbrev").as[String]
-        val tpe = (js \ "type").as[String]
-        val status = (js \ "status").asOpt[String].getOrElse("in use")
+        val stations = jsonSeq map { js =>
+          val lName = (js \ "name").as[String]
+          val sName = (js \ "short").as[String]
+          val abbr = (js \ "abbrev").as[String]
+          val tpe = (js \ "type").as[String]
+          val status = (js \ "status").asOpt[String].getOrElse("in use")
 
-        StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
+          StationEntry(longName = lName, shortName = sName, ds100 = abbr, tpe = tpe, status = status)
+        }
+
+        val stationTypes = Set[String]("Bf", "Bft", "Hp", "NE-Bf", "NE-Bft"/*, "Bush"*/)
+
+        def cond(s: StationEntry): Boolean = stationTypes.contains(s.tpe) && s.status == "in use"
+
+        logger.info(s"getBetriebsstellen($name)")
+
+        stations.filter(cond).toList
+      } catch {
+        case e: NoSuchElementException =>
+          logger.error(s"getBetriebsstellen($name) failed:\n${e.getMessage}")
+
+          val futureList = findByNamePattern(name)
+
+          Await.result(futureList, Duration.Inf)
       }
-
-      val stationTypes = Set[String]("Bf", "Bft", "Hp", "NE-Bf", "NE-Bft"/*, "Bush"*/)
-
-      def cond(s: StationEntry): Boolean = stationTypes.contains(s.tpe) && s.status == "in use"
-
-      logger.info(s"getBetriebsstellen($name)")
-
-      stations.filter(cond).toList
-    } catch {
-      case e: NoSuchElementException =>
-        logger.error(s"getBetriebsstellen($name) failed: ${e.getMessage}")
-
-        val futureList = findByNamePattern(name)
-
-        Await.result(futureList, Duration.Inf)
-    }
 
     // https://api.deutschebahn.com/betriebsstellen/v1/betriebsstellen?name=altona
     val reqHeader = sttp.header("Accept", "application/xml").header("Authorization", "Bearer 8aa98ee641a28d95cddf612756cf1abd")
