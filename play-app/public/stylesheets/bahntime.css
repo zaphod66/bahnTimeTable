@@ -58,9 +58,9 @@ button {
 input[type="text"] {
   height: 1.25rem;
   width: calc(100% - 14.5rem);
-  padding: 0.25rem 0;
+  padding: 0.25rem 0.025rem;
   border: .15rem groove #4ad5e8;
-  margin: 0 .5rem;
+  margin: 0 1.0rem;
 }
 
 input[type="text"][disabled] {
