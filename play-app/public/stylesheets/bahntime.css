@@ -78,6 +78,7 @@ input:focus {
   font-weight: bold;
   color: #4a86e8;
   background-color: #4ad5e8;
+  border: 1px solid #4a86e8;
 }
 
 .red {

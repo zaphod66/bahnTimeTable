@@ -16,13 +16,13 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <main>
-        <div style="display: flex; justify-content: space-between; padding: 1em 0;">
+        <div style="display: flex; justify-content: space-between; padding: 1em 0; border: 1px solid black; margin: 1em 0; background-color: #8ac6df;">
             <input type="text" autofocus
                    v-bind:disabled="inputDisabled"
                    v-model.trim="inputValue"
                    v-on:input="handleInput">
 
-            <div style="display: flex; width: 45em;">
+            <div style="display: flex; width: 50em;">
                 <button type="submit"
                         style="padding: 5px; margin: 0.1em; margin-right: 0.35em; "
                         v-on:click="searchStations">Suchen</button>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div style="display: flex">
+        <div style="display: flex; padding: 1em; border: 1px solid black; margin: 1em 0; background-color: #8ac6df;">
             <div id="counter" v-show="stations.length">
                 <b>Stations: {{stations.length}}</b>
                 <b v-show="counterVisible"> ({{counter}}/{{stations.length}})</b>
