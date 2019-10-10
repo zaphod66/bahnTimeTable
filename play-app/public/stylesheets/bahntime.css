@@ -10,11 +10,14 @@ header {
 }
 
 header {
-  background-color: #5a96f8;
+//  background-color: #5a96f8;
+  background-color: #8ac6df;
+  border: 1px solid black;
 }
 
 h1 {
-  color: #5d4ae8;
+//  color: #5d4ae8;
+  color: #8ac6df;
   background-color: #4a86e8;
   font-variant: small-caps;
 }
