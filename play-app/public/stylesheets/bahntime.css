@@ -3,6 +3,12 @@
 //  box-sizing: border-box;
 }
 
+.self-clear::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 header {
   padding: 5px 50px;
   font-weight: bold;

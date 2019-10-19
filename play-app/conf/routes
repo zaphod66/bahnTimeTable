@@ -25,6 +25,7 @@ GET     /public/javascripts/timetable.js    controllers.Assets.at(path="/public/
 GET     /public/stylesheets/htmlgame.css    controllers.Assets.at(path="/public/stylesheets", file="htmlgame.css")
 GET     /public/stylesheets/bahntime.css    controllers.Assets.at(path="/public/stylesheets", file="bahntime.css")
 
+GET     /public/images/*img             controllers.Assets.at(path="/public/images", img)
 ##################################################################################################################
 
 # An example controller showing how to use dependency injection
