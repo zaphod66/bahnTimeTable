@@ -62,7 +62,7 @@ button {
   margin: 1em 0;
 }
 .submit {
-  margin-top: 0.15em;
+  margin-top: 0.14em;
 }
 
 input[type="text"] {
@@ -92,21 +92,6 @@ input:focus {
   color: #4a86e8;
   background-color: #4ad5e8;
   border: 1px solid #4a86e8;
-}
-
-.red {
-  background-color: rgba(255, 0, 0, 0.2);
-  border-color: rgba(255, 0, 0, 0.2);
-}
-
-.green {
-  background-color: rgba(0, 255, 0, 0.2);
-  border-color: rgba(255, 255, 0, 0.2);
-}
-
-.blue {
-  background-color: rgba(0, 0, 255, 0.2);
-  border-color: rgba(0, 0, 255, 0.2);
 }
 
 .ana1 {
