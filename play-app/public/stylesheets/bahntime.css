@@ -19,7 +19,7 @@ header {
 }
 
 h1 {
-//  color: #5d4ae8;
+  text-align: center;
   color: #8ac6df;
   background-color: #4a86e8;
   font-variant: small-caps;
@@ -46,6 +46,13 @@ main {
   display: flex;
   justify-content: space-between;
   margin: 1em 0;
+}
+
+.divbox {
+  border: 1px solid black;
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #8ac6df;
 }
 
 button {

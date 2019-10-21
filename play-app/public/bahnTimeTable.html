@@ -7,7 +7,7 @@
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 </head>
 
-<header class="self-clear" style="background-image: url(public/images/ice4.jpg); background-repeat: no-repeat; background-position: center center; width=100%">
+<header style="background-image: url(public/images/ice4.jpg); background-repeat: no-repeat; background-position: center center; width=100%">
     <h1 style="text-align: center;">Bahn Time Tables</h1>
 </header>
 
@@ -16,7 +16,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <main>
-        <div style="display: flex; justify-content: space-between; padding: 1em 0; border: 1px solid black; margin: 1em 0; background-color: #8ac6df;">
+        <div class="divbox" style="display: flex; justify-content: space-between;">
             <input type="text" autofocus
                    v-bind:disabled="inputDisabled"
                    v-model.trim="inputValue"
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div style="display: flex; padding: 1em; border: 1px solid black; margin: 1em 0; background-color: #8ac6df;">
+        <div class="divbox" style="display: flex;">
             <div id="counter" v-show="stations.length">
                 <b>Stations: {{stations.length}}</b>
                 <b v-show="counterVisible"> ({{counter}}/{{stations.length}})</b>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div style="border: 1px solid black; padding: 1em; margin-top: 1em; background-color: #8ac6df;" v-show="stations.length">
+        <div class="divbox" v-show="stations.length">
             <div class="divscroll">
                 <ul>
                     <li class="ana3" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
@@ -58,9 +58,8 @@
             </div>
         </div>
 
-        <div v-show="tableVisible">
-            <hr>
-            <header>{{ currentStation }}</header>
+        <div class="divbox" v-show="tableVisible">
+            <h1 style="">{{ currentStation }}</h1>
             <table style="margin: auto;">
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 <tr v-for="e in timeTable">
