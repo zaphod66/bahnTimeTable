@@ -45,13 +45,13 @@
         </div>
 
         <div class="divbox" v-show="stations.length">
-            <div class="divscroll">
+            <div class="divscroll" style="display: inline-block; width: 45%">
                 <ul>
                     <li class="ana3" v-for="el in stations"><span v-html="el.name">{{ el.name }}</span> &rarr; <span v-html="el.link">{{ el.link }}=</span></li>
                 </ul>
             </div>
 
-            <div v-show="buttonsVisible" class="ana3 divscroll" style="margin-top: 1em;">
+            <div v-show="buttonsVisible" class="ana3 divscroll" style="display: inline-block; width: 48%">
                 <span v-show="stations.length" v-for="st in stations">
                     <button style="padding: 5px; margin: 0.1em; vertical-align: middle;" v-on:click="getTimeTable(st.name, st.eva)">{{st.name}}</button> &nbsp;
                 </span>
