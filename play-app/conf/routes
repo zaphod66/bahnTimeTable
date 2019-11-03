@@ -12,7 +12,7 @@ GET     /timeTable/*eva             controllers.BahnController.timeTableServerEv
 GET     /btt                        controllers.BahnController.timeTable
 GET     /timeTableJson/*eva         controllers.BahnController.timeTableServerJson(eva: Int)
 GET     /stationJson/*ds100         controllers.BahnController.getStationDs100Json(ds100: String)
-GET     /betriebJson/*name          controllers.BahnController.betriebstellenJson(name: String)
+GET     /betriebJson/*name          controllers.BahnController.betriebJson(name: String)
 GET     /tokens                     controllers.BahnController.tokenAvailable
 
 GET     /htmlgame                   controllers.HtmlGameController.htmlgame

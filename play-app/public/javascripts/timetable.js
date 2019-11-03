@@ -92,7 +92,7 @@ const timeTable = new Vue({
 		          var url = this.protocol + '//' + this.hostname + ':' + this.port + "/timeTable/" + eva
 		          var lnk = '<a href="' + url + '" target="_blank">' + station.name + '</a>'
                   var btn = '<button class="btn submit" v-on:click="getTimeTable($st.ds100)">{{st.ds100}}</button>'
-		          station.link  = lnk
+		          station.entry = lnk
 		          station.eva   = eva
                   station.found = true
                   this.counter = this.counter + 1
@@ -104,8 +104,7 @@ const timeTable = new Vue({
                   }
 		        })
 		        .catch(_ => {
-    		      station.name  = '<strike>' + station.name + '</strike>'
-    		      station.ds100 = '<strike>' + station.ds100 + '</strike>'
+    		      station.entry = '<strike>' + station.entry + '</strike>'
                   station.found = false
                   this.counter = this.counter + 1
                   if (this.counter >= this.stations.length) {

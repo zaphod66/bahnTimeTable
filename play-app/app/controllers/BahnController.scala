@@ -356,11 +356,11 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     Ok.sendFile(new java.io.File("public/bahnTimeTable.html"))
   }
 
-  def betriebstellenJson(name: String) = Action {
-    case class NameDs100(name: String, ds100: String)
+  def betriebJson(name: String) = Action {
+    case class NameDs100(entry: String, name: String, ds100: String)
 
     implicit val nameDs100Writes: Writes[NameDs100] =
-      ((JsPath \ "name").write[String] and (JsPath \ "ds100").write[String]) (unlift(NameDs100.unapply))
+      ((JsPath \ "entry").write[String] and (JsPath \ "name").write[String] and (JsPath \ "ds100").write[String]) (unlift(NameDs100.unapply))
 
     import java.nio.charset.{StandardCharsets => SC}
     import play.utils.UriEncoding
@@ -369,7 +369,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
 
     val stations = getBetriebsstellen(decodedName)
 
-    val pairs = stations map (s => NameDs100(s.longName, s.ds100))
+    val pairs = stations map (s => NameDs100(s.longName, s.longName, s.ds100))
 
     Ok(Json.toJson(pairs))
   }
