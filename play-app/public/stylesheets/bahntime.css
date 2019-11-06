@@ -166,9 +166,11 @@ caption, th, td {
 }
 
 table tr {
-  background: #4ad5e8;
+//  background: #6aa6f8;
+  background: #9ad6ef;
 }
 
 table tr:nth-of-type(odd) {
-  background: #6aa6f8;
+//  background: #8ac6f8;
+  background: #aae6ff;
 }
