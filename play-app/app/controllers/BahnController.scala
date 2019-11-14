@@ -222,8 +222,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     req.send().map(doIt).unsafeRunSync()
   }
 
-  private def getEntries(eva: Int): List[TableEntry] = {
-    val instant = Instant.now() //.minusSeconds(3600)
+  private def getDateHour(instant: Instant): (String, String) = {
     val dt = instant2LocalDateTime(instant)
     val dfDate = DateTimeFormatter.ofPattern("yyMMdd")
     val dfHour = DateTimeFormatter.ofPattern("HH")
@@ -231,7 +230,11 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val dateStr = dt.format(dfDate)
     val hourStr = dt.format(dfHour)
 
-    logger.info(s"getEntries($eva)")
+    (dateStr, hourStr)
+  }
+
+  private def getEntriesDateHour(eva: Int, dateStr: String, hourStr: String): List[TableEntry] = {
+    logger.info(s"getEntriesDateHour($eva, $dateStr, $hourStr)")
 
     def doIt(res: Id[Response[String]]): List[TableEntry] = {
       try {
@@ -319,6 +322,29 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     req.send().map(doIt).unsafeRunSync()
   }
 
+  private def getEntries(eva: Int): List[TableEntry] = {
+    logger.info(s"getEntries($eva)")
+
+    val (dateStr, hourStr) = getDateHour(Instant.now())
+    getEntriesDateHour(eva, dateStr, hourStr)
+  }
+
+  private def timeTableEntriesHour(eva: Int, hour: Int): List[TableEntry] = {
+    val entries = getEntries(eva)
+    val fchgs   = getFullChanges(eva)
+
+    val fchgsMap = fchgs.map(t => t.id -> t).toMap
+
+    val entries2 = entries map { te =>
+      val delay = fchgsMap.get(te.id)
+
+      delay.fold(te)(fc => te.copy(arDelay = fc.arDelay, dpDelay = fc.dpDelay))
+    }
+
+    entries2.sortWith(lessThan)
+  }
+
+
   private def timeTableEntries(eva: Int): List[TableEntry] = {
     val entries = getEntries(eva)
     val fchgs   = getFullChanges(eva)
@@ -334,6 +360,31 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     entries2.sortWith(lessThan)
   }
 
+  private def timeTableEntriesDate(eva: Int, dateStr: String, hourStr: String): List[TableEntry] = {
+    val entries = getEntriesDateHour(eva, dateStr, hourStr)
+    val fchgs   = getFullChanges(eva)
+
+    val fchgsMap = fchgs.map(t => t.id -> t).toMap
+
+    val entries2 = entries map { te =>
+      val delay = fchgsMap.get(te.id)
+
+      delay.fold(te)(fc => te.copy(arDelay = fc.arDelay, dpDelay = fc.dpDelay))
+    }
+
+    entries2.sortWith(lessThan)
+  }
+
+  def timeTableServerEvaDate(eva: Int, date: String, hour: String) = Action {
+
+    logger.info(s"timeTableServerEvaDate($eva, $date, $hour)")
+
+    val station = getStationEva(eva)
+    val entries = timeTableEntriesDate(eva, date, hour)
+
+    Ok(views.html.station(station.fold("failed")(identity), entries.sortWith(lessThan)))
+  }
+
   def timeTableServerEva(eva: Int) = Action {
 
     logger.info(s"timeTableServerEva($eva)")
@@ -341,7 +392,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
     val station = getStationEva(eva)
     val entries = timeTableEntries(eva)
 
-    Ok(views.html.index(station.fold("failed")(identity), entries.sortWith(lessThan)))
+    Ok(views.html.station(station.fold("failed")(identity), entries.sortWith(lessThan)))
   }
 
   def timeTableServerJson(eva: Int) = Action {
