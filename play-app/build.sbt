@@ -1,14 +1,12 @@
-name := """bahn-timetable"""
+import sourcecode.File
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
-
+resolvers += Resolver.sonatypeRepo("public")
 resolvers += Resolver.sonatypeRepo("snapshots")
 resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
 scalaVersion := "2.12.6"
-
 
 //libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 //libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
@@ -33,10 +31,28 @@ libraryDependencies += "com.h2database" % "h2" % "1.4.194"
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
-scalacOptions += "-feature"
+lazy val scalaXml    = "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
+lazy val scalaParser = "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
+lazy val dispatchV   = "0.12.0"
+lazy val dispatch    = "net.databinder.dispatch" %% "dispatch-core" % dispatchV
 
+scalacOptions += "-feature"
 scalacOptions += "-Ypartial-unification"
 
 //initialCommands in console := "import scalaz._, Scalaz._"
 
 routesGenerator := InjectedRoutesGenerator
+
+lazy val root = (project in file("."))
+  .enablePlugins(PlayScala)
+  .enablePlugins(ScalaxbPlugin)
+  .settings(
+    name := """bahn-timetable""",
+    libraryDependencies ++= Seq(dispatch),
+    libraryDependencies ++= Seq(scalaXml, scalaParser))
+  .settings(
+    scalaxbDispatchVersion in (Compile, scalaxb) := dispatchV,
+    scalaxbXsdSource := file(s"${project.base}/xsd"),
+    scalaxbPackageName in (Compile, scalaxb)     := "generated"
+//  logLevel in (Compile, scalaxb) := Level.Debug
+  )

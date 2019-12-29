@@ -236,6 +236,48 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   private def getEntriesDateHour(eva: Int, dateStr: String, hourStr: String): List[TableEntry] = {
     logger.info(s"getEntriesDateHour($eva, $dateStr, $hourStr)")
 
+    def doIt2(res: Id[Response[String]]): List[TableEntry] = {
+      try {
+        val planStr   = res.unsafeBody
+        val resXml    = scala.xml.XML.loadString(planStr)
+        val timeTable = scalaxb.fromXML[generated.Timetable](resXml)
+
+        val station   = timeTable.station.getOrElse("-")
+        val stops     = timeTable.s
+        val entries   = stops.map { stop =>
+          val id = stop.id
+          val tl = stop.tl  // TripLabel
+          val ar = stop.ar  // Event
+          val dp = stop.dp  // Event
+
+          val an = ar.flatMap(_.pt).getOrElse("-")
+          val dn = dp.flatMap(_.pt).getOrElse("-")
+
+          val ln = (ar.flatMap(_.l)  orElse dp.flatMap(_.l) ).getOrElse("+")
+          val pp = (ar.flatMap(_.pp) orElse dp.flatMap(_.pp)).getOrElse("$")
+
+          val arLDT = dateString2LocalDateTime(an)
+          val dpLDT = dateString2LocalDateTime(dn)
+
+          val ca = tl.map(_.c)
+          val n  = tl.map(_.n)
+
+          val pptha = ar.flatMap(_.ppth)
+          val ppthd = dp.flatMap(_.ppth)
+
+          val line = s"$ca $ln ($n)"
+          val depa = pptha.flatMap(_.split('|').headOption).getOrElse(station)
+          val dest = ppthd.flatMap(_.split('|').headOption).getOrElse(station)
+
+          TableEntry(id, line, pp, arLDT, dpLDT, depa, dest)
+        }
+
+        entries.toList
+      } catch {
+        case e: Exception => /*e.printStackTrace();*/ logger.error(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
+      }
+    }
+
     def doIt(res: Id[Response[String]]): List[TableEntry] = {
       try {
         val planStr = res.unsafeBody
