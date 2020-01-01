@@ -25,6 +25,8 @@ libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-RC1"
 libraryDependencies += "org.typelevel" %% "cats-effect" % "1.3.1"
 libraryDependencies += "org.typelevel" %% "cats-effect-laws" % "1.3.1" % "test"
 
+libraryDependencies += "com.lihaoyi" %% "pprint" % "0.5.6"
+
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"

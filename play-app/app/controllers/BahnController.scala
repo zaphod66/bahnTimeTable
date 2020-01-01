@@ -236,13 +236,22 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
   private def getEntriesDateHour(eva: Int, dateStr: String, hourStr: String): List[TableEntry] = {
     logger.info(s"getEntriesDateHour($eva, $dateStr, $hourStr)")
 
+    // invalid xsd provided by DB (TimeTable_REST.xsd)
+    // does not work with scalaxb
+    /*
     def doIt2(res: Id[Response[String]]): List[TableEntry] = {
       try {
         val planStr   = res.unsafeBody
         val resXml    = scala.xml.XML.loadString(planStr)
         val timeTable = scalaxb.fromXML[generated.Timetable](resXml)
 
+//        val str = pprint.apply(timeTable)
+//
+//        println("=================================")
+//        println(str)
+//        println("=================================")
         val station   = timeTable.station.getOrElse("-")
+
         val stops     = timeTable.s
         val entries   = stops.map { stop =>
           val id = stop.id
@@ -277,6 +286,7 @@ class BahnController @Inject()(cc: ControllerComponents, mongo: Mongo)
         case e: Exception => /*e.printStackTrace();*/ logger.error(s"Error in getEntries($eva) - ${e.getMessage}"); List.empty[TableEntry]
       }
     }
+    */
 
     def doIt(res: Id[Response[String]]): List[TableEntry] = {
       try {
