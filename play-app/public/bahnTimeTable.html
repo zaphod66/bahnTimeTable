@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>Bahn Time Table</title>
     <link rel="stylesheet" href="public/stylesheets/bahntime.css">
-    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 </head>
 
 <header style="background-image: url(public/images/ice4.jpg); background-repeat: no-repeat; background-position: center center; width=100%">
@@ -14,6 +15,7 @@
 <body>
     <noscript>JavaScript required</noscript>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--    <script src="https://unpkg.com/element-ui@2.12.0/lib/index.js"></script>-->
 
     <main>
         <div class="divbox" style="display: flex; justify-content: space-between;">
@@ -47,6 +49,15 @@
                        name="table-time" value="2018-06-12T19:30"
                        min="2019-01-01T00:00" max="2022-12-31T23:59">
             </div>
+<!--            <div>-->
+<!--                <el-time-select v-model="value"-->
+<!--                                :picker-options="{-->
+<!--                                start: '00:00',-->
+<!--                                step: '01:00',-->
+<!--                                end: '23:00' }"-->
+<!--                                placeholder="Select time">-->
+<!--                </el-time-select>-->
+<!--            </div>-->
         </div>
 
         <div class="divbox" v-show="stations.length">
@@ -65,6 +76,14 @@
 
         <div class="divbox" v-show="tableVisible">
             <h1 style="padding: 0em;">{{ currentStation }}</h1>
+<!--            <el-time-select v-model="value"-->
+<!--                            :picker-options="{-->
+<!--                                start: '00:00',-->
+<!--                                step: '01:00',-->
+<!--                                end: '23:00' }"-->
+<!--                            placeholder="Select time">-->
+<!--            </el-time-select>-->
+
             <table style="margin: auto;">
                 <tr><th>Linie</th><th>Gl.</th><th>Ankunft</th><th></th><th>Abfahrt</th><th></th><th>Aus</th><th>Nach</th></tr>
                 <tr v-for="e in timeTable">
