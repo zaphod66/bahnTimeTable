@@ -1,0 +1,5 @@
+
+mongoexport -d btt -c ds100 -q '{ "found": false }' --out notFoundDs100.json
+cat notFoundDs100.json | cut -d ',' -f 2 | cut -d ':' -f 2 > notFoundDs100_sta.txt
+cat notFoundDs100_sta.txt | sed 's/ /%20/g' | sed 's/"//g' > notFoundDs100_url.txt
+cat notFoundDs100_url.txt | awk '{ print "curl localhost:9000/stationJson/"$0 }' > notFound_curl.sh
