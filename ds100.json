@@ -14541,3 +14541,67 @@
 {"_id":"LKMI","ds100":"LKMI","eva":0,"stationName":"","found":false}
 {"_id":"XDRK","ds100":"XDRK","eva":8602026,"stationName":"Roskilde st","found":true}
 {"_id":"XKWY","ds100":"XKWY","eva":0,"stationName":"","found":false}
+{"_id":"DS100","ds100":"DS100","eva":0,"stationName":"","found":false}
+{"_id":"EDO N","ds100":"EDO N","eva":0,"stationName":"","found":false}
+{"_id":"FAGB","ds100":"FAGB","eva":0,"stationName":"","found":false}
+{"_id":"AAH","ds100":"AAH","eva":8000669,"stationName":"Aumühle","found":true}
+{"_id":"NHBU","ds100":"NHBU","eva":0,"stationName":"","found":false}
+{"_id":"TH  T","ds100":"TH  T","eva":8002722,"stationName":"Heilbronn Theater","found":true}
+{"_id":"RJLB","ds100":"RJLB","eva":0,"stationName":"","found":false}
+{"_id":"ALASK","ds100":"ALASK","eva":0,"stationName":"","found":false}
+{"_id":"HLTA","ds100":"HLTA","eva":0,"stationName":"","found":false}
+{"_id":"ALD A","ds100":"ALD A","eva":8003786,"stationName":"Lübeck-Dänischburg IKEA","found":true}
+{"_id":"FNIU","ds100":"FNIU","eva":0,"stationName":"","found":false}
+{"_id":"ARSW","ds100":"ARSW","eva":0,"stationName":"","found":false}
+{"_id":"TTR H","ds100":"TTR H","eva":0,"stationName":"","found":false}
+{"_id":"ABWD","ds100":"ABWD","eva":8007046,"stationName":"Hamburg Burgwedel","found":true}
+{"_id":"ABSK","ds100":"ABSK","eva":8007057,"stationName":"Bad Bramstedt Kurhaus","found":true}
+{"_id":"ABHT","ds100":"ABHT","eva":8007067,"stationName":"Bokholt","found":true}
+{"_id":"ABMB","ds100":"ABMB","eva":8007069,"stationName":"Barmstedt Brunnenstr","found":true}
+{"_id":"ABAT","ds100":"ABAT","eva":8007840,"stationName":"Bargstedt","found":true}
+{"_id":"AAE","ds100":"AAE","eva":8007841,"stationName":"Brest-Aspe","found":true}
+{"_id":"TKO G","ds100":"TKO G","eva":8007855,"stationName":"Korntal Gymnasium","found":true}
+{"_id":"LEGOB","ds100":"LEGOB","eva":0,"stationName":"","found":false}
+{"_id":"BOKO","ds100":"BOKO","eva":0,"stationName":"","found":false}
+{"_id":"DCBO","ds100":"DCBO","eva":0,"stationName":"","found":false}
+{"_id":"DCS G","ds100":"DCS G","eva":8017403,"stationName":"Chemnitz Gustav-Freytag-Straße","found":true}
+{"_id":"DC  M","ds100":"DC  M","eva":8017407,"stationName":"Chemnitz Moritzhof","found":true}
+{"_id":"DOE B","ds100":"DOE B","eva":8017408,"stationName":"Oelsnitz Bahnhofstraße","found":true}
+{"_id":"DC  R","ds100":"DC  R","eva":8017410,"stationName":"Chemnitz Roter Turm","found":true}
+{"_id":"DC  T","ds100":"DC  T","eva":8017416,"stationName":"Chemnitz Theaterplatz","found":true}
+{"_id":"DC  Z","ds100":"DC  Z","eva":8017419,"stationName":"Chemnitz Zentralhaltestelle","found":true}
+{"_id":"DNK K","ds100":"DNK K","eva":8017421,"stationName":"Klaffenbach Hp","found":true}
+{"_id":"DC  E","ds100":"DC  E","eva":8017476,"stationName":"Chemnitz Brückenstraße/Freie Presse","found":true}
+{"_id":"ABAA","ds100":"ABAA","eva":8070023,"stationName":"Basdahl Kluste","found":true}
+{"_id":"ABAAK","ds100":"ABAAK","eva":0,"stationName":"","found":false}
+{"_id":"KB  M","ds100":"KB  M","eva":8070025,"stationName":"Sankt Augustin Zentrum","found":true}
+{"_id":"KB  B","ds100":"KB  B","eva":8070026,"stationName":"Bonn Heussallee/Museumsmeile","found":true}
+{"_id":"KB  A","ds100":"KB  A","eva":8070075,"stationName":"Bonn Konrad-Adenauer-Platz","found":true}
+{"_id":"KB  H","ds100":"KB  H","eva":8070107,"stationName":"Bonn Stadthaus","found":true}
+{"_id":"TH  B","ds100":"TH  B","eva":8070171,"stationName":"Heilbronn Hauptbahnhof/Willy-Brandt-Pl.","found":true}
+{"_id":"TH  H","ds100":"TH  H","eva":8070172,"stationName":"Heilbronn Harmonie","found":true}
+{"_id":"TH  R","ds100":"TH  R","eva":8070173,"stationName":"Heilbronn Rathaus","found":true}
+{"_id":"TH  P","ds100":"TH  P","eva":8070174,"stationName":"Heilbronn Neckar-Turm/K.-S.-Pl","found":true}
+{"_id":"AAV","ds100":"AAV","eva":8070185,"stationName":"Alveslohe","found":true}
+{"_id":"ADS K","ds100":"ADS K","eva":0,"stationName":"","found":false}
+{"_id":"THGLH","ds100":"THGLH","eva":0,"stationName":"","found":false}
+{"_id":"KBO M","ds100":"KBO M","eva":8070754,"stationName":"Bonn-Oberkassel Mitte","found":true}
+{"_id":"TH  A","ds100":"TH  A","eva":8070791,"stationName":"Heilbronn Finanzamt","found":true}
+{"_id":"TH  F","ds100":"TH  F","eva":8070792,"stationName":"Heilbronn Friedensplatz","found":true}
+{"_id":"TH  U","ds100":"TH  U","eva":8070793,"stationName":"Heilbronn Pfühlpark","found":true}
+{"_id":"TH  W","ds100":"TH  W","eva":8071172,"stationName":"Heilbronn Harmonie/Hafenmarktpassage","found":true}
+{"_id":"DC  F","ds100":"DC  F","eva":8071174,"stationName":"Chemnitz Friedrichstraße","found":true}
+{"_id":"DC  O","ds100":"DC  O","eva":8071738,"stationName":"Chemnitz Hbf (Bahnhofstraße)","found":true}
+{"_id":"DC  B","ds100":"DC  B","eva":0,"stationName":"","found":false}
+{"_id":"TH  O","ds100":"TH  O","eva":8072172,"stationName":"Heilbronn Harmonie/Kunsthalle","found":true}
+{"_id":"UGRIB","ds100":"UGRIB","eva":0,"stationName":"","found":false}
+{"_id":"TBO T","ds100":"TBO T","eva":8085005,"stationName":"Böblingen Danziger Str","found":true}
+{"_id":"TBO H","ds100":"TBO H","eva":8085007,"stationName":"Böblingen Heusteigstr","found":true}
+{"_id":"TBO Z","ds100":"TBO Z","eva":8085008,"stationName":"Böblingen Zimmerschlag","found":true}
+{"_id":"ANB A","ds100":"ANB A","eva":8085311,"stationName":"Niebüll Autoverladung","found":true}
+{"_id":"TMWA","ds100":"TMWA","eva":0,"stationName":"","found":false}
+{"_id":"TNU R","ds100":"TNU R","eva":8090021,"stationName":"Nürtingen-Roßdorf","found":true}
+{"_id":"KB  T","ds100":"KB  T","eva":8098044,"stationName":"Bonn Hbf (tief)","found":true}
+{"_id":"LH  G","ds100":"LH  G","eva":0,"stationName":"","found":false}
+{"_id":"DOT L","ds100":"DOT L","eva":0,"stationName":"","found":false}
+{"_id":"DOT K","ds100":"DOT K","eva":0,"stationName":"","found":false}
